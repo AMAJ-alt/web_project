@@ -1,6 +1,5 @@
 <template>
   <AppAuth />
-
 </template>
 
 <script>

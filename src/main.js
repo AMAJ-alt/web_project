@@ -3,7 +3,8 @@ import App from './App.vue';
 import router from './router';
 import store from './store';
 import VeeValidatePlugin from './includes/validation';
-import './assets/sb-admin-2.min.css';
+import './assets/css/iransans.css';
+import './assets/css/style.css';
 
 const vm = createApp(App);
 vm.use(VeeValidatePlugin);

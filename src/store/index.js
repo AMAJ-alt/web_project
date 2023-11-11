@@ -3,6 +3,10 @@ import axios from 'axios';
 
 export default createStore({
   state: {
+    login_in_submittion: false,
+    login_bg_varient: 'bg-primary',
+    login_show_message: 'لطفا صبر کنید! در حال چک کردن مشخصات شما.',
+
     authTabLogin: true,
     userLoggedIn: false,
     headers: {
@@ -27,6 +31,10 @@ export default createStore({
   },
   actions: {
     async login({ commit, state }, payload) {
+      state.login_in_submittion = true;
+      state.login_bg_varient = 'bg-primary text-white';
+      state.login_show_message = 'لطفا صبر کنید! در حال چک کردن مشخصات شما.';
+
       const loginSoapReq = `<?xml version="1.0" encoding="utf-8"?>
       <soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
         <soap:Body>
@@ -45,9 +53,14 @@ export default createStore({
         .post('http://10.10.10.3/tika11/wservice.asmx?op=Login', loginSoapReq, { headers })
         .then((res) => {
           console.log(res.data);
+          this.login_bg_varient = 'bg-success text-white';
+          this.login_show_message = 'عملیات باموفقیت انجام شد';
         })
         .catch((error) => {
           console.log(error);
+          state.login_in_submittion = false;
+          state.login_bg_varient = 'bg-danger text-white';
+          state.login_show_message = 'عملیات با شکست مواجه شد.';
         });
 
       commit('toggleAuth');

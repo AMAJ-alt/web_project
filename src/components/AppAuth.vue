@@ -1,5 +1,5 @@
 <template>
-  <AppLogin class="hey" v-show="authTabLogin == true"/>
+  <AppLogin v-show="authTabLogin == true"/>
   <AppRegister v-show="authTabLogin == false"/>
 </template>
 

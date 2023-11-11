@@ -24,9 +24,9 @@ export default {
     configure({
       generateMessage: (ctx) => {
         const msg = {
-          required: ` ${ctx.field} is required. `,
-          min: ` ${ctx.field} is too short . `,
-          max: ` ${ctx.field} is too big . `,
+          required: 'این فیلد اجباری است. ',
+          min: 'حداقل 3 کاراکتر لازم است. ',
+          max: 'حداکثر 100 کاراکتر لازم است. ',
         };
         const message = msg[ctx.rule.name]
           ? msg[ctx.rule.name]

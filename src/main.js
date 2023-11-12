@@ -3,6 +3,9 @@ import App from './App.vue';
 import router from './router';
 import store from './store';
 import VeeValidatePlugin from './includes/validation';
+import './assets/js/lib/bootstrap.min';
+import './assets/css/lib/bootstrap.min.css';
+import 'bootstrap-icons/font/bootstrap-icons.css';
 import './assets/css/iransans.css';
 import './assets/css/style.css';
 

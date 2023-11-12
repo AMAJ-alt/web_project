@@ -1,13 +1,14 @@
 <template>
-  <AppAuth />
+  <AppHeader />
+  <RouterView />
 </template>
 
 <script>
-import AppAuth from './components/AppAuth.vue';
+import AppHeader from './components/AppHeader.vue';
 
 export default {
   components: {
-    AppAuth,
+    AppHeader,
   },
 };
 </script>

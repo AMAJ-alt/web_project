@@ -28,6 +28,7 @@ body {
   background: rgba(30, 116, 253, 0.3);
 }
 
+
 a {
   transition: none;
   color: #1E74FD;
@@ -6124,7 +6125,6 @@ textarea,
 .toast-box .in .text {
   width: 100%;
 }
-
 .toast-box.toast-top.show {
   top: 56px;
 }

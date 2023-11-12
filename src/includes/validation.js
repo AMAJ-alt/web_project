@@ -9,6 +9,8 @@ import {
   required,
   min,
   max,
+  email,
+  confirmed,
 } from '@vee-validate/rules';
 
 export default {
@@ -20,6 +22,8 @@ export default {
     defineRule('required', required);
     defineRule('min', min);
     defineRule('max', max);
+    defineRule('email', email);
+    defineRule('confirmed', confirmed);
 
     configure({
       generateMessage: (ctx) => {
@@ -27,6 +31,8 @@ export default {
           required: 'این فیلد اجباری است. ',
           min: 'حداقل 3 کاراکتر لازم است. ',
           max: 'حداکثر 100 کاراکتر لازم است. ',
+          email: 'لطفا ایمیل معتبر وارد کنید.',
+          confirmed: 'رمز عبور همخوانی ندارد.',
         };
         const message = msg[ctx.rule.name]
           ? msg[ctx.rule.name]

@@ -1,70 +1,88 @@
 <template>
-  <div class="container">
+  <!-- App Capsule -->
+  <div id="appCapsule">
+    <div id="register_toast" class="toast-box toast-top" :class="register_bg_varient">
+      <div class="in">
+        <div class="text">
+          {{ register_show_message }}
+        </div>
+      </div>
+      <button type="button" class="btn btn-sm close-button text-white">تایید</button>
+    </div>
 
-    <div class="card o-hidden border-0 shadow-lg my-5">
-      <div class="card-body p-0">
-        <!-- Nested Row within Card Body -->
-        <div class="row">
-          <div class="col-lg-5 d-none d-lg-block bg-register-image"></div>
-          <div class="col-lg-7">
-            <div class="p-5">
-              <div class="text-center">
-                <h1 class="h4 text-gray-900 mb-4">Create an Account!</h1>
-              </div>
-              <form class="user">
-                <div class="form-group row">
-                  <div class="col-sm-6 mb-3 mb-sm-0">
-                    <label for="exampleFirstName" class="d-none">h</label>
-                    <input type="text" class="form-control form-control-user" id="exampleFirstName"
-                      placeholder="First Name">
-                  </div>
-                  <div class="col-sm-6">
-                    <label for="exampleLastName" class="d-none">h</label>
-                    <input type="text" class="form-control form-control-user" id="exampleLastName"
-                      placeholder="Last Name">
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label for="exampleInputEmail" class="d-none">h</label>
-                  <input type="email" class="form-control form-control-user" id="exampleInputEmail"
-                    placeholder="Email Address">
-                </div>
-                <div class="form-group row">
-                  <div class="col-sm-6 mb-3 mb-sm-0">
-                    <label for="exampleInputPassword" class="d-none">h</label>
-                    <input type="password" class="form-control form-control-user" id="exampleInputPassword"
-                      placeholder="Password">
-                  </div>
-                  <div class="col-sm-6">
-                    <label for="exampleRepeatPassword" class="d-none">h</label>
-                    <input type="password" class="form-control form-control-user" id="exampleRepeatPassword"
-                      placeholder="Repeat Password">
-                  </div>
-                </div>
-                <a href="login.html" class="btn btn-primary btn-user btn-block">
-                  Register Account
-                </a>
-                <hr>
-                <a href="index.html" class="btn btn-google btn-user btn-block">
-                  <i class="fab fa-google fa-fw"></i> Register with Google
-                </a>
-                <a href="index.html" class="btn btn-facebook btn-user btn-block">
-                  <i class="fab fa-facebook-f fa-fw"></i> Register with Facebook
-                </a>
-              </form>
-              <hr>
-              <div class="text-center">
-                <a class="small" href="forgot-password.html">Forgot Password?</a>
-              </div>
-              <div class="text-center">
-                <button type="button" @click.prevent="toggleAuthTab" class="btn btn-link btn-sm">Already have an account? Login!</button>
-              </div>
+    <br><br>
+    <div class="login-form">
+      <div class="section">
+        <h1>ثبت نام</h1>
+        <h4>برای پیوستن به ما فرم را پر کنید</h4>
+      </div>
+      <div class="section mt-2 mb-5">
+        <vee-form @submit="register" :validation-schema="registerSchema">
+
+          <div class="form-group boxed">
+            <div class="input-wrapper">
+              <label for="number" class="d-none"></label>
+              <vee-field type="text" class="form-control" name="username" placeholder="نام کامل"/>
+              <i class="clear-input">
+                <ion-icon name="close-circle"></ion-icon>
+              </i>
+              <ErrorMessage class="text-danger fs-6" name="username" />
             </div>
           </div>
+
+          <div class="form-group boxed">
+            <div class="input-wrapper">
+              <label for="number" class="d-none"></label>
+              <vee-field name="email" type="email" class="form-control" id="email1" placeholder="ایمیل"/>
+              <i class="clear-input">
+                <ion-icon name="close-circle"></ion-icon>
+              </i>
+              <ErrorMessage class="text-danger fs-6" name="email" />
+            </div>
+          </div>
+
+          <div class="form-group boxed">
+            <div class="input-wrapper">
+              <label for="number" class="d-none"></label>
+              <vee-field name="password" type="password" class="form-control" autocomplete="off" placeholder="رمز"/>
+              <i class="clear-input">
+                <ion-icon name="close-circle"></ion-icon>
+              </i>
+              <ErrorMessage class="text-danger fs-6" name="password" />
+            </div>
+          </div>
+
+          <div class="form-group boxed">
+            <div class="input-wrapper">
+              <label for="number" class="d-none"></label>
+              <vee-field name="confirm_password" type="password" class="form-control" autocomplete="off" placeholder="ورود مجدد رمز"/>
+              <i class="clear-input">
+                <ion-icon name="close-circle"></ion-icon>
+              </i>
+              <ErrorMessage class="text-danger fs-6" name="confirm_password" />
+            </div>
+          </div>
+
+          <div class=" mt-1 text-start">
+            <div class="form-check">
+              <vee-field name="tos"  type="checkbox" class="form-check-input" id="customCheckb1"/>
+              <label class="form-check-label" for="customCheckb1">من <a href="#">قوانین و مقررات</a> را قبول دارم</label>
+              <ErrorMessage class="text-danger fs-6" name="tos" />
+            </div>
+
+          </div>
+          <br>
+
+          <div class="form-button-group">
+            <button type="submit" class="btn btn-primary btn-block btn-lg">عضویت در سایت</button>
+          </div>
+
+        </vee-form>
+        <div class="text-start">
+          <button type="button" @click.prevent="toggleAuthTab" class="btn btn-link">ورود به پنل کاربری </button>
         </div>
       </div>
     </div>
-
   </div>
 </template>
 
@@ -73,8 +91,22 @@ import { mapMutations } from 'vuex';
 
 export default {
   name: 'AppRegister',
+  data() {
+    return {
+      registerSchema: {
+        username: 'required|min:6|max:100',
+        email: 'required|email',
+        password: 'required|min:6|max:100',
+        confirm_password: 'required|confirmed:@password',
+        tos: 'required',
+      },
+    };
+  },
   methods: {
     ...mapMutations(['toggleAuthTab']),
+    async register() {
+      
+    }
   },
 };
 </script>

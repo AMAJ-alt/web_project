@@ -1,6 +1,6 @@
 <template>
-  <AppLogin v-show="authTabLogin == true"/>
-  <AppRegister v-show="authTabLogin == false"/>
+  <AppLogin v-if="authTabLogin == true"/>
+  <AppRegister v-else/>
 </template>
 
 <script>

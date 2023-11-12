@@ -4,7 +4,7 @@ import axios from 'axios';
 export default createStore({
   state: {
     login_in_submittion: false,
-    login_bg_varient: 'bg-primary',
+    login_bg_varient: 'bg-info',
     login_show_message: 'لطفا صبر کنید! در حال چک کردن مشخصات شما.',
 
     authTabLogin: true,
@@ -32,7 +32,7 @@ export default createStore({
   actions: {
     async login({ commit, state }, payload) {
       state.login_in_submittion = true;
-      state.login_bg_varient = 'bg-primary text-white';
+      state.login_bg_varient = 'bg-info text-white';
       state.login_show_message = 'لطفا صبر کنید! در حال چک کردن مشخصات شما.';
 
       const loginSoapReq = `<?xml version="1.0" encoding="utf-8"?>
@@ -53,14 +53,17 @@ export default createStore({
         .post('http://10.10.10.3/tika11/wservice.asmx?op=Login', loginSoapReq, { headers })
         .then((res) => {
           console.log(res.data);
-          this.login_bg_varient = 'bg-success text-white';
-          this.login_show_message = 'عملیات باموفقیت انجام شد';
+          state.login_bg_varient = 'bg-success text-white';
+          state.login_show_message = `${res.data.Message}`;
         })
         .catch((error) => {
           console.log(error);
           state.login_in_submittion = false;
           state.login_bg_varient = 'bg-danger text-white';
-          state.login_show_message = 'عملیات با شکست مواجه شد.';
+          // if (error.data.Message) {
+          //   state.login_show_message = `${error.data.Message}`;
+          // }
+          state.login_show_message = 'لطفا اینترنت خود را چک کنید.';
         });
 
       commit('toggleAuth');

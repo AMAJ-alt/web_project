@@ -1,6 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import HomeView from '../views/HomeView.vue';
 import AuthView from '../views/AuthView.vue';
+import ForgetPassView from '../views/ForgetPassView.vue';
+import ProfileView from '../views/ProfileView.vue';
 
 const routes = [
   {
@@ -12,6 +14,16 @@ const routes = [
     path: '/authentication',
     name: 'auth',
     component: AuthView,
+  },
+  {
+    path: '/authentication/forget_pass',
+    name: 'forget',
+    component: ForgetPassView,
+  },
+  {
+    path: '/profile',
+    name: 'profile',
+    component: ProfileView,
   },
   {
     path: '/about',

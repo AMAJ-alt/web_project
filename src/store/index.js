@@ -1,8 +1,11 @@
 import { createStore } from 'vuex';
+import router from '@/router';
 import axios from 'axios';
 
 export default createStore({
   state: {
+    topicHeader: 'Logo',
+
     login_in_submittion: false,
     login_bg_varient: 'bg-info',
     login_show_message: 'لطفا صبر کنید! در حال چک کردن مشخصات شما.',
@@ -22,6 +25,11 @@ export default createStore({
   mutations: {
     toggleAuthTab(state) {
       state.authTabLogin = !state.authTabLogin;
+      router.push({
+        query: {
+          loginTab: state.authTabLogin,
+        },
+      });
       console.log('authTab value ? ', state.userLoggedIn);
     },
     toggleAuth(state) {

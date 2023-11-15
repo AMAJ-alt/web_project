@@ -16,7 +16,7 @@
         <h1>ثبت نام</h1>
         <h4>برای پیوستن به ما فرم را پر کنید</h4>
       </div>
-      <div class="section mt-2 mb-5">
+      <div class="section mt-2">
         <vee-form @submit="register" :validation-schema="registerSchema">
 
           <div class="form-group boxed">
@@ -67,6 +67,7 @@
             <div class="form-check">
               <vee-field name="tos"  type="checkbox" class="form-check-input" id="customCheckb1"/>
               <label class="form-check-label" for="customCheckb1">من <a href="#">قوانین و مقررات</a> را قبول دارم</label>
+              <br>
               <ErrorMessage class="text-danger fs-6" name="tos" />
             </div>
 
@@ -104,9 +105,9 @@ export default {
   },
   methods: {
     ...mapMutations(['toggleAuthTab']),
-    async register() {
-      
-    }
+    async register(values) {
+      console.log(values);
+    },
   },
 };
 </script>

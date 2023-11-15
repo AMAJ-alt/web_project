@@ -1,5 +1,5 @@
 <template>
-  <div id="appCapsule" class="pt-0">
+  <div id="appCapsule" class="pt-0 ">
     <div id="login_toast" class="toast-box toast-top" :class="login_bg_varient">
       <div class="in">
         <div class="text">

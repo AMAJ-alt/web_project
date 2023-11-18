@@ -1,4 +1,5 @@
 import { createApp } from 'vue';
+import AppCostume from './components/AppCostume.vue';
 import App from './App.vue';
 import router from './router';
 import store from './store';
@@ -10,6 +11,7 @@ import './assets/css/iransans.css';
 import './assets/css/style.css';
 
 const vm = createApp(App);
+vm.component('AppSelect', AppCostume);
 vm.use(VeeValidatePlugin);
 vm.use(store);
 vm.use(router);

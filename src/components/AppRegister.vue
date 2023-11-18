@@ -22,7 +22,7 @@
           <div class="form-group boxed">
             <div class="input-wrapper">
               <label for="number" class="d-none"></label>
-              <vee-field type="text" class="form-control" name="username" placeholder="نام کامل"/>
+              <vee-field type="text" class="form-control" name="username" placeholder="نام کامل" />
               <i class="clear-input">
                 <ion-icon name="close-circle"></ion-icon>
               </i>
@@ -33,7 +33,7 @@
           <div class="form-group boxed">
             <div class="input-wrapper">
               <label for="number" class="d-none"></label>
-              <vee-field name="email" type="email" class="form-control" id="email1" placeholder="ایمیل"/>
+              <vee-field name="email" type="email" class="form-control" id="email1" placeholder="ایمیل" />
               <i class="clear-input">
                 <ion-icon name="close-circle"></ion-icon>
               </i>
@@ -44,7 +44,7 @@
           <div class="form-group boxed">
             <div class="input-wrapper">
               <label for="number" class="d-none"></label>
-              <vee-field name="password" type="password" class="form-control" autocomplete="off" placeholder="رمز"/>
+              <vee-field name="password" type="password" class="form-control" autocomplete="off" placeholder="رمز" />
               <i class="clear-input">
                 <ion-icon name="close-circle"></ion-icon>
               </i>
@@ -55,17 +55,28 @@
           <div class="form-group boxed">
             <div class="input-wrapper">
               <label for="number" class="d-none"></label>
-              <vee-field name="confirm_password" type="password" class="form-control" autocomplete="off" placeholder="ورود مجدد رمز"/>
+              <vee-field name="confirm_password" type="password" class="form-control" autocomplete="off"
+                placeholder="ورود مجدد رمز" />
               <i class="clear-input">
                 <ion-icon name="close-circle"></ion-icon>
               </i>
               <ErrorMessage class="text-danger fs-6" name="confirm_password" />
             </div>
           </div>
+          <div class="form-group boxed">
+            <div class="input-wrapper">
+              <AppSelect
+              :label="selectLabel"
+              :options="selectOptions"
+              :value="selectedValue"
+              name="gender"
+              />
+            </div>
+          </div>
 
           <div class=" mt-1 text-start">
             <div class="form-check">
-              <vee-field name="tos"  type="checkbox" class="form-check-input" id="customCheckb1"/>
+              <vee-field value="1" name="tos" type="checkbox" class="form-check-input" id="customCheckb1" />
               <label class="form-check-label" for="customCheckb1">من <a href="#">قوانین و مقررات</a> را قبول دارم</label>
               <br>
               <ErrorMessage class="text-danger fs-6" name="tos" />
@@ -100,7 +111,15 @@ export default {
         password: 'required|min:6|max:100',
         confirm_password: 'required|confirmed:@password',
         tos: 'required',
+        gender: 'required',
       },
+      selectLabel: 'انتخاب گزینه',
+      selectOptions: [
+        { value: 'male', label: 'مرد' },
+        { value: 'female', label: 'زن' },
+        { value: 'none', label: 'ترجیحی به گفتن آن ندارم' },
+      ],
+      selectedValue: '',
     };
   },
   methods: {

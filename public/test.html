@@ -1,25 +1,70 @@
 <!DOCTYPE html>
-<html lang="fa-IR" dir="rtl">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="bootstrap.min.css">
-    <link rel="stylesheet" href="style.css">
-    <title>Document</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dropdown Example</title>
+  <style>
+    .custom-select {
+      position: relative;
+      display: inline-block;
+    }
+
+    .custom-select select {
+      display: none; /* Hide the default select element */
+    }
+
+    .custom-select .select-trigger {
+      display: block;
+      padding: 10px;
+      border: 1px solid #ccc;
+      cursor: pointer;
+    }
+
+    .custom-select .options {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      display: none;
+      max-height: 150px;
+      overflow-y: auto;
+      border: 1px solid #ccc;
+      z-index: 1;
+    }
+
+    .custom-select .options option {
+      padding: 10px;
+      cursor: pointer;
+    }
+
+    .custom-select.open .options {
+      display: block;
+    }
+  </style>
 </head>
 <body>
-    <p href="#" onclick="toastbox('toast_1')">
-        پیشفرض
-      </p>
-    <div id="toast_1" class="toast-box toast-top">
-      <div class="in">
-        <div class="text">
-          توست در بالا
-        </div>
-      </div>
-      <button type="button" class="btn btn-sm btn-text-primary close-button">تایید</button>
-    </div>
+
+<div class="custom-select" id="customSelect">
+  <div class="select-trigger" onclick="toggleOptions()">Select an option</div>
+  <div class="options">
+    <option onclick="selectOption('Option 1')">Option 1</option>
+    <option onclick="selectOption('Option 2')">Option 2</option>
+    <option onclick="selectOption('Option 3')">Option 3</option>
+  </div>
+</div>
+
+<script>
+  function toggleOptions() {
+    var customSelect = document.getElementById('customSelect');
+    customSelect.classList.toggle('open');
+  }
+
+  function selectOption(option) {
+    alert('Selected option: ' + option);
+    // You can perform further actions when an option is selected
+  }
+</script>
+
 </body>
-<script src="bootstrap.min.js"></script>
-<script src="base.js"></script>
 </html>

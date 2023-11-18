@@ -1,5 +1,5 @@
 <template>
-  <div id="appCapsule">
+  <!-- <div id="appCapsule">
     <div class="text-center">
       صفحه خانه
     </div>
@@ -30,12 +30,28 @@
         </form>
       </div>
     </div>
-  </div>
+  </div> -->
+  <AppCostume  :label="selectLabel" :options="selectOptions" :value="selectedValue" v-model="selectedValue" />
 </template>
 
 <script>
+import AppCostume from '@/components/AppCostume.vue';
 
 export default {
   name: 'HomeView',
+  components: {
+    AppCostume,
+  },
+  data() {
+    return {
+      selectLabel: 'انتخاب گزینه',
+      selectOptions: [
+        { value: 'option1', label: 'گزینه 1' },
+        { value: 'option2', label: 'گزینه 2' },
+        { value: 'option3', label: 'گزینه 3' },
+      ],
+      selectedValue: '',
+    };
+  },
 };
 </script>

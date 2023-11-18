@@ -26,9 +26,9 @@ export default {
       this.$router.go(-1);
     },
   },
-  beforeRouteEnter (to, from, next) {
-    this.$store.statetopicHeader = 'پروفایل';
-    next();
-  }
+  // beforeRouteEnter(to, from, next) {
+  //   this.$store.statetopicHeader = 'پروفایل';
+  //   next();
+  // },
 };
 </script>

@@ -23,6 +23,9 @@ export default createStore({
   getters: {
   },
   mutations: {
+    // headerTitle(state) {
+    //   if(router.)
+    // },
     toggleAuthTab(state) {
       state.authTabLogin = !state.authTabLogin;
       router.push({
@@ -77,6 +80,5 @@ export default createStore({
       commit('toggleAuth');
     },
   },
-  modules: {
-  },
+
 });

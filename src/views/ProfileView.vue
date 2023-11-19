@@ -356,7 +356,18 @@
 </template>
 
 <script>
+// import store from '@/store';
+
 export default {
   name: 'ProfileView',
+  beforeRouteEnter(to, from, next) {
+    next((vm) => {
+      vm.$store.dispatch('headerTitle', {
+        center: 'پروفایل',
+        left: 'خروج',
+      }).then(() => {
+      });
+    });
+  },
 };
 </script>

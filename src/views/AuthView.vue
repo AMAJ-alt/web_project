@@ -17,5 +17,14 @@ export default {
   computed: {
     ...mapState(['authTabLogin']),
   },
+  beforeRouteEnter(to, from, next) {
+    next((vm) => {
+      vm.$store.dispatch('headerTitle', {
+        center: 'احراز هویت',
+        left: 'فراموشی رمزعبور',
+      }).then(() => {
+      });
+    });
+  },
 };
 </script>

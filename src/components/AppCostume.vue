@@ -5,11 +5,11 @@
       {{ selectedOption.label }}
     </div> -->
     <label for="number" class="d-none"></label>
-    <vee-field as="checkbox" name="gender" data-bs-toggle="offcanvas" data-bs-target="#actionSheetDefaultInset"
+    <input type="text" name="gender" data-bs-toggle="offcanvas" data-bs-target="#actionSheetDefaultInset"
       class="form-control" style="padding: 10px 16px;" :value="selectedOption.label"
       placeholder="جنسیت خود را انتخاب کنید" />
     <br>
-    <ErrorMessage class="text-danger fs-6" name="gender" />
+    <!-- <ErrorMessage class="text-danger fs-6" name="gender" /> -->
 
     <div class="offcanvas offcanvas-bottom action-sheet inset" tabindex="-1" id="actionSheetDefaultInset">
       <div class="offcanvas-header">

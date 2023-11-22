@@ -1,40 +1,33 @@
 <template>
   <div class="container">
     <div class="section mt-1 mb-5">
-      <vee-form @submit="filter" :validation-schema="filterSchema">
+      <vee-form @submit="filter" :initial-values="filterData" :validation-schema="filterSchema">
 
         <div class="form-group boxed">
           <div class="input-wrapper">
             <label for="number" class="d-none"></label>
-            <vee-field type="text" class="form-control" name="type" placeholder="نوع ماژوال" />
+            <vee-field as="select" class="form-control" name="Value">
+              <option value="Articles">مقاله ها</option>
+              <option value="news">خبر ها</option>
+            </vee-field>
             <i class="clear-input">
               <ion-icon name="close-circle"></ion-icon>
             </i>
-            <ErrorMessage class="text-danger fs-6" name="type" />
+            <ErrorMessage class="text-danger fs-6" name="Value" />
           </div>
         </div>
 
         <div class="form-group boxed">
           <div class="input-wrapper">
             <label for="number" class="d-none"></label>
-            <vee-field type="text" class="form-control" name="id" placeholder="شناسه" />
+            <vee-field type="text" class="form-control" name="ColName" placeholder="شناسه" />
             <i class="clear-input">
               <ion-icon name="close-circle"></ion-icon>
             </i>
-            <ErrorMessage class="text-danger fs-6" name="id" />
+            <ErrorMessage class="text-danger fs-6" name="ColName" />
           </div>
         </div>
 
-        <div class="form-group boxed">
-          <div class="input-wrapper">
-            <label for="number" class="d-none"></label>
-            <vee-field type="text" class="form-control" name="sort" placeholder="ترتیب" />
-            <i class="clear-input">
-              <ion-icon name="close-circle"></ion-icon>
-            </i>
-            <ErrorMessage class="text-danger fs-6" name="sort" />
-          </div>
-        </div>
         <br>
         <div>
           <button :disabled="login_in_submittion" type="submit" class="btn btn-primary btn-block btn-lg">
@@ -45,25 +38,27 @@
     </div>
   </div>
 
-  <ul class="listview image-listview">
-    <AppCostume v-for="item in filterResult.Items" :key="item.Id" :item="item"/>
+  <ul class="listview image-listview media">
+    <AppCustomeList v-for="item in filterResult" :key="item.Id" :item="item"/>
   </ul>
 </template>
 <script>
 import { mapState } from 'vuex';
-import AppCostume from './AppCostume.vue';
+import AppCustomeList from './AppCustomeList.vue';
 
 export default {
   name: 'AppFilter',
   components: {
-    AppCostume,
+    AppCustomeList,
   },
   data() {
     return {
       filterSchema: {
-        type: 'required',
-        id: 'required',
-        sort: 'required',
+        Value: 'required',
+        ColName: 'required',
+      },
+      filterData: {
+        Value: 'Articles',
       },
     };
   },
@@ -72,7 +67,8 @@ export default {
   },
   methods: {
     async filter(values) {
-      await this.$store.dispatch('filter', values);
+      const JValues = JSON.stringify(values);
+      await this.$store.dispatch('filter', JValues);
     },
   },
 };

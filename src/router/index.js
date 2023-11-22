@@ -3,6 +3,7 @@ import HomeView from '../views/HomeView.vue';
 import AuthView from '../views/AuthView.vue';
 import ForgetPassView from '../views/ForgetPassView.vue';
 import ProfileView from '../views/ProfileView.vue';
+import BlogView from '../views/BlogView.vue';
 
 const routes = [
   {
@@ -24,6 +25,12 @@ const routes = [
     path: '/profile',
     name: 'profile',
     component: ProfileView,
+  },
+  {
+    path: '/blog/:id',
+    name: 'blog',
+    component: BlogView,
+    props: true,
   },
   {
     path: '/about',

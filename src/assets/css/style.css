@@ -1922,7 +1922,7 @@ a.badge-dark {
   width: 100%;
 }
 
-.image-listview > li a.item {
+.image-listview > li >.item {
   color: #141515 !important;
   padding-right: 36px;
 }

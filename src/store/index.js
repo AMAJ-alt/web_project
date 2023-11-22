@@ -91,15 +91,7 @@ export default createStore({
       <soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
         <soap:Body>
           <GetAdvCntList xmlns="http://tempuri.org/">
-            <Type>${payload.type}</Type>
-            <Keyword></Keyword>
-            <Status>3</Status>
-            <Id>${payload.id}</Id>
-            <FromRec>0</FromRec>
-            <MaxNo>3</MaxNo>
-            <Sort>${payload.sort}</Sort>
-            <CategoryId>-1</CategoryId>
-            <SubCategoryId>-1</SubCategoryId>
+            <JsonNameVale>[${payload}]</JsonNameVale>
           </GetAdvCntList>
         </soap:Body>
       </soap:Envelope>`;
@@ -111,8 +103,8 @@ export default createStore({
         .post(`${state.host}?op=GetAdvCntList`, filterSoapReq, { headers })
         .then((res) => {
           console.log(res);
-          // state.filterResult = res.data;
-          // console.log(state.filterResult);
+          state.filterResult = res.data.data;
+          console.log(state.filterResult);
         })
         .catch((error) => {
           console.log(error);

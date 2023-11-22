@@ -1,5 +1,5 @@
 <template>
-  <div id="appCapsule">
+  <!-- <div id="appCapsule">
     <div class="login-form mt-5 pe-2 ps-2">
       <div class="section">
         <img src="../assets/avatar1.jpg" alt="avatar" class="imaged rounded w86">
@@ -27,12 +27,19 @@
         </form>
       </div>
     </div>
-  </div>
+  </div> -->
+
+  <AppFilter />
 </template>
 
 <script>
+import AppFilter from '@/components/AppFilter.vue';
+
 export default {
   name: 'HomeView',
+  components: {
+    AppFilter,
+  },
   beforeRouteEnter(to, from, next) {
     next((vm) => {
       vm.$store.dispatch('headerTitle', {

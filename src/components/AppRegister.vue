@@ -68,8 +68,6 @@
               <AppSelect
               :label="selectLabel"
               :options="selectOptions"
-              :value="selectedValue"
-              name="gender"
               />
             </div>
           </div>
@@ -119,7 +117,6 @@ export default {
         { value: 'female', label: 'زن' },
         { value: 'none', label: 'ترجیحی به گفتن آن ندارم' },
       ],
-      selectedValue: '',
     };
   },
   methods: {

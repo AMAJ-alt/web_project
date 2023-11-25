@@ -1,70 +1,16 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dropdown Example</title>
-  <style>
-    .custom-select {
-      position: relative;
-      display: inline-block;
-    }
+Id
+GId
+Type
+----
+Status
+Keyword
+CategoryId
+SubCategoryId
+IsImportant
+Sort
 
-    .custom-select select {
-      display: none; /* Hide the default select element */
-    }
-
-    .custom-select .select-trigger {
-      display: block;
-      padding: 10px;
-      border: 1px solid #ccc;
-      cursor: pointer;
-    }
-
-    .custom-select .options {
-      position: absolute;
-      top: 100%;
-      left: 0;
-      right: 0;
-      display: none;
-      max-height: 150px;
-      overflow-y: auto;
-      border: 1px solid #ccc;
-      z-index: 1;
-    }
-
-    .custom-select .options option {
-      padding: 10px;
-      cursor: pointer;
-    }
-
-    .custom-select.open .options {
-      display: block;
-    }
-  </style>
-</head>
-<body>
-
-<div class="custom-select" id="customSelect">
-  <div class="select-trigger" onclick="toggleOptions()">Select an option</div>
-  <div class="options">
-    <option onclick="selectOption('Option 1')">Option 1</option>
-    <option onclick="selectOption('Option 2')">Option 2</option>
-    <option onclick="selectOption('Option 3')">Option 3</option>
-  </div>
-</div>
-
-<script>
-  function toggleOptions() {
-    var customSelect = document.getElementById('customSelect');
-    customSelect.classList.toggle('open');
-  }
-
-  function selectOption(option) {
-    alert('Selected option: ' + option);
-    // You can perform further actions when an option is selected
-  }
-</script>
-
-</body>
-</html>
+FromRec
+MaxNo
+WithPaging
+SetAsRead
+IncVisitCount

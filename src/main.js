@@ -5,6 +5,7 @@ import router from './router';
 import store from './store';
 import VeeValidatePlugin from './includes/validation';
 import './assets/js/lib/bootstrap.min';
+// import tikaUtils from './assets/js/custom';
 import './assets/css/lib/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import './assets/css/iransans.css';
@@ -12,6 +13,7 @@ import './assets/css/style.css';
 
 const vm = createApp(App);
 vm.component('AppSelect', AppCostume);
+// vm.use(tikaUtils);
 vm.use(VeeValidatePlugin);
 vm.use(store);
 vm.use(router);

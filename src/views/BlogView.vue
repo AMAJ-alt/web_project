@@ -9,7 +9,7 @@
       <div class="post-header">
         <div>
           <a href="#">
-            creator
+            {{ blog_item.CreatorFullName }}
           </a>
         </div>
         {{ blog_item.PublishDateStr }}
@@ -177,6 +177,15 @@ export default {
     return {
       blog_item: JSON.parse(this.$route.query.item || '{}'),
     };
+  },
+  beforeRouteEnter(to, from, next) {
+    next((vm) => {
+      vm.$store.dispatch('headerTitle', {
+        center: vm.blog_item.CategoryName,
+        left: '1',
+      }).then(() => {
+      });
+    });
   },
 };
 </script>

@@ -4,12 +4,15 @@
       @keydown.prevent="toggleDropdown" @click="toggleDropdown" style="padding: 10px 15px; text-align: start;">
       {{ selectedOption.label }}
     </div> -->
-    <label for="number" class="d-none"></label>
-    <input type="text" name="gender" data-bs-toggle="offcanvas" data-bs-target="#actionSheetDefaultInset"
-      class="form-control" style="padding: 10px 16px;" :value="selectedOption.label"
-      placeholder="جنسیت خود را انتخاب کنید" />
+    <label for="gender" class="d-none"></label>
+    <div id="gender" data-bs-toggle="offcanvas" data-bs-target="#actionSheetDefaultInset"
+      class="form-control" style="padding: 10px 16px">
+      {{ selectedOption }}
+    </div>
     <br>
-    <!-- <ErrorMessage class="text-danger fs-6" name="gender" /> -->
+
+    <vee-field name="gender" type="hidden"/>
+    <ErrorMessage class="text-danger fs-6" name="gender" />
 
     <div class="offcanvas offcanvas-bottom action-sheet inset" tabindex="-1" id="actionSheetDefaultInset">
       <div class="offcanvas-header">
@@ -42,9 +45,9 @@ export default {
   },
   methods: {
     selectOption(option) {
-      this.selectedOption = option;
-      this.isDropdownOpen = false;
-      this.$emit('input', option.value);
+      this.selectedOption = option.value;
+      // this.$emit('input', option.value);
+      document.getElementsByName('gender').value = option.value;
     },
     findOptionByValue(value) {
       return this.options ? this.options.find((option) => option.value === value) : null;

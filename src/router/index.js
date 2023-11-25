@@ -4,6 +4,7 @@ import AuthView from '../views/AuthView.vue';
 import ForgetPassView from '../views/ForgetPassView.vue';
 import ProfileView from '../views/ProfileView.vue';
 import BlogView from '../views/BlogView.vue';
+import VerifyView from '../views/VerifyView.vue';
 
 const routes = [
   {
@@ -27,10 +28,14 @@ const routes = [
     component: ProfileView,
   },
   {
+    path: '/verify',
+    name: 'verify',
+    component: VerifyView,
+  },
+  {
     path: '/blog/:id',
     name: 'blog',
     component: BlogView,
-    props: true,
   },
   {
     path: '/about',

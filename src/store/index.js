@@ -1,6 +1,7 @@
 import { createStore } from 'vuex';
 import router from '@/router';
 import axios from 'axios';
+import tikaUtils from '@/assets/js/tikaUtils';
 
 export default createStore({
   state: {
@@ -28,7 +29,7 @@ export default createStore({
       // 'siteid': '1',
       // 'uid': '',
     },
-    filterResult: {},
+    AdvCntResult: {},
   },
   getters: {
   },
@@ -86,25 +87,16 @@ export default createStore({
 
       commit('toggleAuth');
     },
-    async filter({ state }, payload) {
-      const filterSoapReq = `<?xml version="1.0" encoding="utf-8"?>
-      <soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
-        <soap:Body>
-          <GetAdvCntList xmlns="http://tempuri.org/">
-            <JsonNameVale>[${payload}]</JsonNameVale>
-          </GetAdvCntList>
-        </soap:Body>
-      </soap:Envelope>`;
+    async WS_GetAdvCntList({ state }, jsonParams) {
+      tikaUtils.clog(jsonParams);
 
-      let headers = {};
-      headers = state.headers;
+      // let headers = {};
+      // headers = state.headers;
 
-      await axios
-        .post(`${state.host}?op=GetAdvCntList`, filterSoapReq, { headers })
+      tikaUtils.callWS('GetAdvCntList', state, jsonParams)
         .then((res) => {
           console.log(res);
-          state.filterResult = res.data.data;
-          console.log(state.filterResult);
+          state.AdvCntResult = res.data;
         })
         .catch((error) => {
           console.log(error);

@@ -1,6 +1,6 @@
 <template>
   <li>
-    <router-link :to="{ name: 'blog', params: { id: item.GUID }, query: { item: JSON.stringify(item) } }" data-custom="item" class="item">
+    <router-link :to="{ name: 'blog', params: { id: item.GUID }, query: { item: JSON.stringify(item) } }" class="item">
       <div class="imageWrapper">
         <img :src="item.ImageUrl" alt="image" class="imaged w100">
       </div>

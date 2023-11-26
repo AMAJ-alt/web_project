@@ -90,17 +90,18 @@ export default createStore({
     async WS_GetAdvCntList({ state }, jsonParams) {
       tikaUtils.clog(jsonParams);
 
-      // let headers = {};
-      // headers = state.headers;
-
       tikaUtils.callWS('GetAdvCntList', state, jsonParams)
         .then((res) => {
           console.log(res);
           state.AdvCntResult = res.data;
+          console.log(state.AdvCntResult);
         })
         .catch((error) => {
           console.log(error);
         });
+    },
+    async Ws_GetCmsCatList({ state }, jsonParams) {
+
     },
     headerTitle({ state }, payload) {
       state.centerTopicHeader = payload.center;

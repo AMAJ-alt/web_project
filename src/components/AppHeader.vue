@@ -7,8 +7,10 @@
     </div>
     <div class="pageTitle">{{ centerTopicHeader }}</div>
     <div class="right">
-      <router-link :to="{ name: 'auth' }" class="headerButton text-white">
-        {{ leftTopicHeader }}
+      <router-link
+      :to="{ name: 'auth' }"
+      class="headerButton text-white"
+      v-html="leftTopicHeader">
       </router-link>
     </div>
   </div>

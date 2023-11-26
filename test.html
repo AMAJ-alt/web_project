@@ -1,63 +1,149 @@
-<div id="appCapsule" class="pt-0">
-
-    <div class="login-form mt-1">
-        <div class="section">
-            <img src="assets/img/sample/photo/vector4.png" alt="image" class="form-image">
-        </div>
-        <div class="section mt-1">
-            <h1>شروع کنید</h1>
-            <h4>برای ورود فیلدهای فرم را پر کنید</h4>
-        </div>
-        <div class="section mt-1 mb-5">
-            <vee-form action="app-pages.html">
-                <div class="form-group boxed">
-                    <div class="input-wrapper">
-                        <label for="number" class="d-none"></label>
-                        <vee-field name="number" type="text" class="form-control form-control-user"
-                            id="exampleInputEmail" aria-describedby="emailHelp" placeholder="ایمیل..." />
-                        <ErrorMessage class="text-danger fs-6" name="number" />
-                        <i class="clear-input">
-                            <ion-icon name="close-circle"></ion-icon>
-                        </i>
-                    </div>
-                </div>
-
-                <div class="form-group boxed">
-                    <div class="input-wrapper">
-                        <label for="password" class="d-none"></label>
-                        <vee-field name="password" type="password" class="form-control form-control-user"
-                            id="exampleInputPassword" placeholder="رمز عبور" />
-                        <ErrorMessage class="text-danger fs-6" name="password" />
-                        <i class="clear-input">
-                            <ion-icon name="close-circle"></ion-icon>
-                        </i>
-                    </div>
-                </div>
-                <div class="form-group boxed">
-                    <div class="input-wrapper">
-                        <vee-field type="checkbox" name="remember" value="1" />
-                        <label class="px-2" for="remember">Remember
-                            Me</label><br>
-                        <ErrorMessage class="text-danger fs-6" name="remember" />
-                    </div>
-                </div>
-
-                <div class="form-links mt-2">
-                    <hr>
-                    <div>
-                        <a href="page-register.html">ثبت نام</a>
-                    </div>
-                    <div><a href="page-forgot-password.html" class="text-muted">رمز خود را فراموش کردید؟</a></div>
-                </div>
-
-                <div class="form-button-group">
-                    <button :disabled="login_in_submittion" type="submit" class="btn btn-primary btn-block btn-lg">
-                        ورود
-                    </button>
-                </div>
-
-            </vee-form>
-        </div>
+<div class="form-group boxed">
+    <div class="input-wrapper">
+        <label for="number" class="d-none"></label>
+        <vee-field as="select" class="form-control" name="Sort" placeholder="ترتیب">
+            <option value="Articles">مقاله ها</option>
+            <option value="news">خبر ها</option>
+        </vee-field>
+        <i class="clear-input">
+            <ion-icon name="close-circle"></ion-icon>
+        </i>
+        <ErrorMessage class="text-danger fs-6" name="Sort" />
     </div>
-
 </div>
+
+<div class="form-group boxed">
+    <div class="input-wrapper">
+        <label for="number" class="d-none"></label>
+        <vee-field as="select" class="form-control" name="Keyword" placeholder="کلمات کلیدی">
+            <option value="Articles">مقاله ها</option>
+            <option value="news">خبر ها</option>
+        </vee-field>
+        <i class="clear-input">
+            <ion-icon name="close-circle"></ion-icon>
+        </i>
+        <ErrorMessage class="text-danger fs-6" name="Keyword" />
+    </div>
+</div>
+
+<div class="form-group boxed">
+    <div class="input-wrapper">
+        <label for="number" class="d-none"></label>
+        <vee-field as="select" class="form-control" name="CategoryId" placeholder="دسته بندی">
+            <option value="Articles">مقاله ها</option>
+            <option value="news">خبر ها</option>
+        </vee-field>
+        <i class="clear-input">
+            <ion-icon name="close-circle"></ion-icon>
+        </i>
+        <ErrorMessage class="text-danger fs-6" name="CategoryId" />
+    </div>
+</div>
+
+<div class="form-group boxed">
+    <div class="input-wrapper">
+        <label for="number" class="d-none"></label>
+        <vee-field as="select" class="form-control" name="SubCategoryId" placeholder="زیرمجموعه">
+            <option value="Articles">مقاله ها</option>
+            <option value="news">خبر ها</option>
+        </vee-field>
+        <i class="clear-input">
+            <ion-icon name="close-circle"></ion-icon>
+        </i>
+        <ErrorMessage class="text-danger fs-6" name="SubCategoryId" />
+    </div>
+</div>
+
+<div class="form-group boxed">
+    <div class="input-wrapper">
+        <label for="number" class="d-none"></label>
+        <vee-field as="select" class="form-control" name="IsImportant" placeholder="ضروری">
+            <option value="Articles">مقاله ها</option>
+            <option value="news">خبر ها</option>
+        </vee-field>
+        <i class="clear-input">
+            <ion-icon name="close-circle"></ion-icon>
+        </i>
+        <ErrorMessage class="text-danger fs-6" name="IsImportant" />
+    </div>
+</div>
+
+<div class="form-group boxed">
+    <div class="input-wrapper">
+        <label for="number" class="d-none"></label>
+        <vee-field as="select" class="form-control" name="Status" placeholder="وضعیت">
+            <option value="Articles">مقاله ها</option>
+            <option value="news">خبر ها</option>
+        </vee-field>
+        <i class="clear-input">
+            <ion-icon name="close-circle"></ion-icon>
+        </i>
+        <ErrorMessage class="text-danger fs-6" name="Status" />
+    </div>
+</div>
+
+<div class="form-group boxed">
+    <div class="input-wrapper">
+        <label for="number" class="d-none"></label>
+        <vee-field as="select" class="form-control" name="Status" placeholder="وضعیت">
+            <option value="Articles">مقاله ها</option>
+            <option value="news">خبر ها</option>
+        </vee-field>
+        <i class="clear-input">
+            <ion-icon name="close-circle"></ion-icon>
+        </i>
+        <ErrorMessage class="text-danger fs-6" name="Status" />
+    </div>
+</div>
+
+<div class="form-group boxed">
+    <div class="input-wrapper">
+        <label for="number" class="d-none"></label>
+        <vee-field as="select" class="form-control" name="Status" placeholder="وضعیت">
+            <option value="Articles">مقاله ها</option>
+            <option value="news">خبر ها</option>
+        </vee-field>
+        <i class="clear-input">
+            <ion-icon name="close-circle"></ion-icon>
+        </i>
+        <ErrorMessage class="text-danger fs-6" name="Status" />
+    </div>
+</div>
+
+<div class="form-group boxed">
+    <div class="input-wrapper">
+        <label for="number" class="d-none"></label>
+        <vee-field as="select" class="form-control" name="Status" placeholder="وضعیت">
+            <option value="Articles">مقاله ها</option>
+            <option value="news">خبر ها</option>
+        </vee-field>
+        <i class="clear-input">
+            <ion-icon name="close-circle"></ion-icon>
+        </i>
+        <ErrorMessage class="text-danger fs-6" name="Status" />
+    </div>
+</div>
+
+
+
+
+GetAdvCntList::::::::
+Id:-1
+GId:""
+Type
+FromRec:-1
+
+MaxNo:-1
+
+----
+WithPaging:false
+Status:3
+----
+Sort:""
+Keyword:""
+CategoryId:-1
+SubCategoryId:-1
+IsImportant:false
+IncVisitCount:false
+
+[{"ColName":"Type","Value":"Articles"}]

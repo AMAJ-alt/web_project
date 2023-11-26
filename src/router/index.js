@@ -3,7 +3,7 @@ import HomeView from '../views/HomeView.vue';
 import AuthView from '../views/AuthView.vue';
 import ForgetPassView from '../views/ForgetPassView.vue';
 import ProfileView from '../views/ProfileView.vue';
-import BlogView from '../views/BlogView.vue';
+import GetAdvCntListItemView from '../views/GetAdvCntListItemView.vue';
 import VerifyView from '../views/VerifyView.vue';
 
 const routes = [
@@ -33,9 +33,9 @@ const routes = [
     component: VerifyView,
   },
   {
-    path: '/blog/:id',
-    name: 'blog',
-    component: BlogView,
+    path: '/GetAdvCntListItem/:type/:id',
+    name: 'GetAdvCntListItem',
+    component: GetAdvCntListItemView,
   },
   {
     path: '/about',

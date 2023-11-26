@@ -1,23 +1,21 @@
 <template>
-  <div id="appCapsule">
+  <div class="mt-2" v-for="item in AdvCntResult" :key="item.id">
     <div class="blog-post">
-      <div class="my-2 d-flex justify-content-center">
-        <img :src="blog_item.ImageUrl" alt="image" class="imaged w-50 rounded-2">
+      <div class="d-flex justify-content-center">
+        <img :src="item.ImageUrl" alt="image" class="imaged w-50 rounded-2">
       </div>
-      <h1 class="title">{{ blog_item.Title }}</h1>
+      <hr>
+      <h1 class="title">{{ item.Title }}</h1>
 
       <div class="post-header">
         <div>
           <a href="#">
-            {{ blog_item.CreatorFullName }}
+            {{ item.CreatorFullName }}
           </a>
         </div>
-        {{ blog_item.PublishDateStr }}
+        {{ item.PublishDateStr }}
       </div>
-      <div class="post-body">
-        <p>{{ blog_item.Content }}</p>
-        <!-- <img :src="blog_item.ShareImage" alt="image"> -->
-      </div>
+      <div class="post-body" v-html="item.Content"></div>
     </div>
 
     <div class="section mt-4">
@@ -171,18 +169,27 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
+import tikaUtils from '../assets/js/tikaUtils';
+
 export default {
-  name: 'BlogView',
+  name: 'GetAdvCntListItemView',
   data() {
     return {
-      blog_item: JSON.parse(this.$route.query.item || '{}'),
+      itemId: this.$route.params.id,
+      itemType: this.$route.params.type,
     };
+  },
+  computed: {
+    ...mapState(['AdvCntResult']),
   },
   beforeRouteEnter(to, from, next) {
     next((vm) => {
+      vm.$store.dispatch('WS_GetAdvCntList', tikaUtils.serializeEntry(vm.itemType, vm.itemId));
+
       vm.$store.dispatch('headerTitle', {
-        center: vm.blog_item.CategoryName,
-        left: '1',
+        center: 'بلاگ',
+        left: '<ion-icon name="share-outline"></ion-icon>',
       }).then(() => {
       });
     });

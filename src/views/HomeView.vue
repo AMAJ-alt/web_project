@@ -29,16 +29,16 @@
     </div>
   </div> -->
 
-  <AppFilter />
+  <AppGetAdvCntList />
 </template>
 
 <script>
-import AppFilter from '@/components/AppFilter.vue';
+import AppGetAdvCntList from '@/components/AppGetAdvCntList.vue';
 
 export default {
   name: 'HomeView',
   components: {
-    AppFilter,
+    AppGetAdvCntList,
   },
   beforeRouteEnter(to, from, next) {
     next((vm) => {

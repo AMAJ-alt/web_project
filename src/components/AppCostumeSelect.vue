@@ -1,20 +1,14 @@
 <template>
   <div>
-    <!-- <div data-bs-toggle="offcanvas" data-bs-target="#actionSheetDefaultInset" class="form-control"
-      @keydown.prevent="toggleDropdown" @click="toggleDropdown" style="padding: 10px 15px; text-align: start;">
-      {{ selectedOption.label }}
-    </div> -->
-    <label for="gender" class="d-none"></label>
-    <div id="gender" data-bs-toggle="offcanvas" data-bs-target="#actionSheetDefaultInset"
+    <div data-bs-toggle="offcanvas" :data-bs-target="`#${id}`"
       class="form-control" style="padding: 10px 16px">
       {{ selectedOption }}
     </div>
-    <br>
 
-    <vee-field name="gender" type="hidden"/>
-    <ErrorMessage class="text-danger fs-6" name="gender" />
+    <vee-field :name="name" type="hidden" v-model="selectedOption"/>
+    <ErrorMessage class="text-danger fs-6" :name="name" />
 
-    <div class="offcanvas offcanvas-bottom action-sheet inset" tabindex="-1" id="actionSheetDefaultInset">
+    <div class="offcanvas offcanvas-bottom action-sheet inset" tabindex="-1" :id="id">
       <div class="offcanvas-header">
         <h5 class="offcanvas-title">{{ label }}</h5>
       </div>
@@ -34,20 +28,20 @@
 <script>
 export default {
   props: {
+    id: String,
+    name: String,
     label: String,
     options: Array,
     value: String,
   },
   data() {
     return {
-      selectedOption: this.findOptionByValue(this.value) || { label: '' },
+      selectedOption: this.findOptionByValue(this.value) || '',
     };
   },
   methods: {
     selectOption(option) {
       this.selectedOption = option.value;
-      // this.$emit('input', option.value);
-      document.getElementsByName('gender').value = option.value;
     },
     findOptionByValue(value) {
       return this.options ? this.options.find((option) => option.value === value) : null;

@@ -1,5 +1,5 @@
 import { createApp } from 'vue';
-import AppCostume from './components/AppCostume.vue';
+import AppCostumeSelect from './components/AppCostumeSelect.vue';
 import App from './App.vue';
 import router from './router';
 import store from './store';
@@ -12,7 +12,7 @@ import './assets/css/iransans.css';
 import './assets/css/style.css';
 
 const vm = createApp(App);
-vm.component('AppSelect', AppCostume);
+vm.component('AppSelect', AppCostumeSelect);
 // vm.use(tikaUtils);
 vm.use(VeeValidatePlugin);
 vm.use(store);

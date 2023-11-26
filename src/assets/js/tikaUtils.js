@@ -1,9 +1,8 @@
 import axios from 'axios';
 
 const tikaUtils = {
-  clog() {
-    if (true)
-      console.log(arguments);
+  clog(arg) {
+    console.log(arg);
   },
   gel(id) {
     return document.getElementById(id);
@@ -14,13 +13,21 @@ const tikaUtils = {
   selAll(s) {
     return document.querySelectorAll(s);
   },
+  serializeEntry(type, id) {
+    const fdJsonArr = [
+      { ColName: 'Type', Value: type },
+      { ColName: 'Id', Value: id },
+    ];
+    console.log(JSON.stringify(fdJsonArr));
+    return JSON.stringify(fdJsonArr);
+  },
   serializeForm(formId) {
     const fd = new FormData(tikaUtils.gel(formId));
     const fdJsonArr = [];
     fd.forEach((value, key) => {
-      let fdJson = {};
-      fdJson["ColName"] = key;
-      fdJson["Value"] = value;
+      const fdJson = {};
+      fdJson.ColName = key;
+      fdJson.Value = value;
       fdJsonArr.push(fdJson);
     });
     return JSON.stringify(fdJsonArr);
@@ -42,8 +49,8 @@ const tikaUtils = {
       axios
         .post(`${state.host}?op=${action}`, filterSoapReq, { headers })
         .then((res) => {
-          tikaUtils.clog(res);
-          state.filterResult = res.data.data;
+          console.log(res);
+          // state.AdvCntResult = res.data.data;
           resolve(res.data);
         })
         .catch((error) => {
@@ -53,7 +60,5 @@ const tikaUtils = {
     });
   },
 };
-
-// console.log(tikaUtils);
 
 export default tikaUtils;

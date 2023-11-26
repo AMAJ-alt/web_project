@@ -1,6 +1,6 @@
 <template>
-  <li>
-    <router-link :to="{ name: 'blog', params: { id: item.GUID }, query: { item: JSON.stringify(item) } }" class="item">
+  <li :class="item.StatusColor">
+    <router-link :to="{ name: 'GetAdvCntListItem', params: { type: 'Articles', id: item.Id } }" class="item">
       <div class="imageWrapper">
         <img :src="item.ImageUrl" alt="image" class="imaged w100">
       </div>
@@ -10,7 +10,7 @@
           {{ item.Title }}
           <br>
           <footer>
-            <p :class="['text-',item.StatusColor]">{{ item.StatusName }}</p>
+            <p>{{ item.StatusName }}</p>
             <br>
             <time>{{ item.PublishDateStr }}</time>
           </footer>
@@ -26,3 +26,15 @@ export default {
   props: ['item'],
 };
 </script>
+
+<style>
+.success{
+  background-color: #0080000f;
+}
+.info{
+  background-color: #0000ff0f;
+}
+.danger{
+  background-color: #ff00000a;
+}
+</style>

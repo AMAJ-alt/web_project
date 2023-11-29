@@ -173,7 +173,7 @@ import { mapState } from 'vuex';
 import tikaUtils from '../assets/js/tikaUtils';
 
 export default {
-  name: 'GetAdvCntListItemView',
+  name: 'GetAdvCntView',
   data() {
     return {
       itemId: this.$route.params.id,

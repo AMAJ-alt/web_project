@@ -18,7 +18,6 @@ const tikaUtils = {
       { ColName: 'Type', Value: type },
       { ColName: 'Id', Value: id },
     ];
-    console.log(JSON.stringify(fdJsonArr));
     return JSON.stringify(fdJsonArr);
   },
   serializeForm(formId) {

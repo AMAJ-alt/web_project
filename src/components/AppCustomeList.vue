@@ -1,6 +1,6 @@
 <template>
   <li :class="item.StatusColor">
-    <router-link :to="{ name: 'GetAdvCntListItem', params: { type: 'Articles', id: item.Id } }" class="item">
+    <router-link :to="{ name: 'GetAdvCnt', params: { type: 'Articles', id: item.Id } }" class="item">
       <div class="imageWrapper">
         <img :src="item.ImageUrl" alt="image" class="imaged w100">
       </div>

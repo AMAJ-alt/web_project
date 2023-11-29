@@ -64,11 +64,13 @@
             </div>
           </div>
           <div class="form-group boxed">
-            <div class="input-wrapper">
-              <AppSelect
-              :label="selectLabel"
-              :options="selectOptions"
-              />
+            <div class="input-wrapper text-start">
+              <AppSelect :id="'sgender'" :name="'gender'" :label="'انتخاب جنسیت'" :options="[
+                { value: 'female', label: 'زن' },
+                { value: 'male', label: 'مرد' },
+                { value: 'none', label: 'تمایلی به بازگو کردن ندارم' },
+              ]
+                " />
             </div>
           </div>
 
@@ -111,12 +113,6 @@ export default {
         tos: 'required',
         gender: 'required',
       },
-      selectLabel: 'انتخاب گزینه',
-      selectOptions: [
-        { value: 'male', label: 'مرد' },
-        { value: 'female', label: 'زن' },
-        { value: 'none', label: 'ترجیحی به گفتن آن ندارم' },
-      ],
     };
   },
   methods: {

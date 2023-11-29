@@ -29,16 +29,16 @@
     </div>
   </div> -->
 
-  <AppGetAdvCntList />
+  <GetAdvCntApp />
 </template>
 
 <script>
-import AppGetAdvCntList from '@/components/AppGetAdvCntList.vue';
+import GetAdvCntApp from '@/components/GetAdvCntApp.vue';
 
 export default {
   name: 'HomeView',
   components: {
-    AppGetAdvCntList,
+    GetAdvCntApp,
   },
   beforeRouteEnter(to, from, next) {
     next((vm) => {

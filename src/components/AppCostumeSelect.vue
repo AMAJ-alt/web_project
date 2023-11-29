@@ -2,10 +2,10 @@
   <div>
     <div data-bs-toggle="offcanvas" :data-bs-target="`#${id}`"
       class="form-control" style="padding: 10px 16px">
-      {{ selectedOption }}
+      {{ selectedText }}
     </div>
 
-    <vee-field :name="name" type="hidden" v-model="selectedOption"/>
+    <vee-field :name="name" type="hidden" v-model="selectedOption" @input="emitValue"/>
     <ErrorMessage class="text-danger fs-6" :name="name" />
 
     <div class="offcanvas offcanvas-bottom action-sheet inset" tabindex="-1" :id="id">
@@ -36,15 +36,21 @@ export default {
   },
   data() {
     return {
-      selectedOption: this.findOptionByValue(this.value) || '',
+      selectedOption: '',
+      selectedText: '',
     };
   },
   methods: {
     selectOption(option) {
       this.selectedOption = option.value;
+      this.selectedText = option.label;
+      this.emitValue();
     },
     findOptionByValue(value) {
       return this.options ? this.options.find((option) => option.value === value) : null;
+    },
+    emitValue() {
+      this.$emit('input', this.selectedOption);
     },
   },
 };

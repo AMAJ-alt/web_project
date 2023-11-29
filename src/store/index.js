@@ -30,6 +30,7 @@ export default createStore({
       // 'uid': '',
     },
     AdvCntResult: {},
+    AdvCmsCatResult: {},
   },
   getters: {
   },
@@ -101,7 +102,14 @@ export default createStore({
         });
     },
     async Ws_GetCmsCatList({ state }, jsonParams) {
-
+      tikaUtils.callWS('GetCmsCatList', state, jsonParams)
+        .then((res) => {
+          state.AdvCmsCatResult = res.data;
+          console.log(state.AdvCmsCatResult);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     },
     headerTitle({ state }, payload) {
       state.centerTopicHeader = payload.center;

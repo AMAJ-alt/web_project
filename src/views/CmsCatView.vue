@@ -35,7 +35,7 @@
 import { mapState } from 'vuex';
 
 export default {
-  name: 'GetCmsCatList',
+  name: 'CmsCatView',
   data() {
     return {
       TypeValue: 'Articles',

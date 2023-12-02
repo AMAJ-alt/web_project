@@ -29,6 +29,12 @@ const tikaUtils = {
       fdJson.Value = value;
       fdJsonArr.push(fdJson);
     });
+
+    const fromRec = { ColName: 'CurrPage', Value: '1' };
+    const maxPage = { ColName: 'MaxNo', Value: '4' };
+    fdJsonArr.push(fromRec);
+    fdJsonArr.push(maxPage);
+
     return JSON.stringify(fdJsonArr);
   },
   async callWS(action, state, jsonParams) {

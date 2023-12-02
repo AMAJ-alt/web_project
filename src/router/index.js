@@ -4,7 +4,8 @@ import AuthView from '../views/AuthView.vue';
 import ForgetPassView from '../views/ForgetPassView.vue';
 import ProfileView from '../views/ProfileView.vue';
 import GetAdvCntView from '../views/GetAdvCntView.vue';
-import GetCmsCatView from '../views/GetCmsCatView.vue';
+import AdvCntView from '../views/AdvCntView.vue';
+import CmsCatView from '../views/CmsCatView.vue';
 import VerifyView from '../views/VerifyView.vue';
 
 const routes = [
@@ -34,14 +35,19 @@ const routes = [
     component: VerifyView,
   },
   {
-    path: '/GetAdvCnt/:type/:id',
+    path: '/GetAdvCnt',
     name: 'GetAdvCnt',
     component: GetAdvCntView,
   },
   {
+    path: '/AdvCnt/:type/:id',
+    name: 'AdvCnt',
+    component: AdvCntView,
+  },
+  {
     path: '/catagory',
     name: 'catagory',
-    component: GetCmsCatView,
+    component: CmsCatView,
   },
   {
     path: '/about',

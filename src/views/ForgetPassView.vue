@@ -31,5 +31,15 @@
 <script>
 export default {
   name: 'ForgetPassView',
+  beforeRouteEnter(to, from, next) {
+    next((vm) => {
+      vm.$store.dispatch('headerTitle', {
+        center: 'احراز هویت',
+        left: 'حساب کاربری دارید ؟',
+        to: 'auth',
+      }).then(() => {
+      });
+    });
+  },
 };
 </script>

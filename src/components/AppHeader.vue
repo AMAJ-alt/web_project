@@ -8,7 +8,7 @@
     <div class="pageTitle">{{ centerTopicHeader }}</div>
     <div class="right">
       <router-link
-      :to="{ name: 'auth' }"
+      :to="{ name: LinkTopicHeader }"
       class="headerButton text-white"
       v-html="leftTopicHeader">
       </router-link>
@@ -21,7 +21,7 @@ import { mapState } from 'vuex';
 export default {
   name: 'AppHeader',
   computed: {
-    ...mapState(['leftTopicHeader', 'centerTopicHeader']),
+    ...mapState(['leftTopicHeader', 'centerTopicHeader', 'LinkTopicHeader']),
   },
   methods: {
     goBack() {

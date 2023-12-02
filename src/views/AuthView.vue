@@ -22,6 +22,7 @@ export default {
       vm.$store.dispatch('headerTitle', {
         center: 'احراز هویت',
         left: 'فراموشی رمزعبور',
+        to: 'forget',
       }).then(() => {
       });
     });

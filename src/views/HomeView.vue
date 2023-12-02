@@ -1,5 +1,5 @@
 <template>
-  <!-- <div id="appCapsule">
+  <div id="appCapsule">
     <div class="login-form mt-5 pe-2 ps-2">
       <div class="section">
         <img src="../assets/avatar1.jpg" alt="avatar" class="imaged rounded w86">
@@ -20,6 +20,11 @@
             </div>
           </div>
 
+          <br>
+          <router-link :to="{ name: 'GetAdvCnt'}">GetAdvCnt</router-link><br>
+          <router-link :to="{ name: 'catagory'}">catagory</router-link><br>
+          <router-link :to="{ name: 'auth'}">auth</router-link><br>
+
           <div class="form-button-group">
             <button type="submit" class="btn btn-primary btn-block btn-lg">ورود</button>
           </div>
@@ -27,24 +32,18 @@
         </form>
       </div>
     </div>
-  </div> -->
-
-  <GetAdvCntApp />
+  </div>
 </template>
 
 <script>
-import GetAdvCntApp from '@/components/GetAdvCntApp.vue';
-
 export default {
   name: 'HomeView',
-  components: {
-    GetAdvCntApp,
-  },
   beforeRouteEnter(to, from, next) {
     next((vm) => {
       vm.$store.dispatch('headerTitle', {
         center: 'خانه',
         left: ' ثبت نام / ورود',
+        to: 'auth',
       }).then(() => {
       });
     });

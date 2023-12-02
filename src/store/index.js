@@ -9,6 +9,7 @@ export default createStore({
 
     leftTopicHeader: '',
     centerTopicHeader: '',
+    LinkTopicHeader: '',
 
     login_in_submittion: false,
     login_bg_varient: 'bg-info',
@@ -30,6 +31,8 @@ export default createStore({
       // 'uid': '',
     },
     AdvCntResult: {},
+    AdvCntMeta: {},
+
     AdvCmsCatResult: {},
   },
   getters: {
@@ -91,9 +94,10 @@ export default createStore({
     async WS_GetAdvCntList({ state }, jsonParams) {
       tikaUtils.clog(jsonParams);
 
-      tikaUtils.callWS('GetAdvCntList', state, jsonParams)
+      await tikaUtils.callWS('GetAdvCntList', state, jsonParams)
         .then((res) => {
           console.log(res);
+          state.AdvCntMeta = res.meta;
           state.AdvCntResult = res.data;
           console.log(state.AdvCntResult);
         })
@@ -114,6 +118,7 @@ export default createStore({
     headerTitle({ state }, payload) {
       state.centerTopicHeader = payload.center;
       state.leftTopicHeader = payload.left;
+      state.LinkTopicHeader = payload.to;
     },
   },
 

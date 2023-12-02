@@ -30,9 +30,9 @@ const tikaUtils = {
       fdJsonArr.push(fdJson);
     });
 
-    const fromRec = { ColName: 'CurrPage', Value: '1' };
+    // const fromRec = { ColName: 'CurrPage', Value: '1' };
     const maxPage = { ColName: 'MaxNo', Value: '4' };
-    fdJsonArr.push(fromRec);
+    // fdJsonArr.push(fromRec);
     fdJsonArr.push(maxPage);
 
     return JSON.stringify(fdJsonArr);

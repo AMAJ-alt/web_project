@@ -91,7 +91,7 @@ export default {
     return {
       catOp: [],
 
-      pageVal: '',
+      pageVal: 1,
       pagination: 0,
 
       filterSchema: {

@@ -43,7 +43,7 @@
             ]" />
           </div>
         </div>
-        <vee-field name="CurrPage" type="hidden" v-model="pageVal"/>
+        <vee-field name="CurrPage" type="text" v-model="pageVal"/>
 
         <br>
         <div>
@@ -105,10 +105,10 @@ export default {
     ...mapState(['AdvCntResult', 'AdvCmsCatResult', 'AdvCntMeta']),
   },
   methods: {
-    selectOption(val) {
-      console.log(val);
+    async selectOption(val) {
       this.pageVal = val;
-      this.callWS();
+      console.log(this.pageVal);
+      await this.callWS();
     },
     async handleTypeInput(newValue) {
       await this.$store.dispatch('Ws_GetCmsCatList', `[{"ColName":"Type","Value":"${newValue}"}]`);

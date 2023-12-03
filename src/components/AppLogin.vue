@@ -1,9 +1,9 @@
 <template>
   <div id="appCapsule" class="pt-0 ">
-    <div id="login_toast" class="toast-box toast-top" :class="login_bg_varient">
+    <div id="login_toast" class="toast-box toast-top" :class="task.bg_varient">
       <div class="in">
         <div class="text">
-          {{ login_show_message }}
+          {{ task.show_message }}
         </div>
       </div>
       <button type="button" class="btn btn-sm close-button text-white">تایید</button>
@@ -21,12 +21,12 @@
         <h4>برای ورود فیلدهای فرم را پر کنید</h4>
       </div>
       <div class="section mt-1 mb-5">
-        <vee-form @submit="login" :validation-schema="loginSchema">
+        <vee-form @submit="login" :validation-schema="loginSchema" id="AdvLoginForm">
           <div class="form-group boxed">
             <div class="input-wrapper">
-              <label for="number" class="d-none"></label>
-              <vee-field name="number" type="text" class="form-control form-control-user" placeholder="ایمیل..." />
-              <ErrorMessage class="text-danger fs-6" name="number" />
+              <label for="usname" class="d-none"></label>
+              <vee-field name="usname" type="text" class="form-control form-control-user" placeholder="ایمیل..." />
+              <ErrorMessage class="text-danger fs-6" name="usname" />
               <i class="clear-input">
                 <ion-icon name="close-circle"></ion-icon>
               </i>
@@ -45,9 +45,9 @@
           </div>
           <div class="form-group boxed">
             <div class="input-wrapper">
-              <vee-field type="checkbox" name="remember" value="1" />
+              <vee-field type="checkbox" name="pwd" value="1" />
               <label class="px-2" for="remember">مرا به یاد داشته باش</label><br>
-              <ErrorMessage class="text-danger fs-6" name="remember" />
+              <ErrorMessage class="text-danger fs-6" name="pwd" />
             </div>
           </div>
 
@@ -59,7 +59,7 @@
           </div>
 
           <div class="form-button-group">
-            <button :disabled="login_in_submittion" type="submit" class="btn btn-primary btn-block btn-lg">
+            <button :disabled="task.in_submittion" type="submit" class="btn btn-primary btn-block btn-lg">
               ورود
             </button>
           </div>
@@ -69,6 +69,7 @@
   </div>
 </template>
 <script>
+import tikaUtils from '../assets/js/tikaUtils';
 import { mapMutations, mapState } from 'vuex';
 import { toastbox } from '@/assets/js/base';
 
@@ -77,20 +78,19 @@ export default {
   data() {
     return {
       loginSchema: {
-        number: 'required|min:3|max:100',
-        password: 'required|min:3|max:100',
-        remember: 'required',
+        usname: 'required|min:3|max:100',
+        pwd: '',
       },
     };
   },
   computed: {
-    ...mapState(['login_in_submittion', 'login_bg_varient', 'login_show_message']),
+    ...mapState(['task']),
   },
   methods: {
     ...mapMutations(['toggleAuthTab']),
     async login(values) {
       toastbox('login_toast');
-      await this.$store.dispatch('login', values);
+      await this.$store.dispatch('WS_Login', tikaUtils.serializeForm('AdvLoginForm'));
     },
   },
 };

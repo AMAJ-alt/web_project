@@ -1,6 +1,5 @@
 import { createStore } from 'vuex';
 import router from '@/router';
-import axios from 'axios';
 import tikaUtils from '@/assets/js/tikaUtils';
 
 export default createStore({
@@ -11,9 +10,11 @@ export default createStore({
     centerTopicHeader: '',
     LinkTopicHeader: '',
 
-    login_in_submittion: false,
-    login_bg_varient: 'bg-info',
-    login_show_message: 'لطفا صبر کنید! در حال چک کردن مشخصات شما.',
+    task: {
+      in_submittion: false,
+      bg_varient: 'bg-info',
+      show_message: 'لطفا صبر کنید! در حال چک کردن مشخصات شما.',
+    },
 
     authTabLogin: true,
 
@@ -32,6 +33,8 @@ export default createStore({
     },
     AdvCntResult: {},
     AdvCntMeta: {},
+
+    AdvCntSmp: {},
 
     AdvCmsCatResult: {},
   },
@@ -53,42 +56,32 @@ export default createStore({
     },
   },
   actions: {
-    async login({ commit, state }, payload) {
-      state.login_in_submittion = true;
-      state.login_bg_varient = 'bg-info text-white';
-      state.login_show_message = 'لطفا صبر کنید! در حال چک کردن مشخصات شما.';
+    async WS_Login({ commit, state }, jsonParams) {
+      console.log(jsonParams);
+      
 
-      const loginSoapReq = `<?xml version="1.0" encoding="utf-8"?>
-      <soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
-        <soap:Body>
-          <Login xmlns="http://tempuri.org/">
-            <UserName>${payload.number}</UserName>
-            <Password>${payload.password}</Password>
-            <ShowImageType>${payload.remember}</ShowImageType>
-          </Login>
-        </soap:Body>
-      </soap:Envelope>`;
+      state.task.in_submittion = true;
+      state.task.bg_varient = 'bg-info text-white';
+      state.task.show_message = 'لطفا صبر کنید! در حال چک کردن مشخصات شما.';
 
-      let headers = {};
-      headers = state.headers;
-
-      await axios
-        .post(`${state.host}?op=Login`, loginSoapReq, { headers })
-        .then((res) => {
-          console.log(res.data);
-          state.login_bg_varient = 'bg-success text-white';
-          state.login_show_message = `${res.data.Message}`;
-        })
-        .catch((error) => {
-          console.log(error);
-          state.login_in_submittion = false;
-          state.login_bg_varient = 'bg-danger text-white';
-          // if (error.data.Message) {
-          //   state.login_show_message = `${error.data.Message}`;
-          // }
-          state.login_show_message = 'لطفا اینترنت خود را چک کنید.';
-        });
-
+      await tikaUtils.callWS('Login', state, jsonParams)
+      .then((res) => {
+        console.log(res);
+        console.log(state.AdvCntResult);
+        if (res.flag < 0) {
+          console.log('hell');
+          state.task.in_submittion = false;
+          state.task.bg_varient = 'bg-danger text-white';
+          state.task.show_message = res.message;
+        } else{
+          state.task.in_submittion = true;
+          state.task.bg_varient = 'bg-success text-white';
+          state.task.show_message = res.message;
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
       commit('toggleAuth');
     },
     async WS_GetAdvCntList({ state }, jsonParams) {
@@ -105,6 +98,20 @@ export default createStore({
           console.log(error);
         });
     },
+    async WS_GetSmpCntList({ state }, jsonParams) {
+      tikaUtils.clog(jsonParams);
+
+      await tikaUtils.callWS('GetSmpCntList', state, jsonParams)
+        .then((res) => {
+          console.log(res);
+          state.AdvCntSmp = res.data;
+          console.log(state.AdvCntResult);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+
     async Ws_GetCmsCatList({ state }, jsonParams) {
       tikaUtils.callWS('GetCmsCatList', state, jsonParams)
         .then((res) => {

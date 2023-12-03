@@ -1,21 +1,13 @@
 <template>
   <div ref="editor"></div>
-  <button @click.prevent="fun">click</button>
-  <div class="hello"></div>
 </template>
 
 <script>
-import $ from 'jquery';
 import 'tui-image-editor/dist/tui-image-editor.css';
 import ImageEditor from 'tui-image-editor';
 
 export default {
   name: 'AboutView',
-  methods: {
-    fun() {
-      $('.hello').appendTo('.helgfgfgflo');
-    },
-  },
   mounted() {
     const editorElement = this.$refs.editor;
     const editor = new ImageEditor(editorElement, {

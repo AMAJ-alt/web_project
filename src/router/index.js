@@ -7,6 +7,7 @@ import GetAdvCntView from '../views/GetAdvCntView.vue';
 import AdvCntView from '../views/AdvCntView.vue';
 import CmsCatView from '../views/CmsCatView.vue';
 import VerifyView from '../views/VerifyView.vue';
+import FAQView from '../views/FAQView.vue';
 
 const routes = [
   {
@@ -48,6 +49,11 @@ const routes = [
     path: '/catagory',
     name: 'catagory',
     component: CmsCatView,
+  },
+  {
+    path: '/FAQ',
+    name: 'FAQ',
+    component: FAQView,
   },
   {
     path: '/about',

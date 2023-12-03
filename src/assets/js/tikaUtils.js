@@ -13,6 +13,7 @@ const tikaUtils = {
   selAll(s) {
     return document.querySelectorAll(s);
   },
+
   serializeEntry(type, id) {
     const fdJsonArr = [
       { ColName: 'Type', Value: type },
@@ -20,6 +21,16 @@ const tikaUtils = {
     ];
     return JSON.stringify(fdJsonArr);
   },
+
+  serializeSmpCnt(Type, P_SimpleMode, P_ContentWithHTML) {
+    const fdJsonArr = [
+      { ColName: 'Type', Value: Type },
+      { ColName: 'Param_SimpleMode', Value: P_SimpleMode },
+      { ColName: 'Param_ContentWithHTML', Value: P_ContentWithHTML },
+    ];
+    return JSON.stringify(fdJsonArr);
+  },
+
   serializeForm(formId) {
     const fd = new FormData(tikaUtils.gel(formId));
     const fdJsonArr = [];
@@ -30,9 +41,7 @@ const tikaUtils = {
       fdJsonArr.push(fdJson);
     });
 
-    // const fromRec = { ColName: 'CurrPage', Value: '1' };
     const maxPage = { ColName: 'MaxNo', Value: '4' };
-    // fdJsonArr.push(fromRec);
     fdJsonArr.push(maxPage);
 
     return JSON.stringify(fdJsonArr);

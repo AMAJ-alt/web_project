@@ -1,4 +1,6 @@
 import { createApp } from 'vue';
+import VueToast from 'vue-toast-notification';
+import 'vue-toast-notification/dist/theme-default.css';
 import AppCostumeSelect from './components/AppCostumeSelect.vue';
 import App from './App.vue';
 import router from './router';
@@ -10,10 +12,12 @@ import './assets/css/lib/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import './assets/css/iransans.css';
 import './assets/css/style.css';
+import './registerServiceWorker';
 
 const vm = createApp(App);
 vm.component('AppSelect', AppCostumeSelect);
-// vm.use(tikaUtils);
+vm.config.productionTip = false;
+vm.use(VueToast);
 vm.use(VeeValidatePlugin);
 vm.use(store);
 vm.use(router);

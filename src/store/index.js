@@ -34,6 +34,9 @@ export default createStore({
     AdvCntResult: {},
     AdvCntMeta: {},
 
+    HLinkListMeta: {},
+    HLinkListResult: {},
+
     AdvCntSmp: {},
 
     AdvCmsCatResult: {},
@@ -58,31 +61,43 @@ export default createStore({
   actions: {
     async WS_Login({ commit, state }, jsonParams) {
       console.log(jsonParams);
-      
 
       state.task.in_submittion = true;
       state.task.bg_varient = 'bg-info text-white';
       state.task.show_message = 'لطفا صبر کنید! در حال چک کردن مشخصات شما.';
 
       await tikaUtils.callWS('Login', state, jsonParams)
-      .then((res) => {
-        console.log(res);
-        console.log(state.AdvCntResult);
-        if (res.flag < 0) {
-          console.log('hell');
-          state.task.in_submittion = false;
-          state.task.bg_varient = 'bg-danger text-white';
-          state.task.show_message = res.message;
-        } else{
-          state.task.in_submittion = true;
-          state.task.bg_varient = 'bg-success text-white';
-          state.task.show_message = res.message;
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+        .then((res) => {
+          console.log(res);
+          console.log(state.AdvCntResult);
+          if (res.flag < 0) {
+            state.task.in_submittion = false;
+            state.task.bg_varient = 'bg-danger text-white';
+            state.task.show_message = res.message;
+          } else {
+            state.task.in_submittion = true;
+            state.task.bg_varient = 'bg-success text-white';
+            state.task.show_message = res.message;
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
       commit('toggleAuth');
+    },
+    async WS_GetHLinkList({ state }, jsonParams) {
+      tikaUtils.clog(jsonParams);
+
+      await tikaUtils.callWS('GetHLinkList', state, jsonParams)
+        .then((res) => {
+          console.log(res);
+          state.HLinkListMeta = res.meta;
+          state.HLinkListResult = res.data;
+          console.log(state.AdvCntResult);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     },
     async WS_GetAdvCntList({ state }, jsonParams) {
       tikaUtils.clog(jsonParams);
@@ -105,6 +120,10 @@ export default createStore({
         .then((res) => {
           console.log(res);
           state.AdvCntSmp = res.data;
+
+          const jsonString = JSON.stringify(state.AdvCntSmp);
+          localStorage.setItem('smp', jsonString);
+
           console.log(state.AdvCntResult);
         })
         .catch((error) => {
@@ -126,6 +145,9 @@ export default createStore({
       state.centerTopicHeader = payload.center;
       state.leftTopicHeader = payload.left;
       state.LinkTopicHeader = payload.to;
+    },
+    changeValue({ state }, payload) {
+      state[payload.property] = payload.data;
     },
   },
 

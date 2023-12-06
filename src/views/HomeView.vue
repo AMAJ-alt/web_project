@@ -25,6 +25,8 @@
           <router-link :to="{ name: 'catagory'}">catagory</router-link><br>
           <router-link :to="{ name: 'auth'}">auth</router-link><br>
           <router-link :to="{ name: 'FAQ'}">FAQ</router-link><br>
+          <router-link :to="{ name: 'hchat'}">hchat</router-link><br>
+          <router-link :to="{ name: 'info-slide'}">info-slide</router-link><br>
 
           <div class="form-button-group">
             <button type="submit" class="btn btn-primary btn-block btn-lg">ورود</button>

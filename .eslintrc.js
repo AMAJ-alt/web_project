@@ -17,6 +17,7 @@ module.exports = {
     'jsx-a11y/label-has-associated-control': 'off',
     'linebreak-style': 0,
     'max-len': 'off',
+    camelcase: ['error', { properties: 'never' }],
   },
   overrides: [
     {

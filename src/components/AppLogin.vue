@@ -35,9 +35,9 @@
 
           <div class="form-group boxed">
             <div class="input-wrapper">
-              <label for="password" class="d-none"></label>
-              <vee-field name="password" type="password" class="form-control form-control-user" placeholder="رمز عبور" />
-              <ErrorMessage class="text-danger fs-6" name="password" />
+              <label for="pwd" class="d-none"></label>
+              <vee-field name="pwd" type="password" class="form-control form-control-user" placeholder="رمز عبور" />
+              <ErrorMessage class="text-danger fs-6" name="pwd" />
               <i class="clear-input">
                 <ion-icon name="close-circle"></ion-icon>
               </i>
@@ -45,9 +45,9 @@
           </div>
           <div class="form-group boxed">
             <div class="input-wrapper">
-              <vee-field type="checkbox" name="pwd" value="1" />
+              <vee-field type="checkbox" name="remember" value="1" />
               <label class="px-2" for="remember">مرا به یاد داشته باش</label><br>
-              <ErrorMessage class="text-danger fs-6" name="pwd" />
+              <ErrorMessage class="text-danger fs-6" name="remember" />
             </div>
           </div>
 
@@ -69,9 +69,9 @@
   </div>
 </template>
 <script>
-import tikaUtils from '../assets/js/tikaUtils';
 import { mapMutations, mapState } from 'vuex';
 import { toastbox } from '@/assets/js/base';
+import tikaUtils from '../assets/js/tikaUtils';
 
 export default {
   name: 'AppLogin',
@@ -88,7 +88,7 @@ export default {
   },
   methods: {
     ...mapMutations(['toggleAuthTab']),
-    async login(values) {
+    async login() {
       toastbox('login_toast');
       await this.$store.dispatch('WS_Login', tikaUtils.serializeForm('AdvLoginForm'));
     },

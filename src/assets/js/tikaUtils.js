@@ -14,6 +14,13 @@ const tikaUtils = {
     return document.querySelectorAll(s);
   },
 
+  manualSerialize(key, value) {
+    const fdJsonArr = [
+      { ColName: key, Value: value },
+    ];
+    return JSON.stringify(fdJsonArr);
+  },
+
   serializeEntry(type, id) {
     const fdJsonArr = [
       { ColName: 'Type', Value: type },
@@ -22,11 +29,11 @@ const tikaUtils = {
     return JSON.stringify(fdJsonArr);
   },
 
-  serializeSmpCnt(Type, P_SimpleMode, P_ContentWithHTML) {
+  serializeSmpCnt(Type, PsimpleMode, PcontentWithHTML) {
     const fdJsonArr = [
       { ColName: 'Type', Value: Type },
-      { ColName: 'Param_SimpleMode', Value: P_SimpleMode },
-      { ColName: 'Param_ContentWithHTML', Value: P_ContentWithHTML },
+      { ColName: 'Param_SimpleMode', Value: PsimpleMode },
+      { ColName: 'Param_ContentWithHTML', Value: PcontentWithHTML },
     ];
     return JSON.stringify(fdJsonArr);
   },

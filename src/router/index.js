@@ -8,6 +8,8 @@ import AdvCntView from '../views/AdvCntView.vue';
 import CmsCatView from '../views/CmsCatView.vue';
 import VerifyView from '../views/VerifyView.vue';
 import FAQView from '../views/FAQView.vue';
+import HChatView from '../views/HChatView.vue';
+import InfoSliderView from '../views/InfoSliderView.vue';
 
 const routes = [
   {
@@ -54,6 +56,21 @@ const routes = [
     path: '/FAQ',
     name: 'FAQ',
     component: FAQView,
+  },
+  {
+    path: '/FAQ',
+    name: 'FAQ',
+    component: FAQView,
+  },
+  {
+    path: '/Help-chat',
+    name: 'hchat',
+    component: HChatView,
+  },
+  {
+    path: '/start',
+    name: 'info-slide',
+    component: InfoSliderView,
   },
   {
     path: '/about',

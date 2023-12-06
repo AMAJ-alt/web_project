@@ -2,6 +2,7 @@
   <swiper :options="swiperOptions">
     <swiper-slide v-for="HLink in HLinkListResult" :key="HLink.GUID">
       <img :src="HLink.ImageUrl" alt="Slide Image">
+      <h2>{{ HLink.Title }}</h2>
     </swiper-slide>
     <swiper-pagination />
   </swiper>

@@ -1,9 +1,12 @@
 import { createStore } from 'vuex';
 import router from '@/router';
+import { useToast } from 'vue-toast-notification';
 import tikaUtils from '@/assets/js/tikaUtils';
 
 export default createStore({
   state: {
+    $toast: useToast(),
+
     host: 'http://10.10.10.3/tika11/wservice.asmx',
 
     leftTopicHeader: '',
@@ -31,6 +34,8 @@ export default createStore({
       // 'siteid': '1',
       // 'uid': '',
     },
+    SignUpInfoResult: {},
+
     AdvCntResult: {},
     AdvCntMeta: {},
 
@@ -84,6 +89,48 @@ export default createStore({
           console.log(error);
         });
       commit('toggleAuth');
+    },
+    async WS_SignupFirstInfo({ state }, jsonParams) {
+      console.log(jsonParams);
+
+      await tikaUtils.callWS('SignupFirstInfo', state, jsonParams)
+        .then((res) => {
+          console.log(res);
+          state.SignUpInfoResult = res.data;
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    async WS_SignupCheckCode({ state }, jsonParams) {
+      console.log(jsonParams);
+
+      await tikaUtils.callWS('SignupCheckCode', state, jsonParams)
+        .then((res) => {
+          console.log(res);
+          state.$toast.open({
+            message: res.description,
+            type: 'info',
+          });
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    async WS_SignupResendCode({ state }, jsonParams) {
+      console.log(jsonParams);
+
+      await tikaUtils.callWS('SignupResendCode', state, jsonParams)
+        .then((res) => {
+          console.log(res);
+          state.$toast.open({
+            message: `${res.description} زمان لازم برای تلاش دوباره  ${res.id} ثانیه میباشد.`,
+            type: 'info',
+          });
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     },
     async WS_GetHLinkList({ state }, jsonParams) {
       tikaUtils.clog(jsonParams);

@@ -17,20 +17,20 @@
         <h4>برای پیوستن به ما فرم را پر کنید</h4>
       </div>
       <div class="section mt-2">
-        <vee-form @submit="register" :validation-schema="registerSchema">
+        <vee-form @submit="register" :validation-schema="registerSchema" id="AdvRegisterForm">
 
           <div class="form-group boxed">
             <div class="input-wrapper">
               <label for="number" class="d-none"></label>
-              <vee-field type="text" class="form-control" name="username" placeholder="نام کامل" />
+              <vee-field type="text" class="form-control" name="usname" placeholder="شماره موبایل..." />
               <i class="clear-input">
                 <ion-icon name="close-circle"></ion-icon>
               </i>
-              <ErrorMessage class="text-danger fs-6" name="username" />
+              <ErrorMessage class="text-danger fs-6" name="usname" />
             </div>
           </div>
 
-          <div class="form-group boxed">
+          <!-- <div class="form-group boxed">
             <div class="input-wrapper">
               <label for="number" class="d-none"></label>
               <vee-field name="email" type="email" class="form-control" id="email1" placeholder="ایمیل" />
@@ -39,20 +39,20 @@
               </i>
               <ErrorMessage class="text-danger fs-6" name="email" />
             </div>
-          </div>
+          </div> -->
 
           <div class="form-group boxed">
             <div class="input-wrapper">
               <label for="number" class="d-none"></label>
-              <vee-field name="password" type="password" class="form-control" autocomplete="off" placeholder="رمز" />
+              <vee-field name="pwd" type="password" class="form-control" autocomplete="off" placeholder="رمز عبور..." />
               <i class="clear-input">
                 <ion-icon name="close-circle"></ion-icon>
               </i>
-              <ErrorMessage class="text-danger fs-6" name="password" />
+              <ErrorMessage class="text-danger fs-6" name="pwd" />
             </div>
           </div>
 
-          <div class="form-group boxed">
+          <!-- <div class="form-group boxed">
             <div class="input-wrapper">
               <label for="number" class="d-none"></label>
               <vee-field name="confirm_password" type="password" class="form-control" autocomplete="off"
@@ -62,8 +62,8 @@
               </i>
               <ErrorMessage class="text-danger fs-6" name="confirm_password" />
             </div>
-          </div>
-          <div class="form-group boxed">
+          </div> -->
+          <!-- <div class="form-group boxed">
             <div class="input-wrapper text-start">
               <AppSelect :id="'sgender'" :name="'gender'" :label="'انتخاب جنسیت'" :options="[
                 { value: 'female', label: 'زن' },
@@ -72,9 +72,9 @@
               ]
                 " />
             </div>
-          </div>
+          </div> -->
 
-          <div class=" mt-1 text-start">
+          <!-- <div class=" mt-1 text-start">
             <div class="form-check">
               <vee-field value="1" name="tos" type="checkbox" class="form-check-input" id="customCheckb1" />
               <label class="form-check-label" for="customCheckb1">من <a href="#">قوانین و مقررات</a> را قبول دارم</label>
@@ -82,7 +82,7 @@
               <ErrorMessage class="text-danger fs-6" name="tos" />
             </div>
 
-          </div>
+          </div> -->
           <br>
 
           <div class="form-button-group">
@@ -100,25 +100,38 @@
 
 <script>
 import { mapMutations } from 'vuex';
+import tikaUtils from '../assets/js/tikaUtils';
 
 export default {
   name: 'AppRegister',
   data() {
     return {
       registerSchema: {
-        username: 'required|min:6|max:100',
-        email: 'required|email',
-        password: 'required|min:6|max:100',
-        confirm_password: 'required|confirmed:@password',
-        tos: 'required',
-        gender: 'required',
+        usname: 'required|min:3|max:100',
+        // email: 'required|email',
+        pwd: 'required|min:3|max:100',
+        // confirm_password: 'required|confirmed:@pwd',
+        // tos: 'required',
+        // gender: 'required',
       },
     };
   },
   methods: {
     ...mapMutations(['toggleAuthTab']),
-    async register(values) {
-      console.log(values);
+    async register(value) {
+      this.$toast.open({
+        message: 'لطفا صبر کنید',
+        type: 'info',
+      });
+
+      await this.$store.dispatch('WS_SignupFirstInfo', tikaUtils.serializeForm('AdvRegisterForm'));
+
+      this.$toast.open({
+        message: 'در حال انتقال به صفحه بعدی',
+        type: 'default',
+      });
+      console.log(value.usname);
+      this.$router.push({ name: 'verify', params: { key: value.usname } });
     },
   },
 };

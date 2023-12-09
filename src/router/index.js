@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import HomeView from '../views/HomeView.vue';
 import AuthView from '../views/AuthView.vue';
+import FinalRegistrationView from '../views/FinalRegistrationView.vue';
 import ForgetPassView from '../views/ForgetPassView.vue';
 import ProfileView from '../views/ProfileView.vue';
 import GetAdvCntView from '../views/GetAdvCntView.vue';
@@ -23,6 +24,11 @@ const routes = [
     component: AuthView,
   },
   {
+    path: '/authentication/final_registration/:key',
+    name: 'finalregister',
+    component: FinalRegistrationView,
+  },
+  {
     path: '/authentication/forget_pass',
     name: 'forget',
     component: ForgetPassView,
@@ -33,7 +39,7 @@ const routes = [
     component: ProfileView,
   },
   {
-    path: '/verify',
+    path: '/verify/:key',
     name: 'verify',
     component: VerifyView,
   },

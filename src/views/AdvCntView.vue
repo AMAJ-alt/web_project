@@ -30,81 +30,28 @@
 
     <div class="section">
       <div class="section-title mb-1">
-        <h3 class="mb-0">دیدگاه ها (3)</h3>
+        <h3 class="mb-0">دیدگاه ها ({{ AdvCommentMeta.total }})</h3>
       </div>
       <div class="pt-2 pb-2">
         <!-- comment block -->
         <div class="comment-block">
           <!--item -->
-          <div class="item">
+          <div v-for="comment in AdvCommentResult" :key="comment.Id" class="item">
             <div class="avatar">
               <img src="assets/img/sample/avatar/avatar1.jpg" alt="avatar" class="imaged w32 rounded">
             </div>
             <div class="in">
               <div class="comment-header">
-                <h4 class="title">دیگو موراتا</h4>
-                <span class="time">الان</span>
+                <h4 class="title">{{ comment.SenderStr }}</h4>
+                <span class="time">{{ comment.SendDateStr }}</span>
               </div>
               <div class="text">
-                لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت.
+                {{ comment.Title }}
               </div>
               <div class="comment-footer">
                 <a href="#" class="comment-button">
                   <ion-icon name="heart-outline"></ion-icon>
                   پسند (523)
-                </a>
-                <a href="#" class="comment-button">
-                  <ion-icon name="chatbubble-outline"></ion-icon>
-                  پاسخ
-                </a>
-              </div>
-            </div>
-          </div>
-          <!-- * item -->
-          <!--item -->
-          <div class="item">
-            <div class="avatar">
-              <img src="assets/img/sample/avatar/avatar3.jpg" alt="avatar" class="imaged w32 rounded">
-            </div>
-            <div class="in">
-              <div class="comment-header">
-                <h4 class="title">هنری ایتوندو</h4>
-                <span class="time">05:50 PM</span>
-              </div>
-              <div class="text">
-                لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت.
-              </div>
-              <div class="comment-footer">
-                <a href="#" class="comment-button">
-                  <ion-icon name="heart" class="text-danger"></ion-icon>
-                  پسند (4)
-                </a>
-                <a href="#" class="comment-button">
-                  <ion-icon name="chatbubble-outline"></ion-icon>
-                  پاسخ
-                </a>
-              </div>
-            </div>
-          </div>
-          <!-- * item -->
-          <!--item -->
-          <div class="item">
-            <div class="avatar">
-              <img src="assets/img/sample/avatar/avatar4.jpg" alt="avatar" class="imaged w32 rounded">
-            </div>
-            <div class="in">
-              <div class="comment-header">
-                <h4 class="title">چارملیتا مارشام</h4>
-                <span class="time">20 مرداد 1401</span>
-              </div>
-              <div class="text">
-                لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت. لورم ایپسوم متن ساختگی با تولید سادگی
-                نامفهوم از صنعت.
-              </div>
-              <div class="comment-footer">
-                <a href="#" class="comment-button">
-                  <ion-icon name="heart-outline"></ion-icon>
-                  پسند (5)
                 </a>
                 <a href="#" class="comment-button">
                   <ion-icon name="chatbubble-outline"></ion-icon>
@@ -124,8 +71,8 @@
     <div class="section mt-2">
       <h3 class="mb-0">یک دیدگاه بنویسید</h3>
       <div class="pt-2 pb-2">
-        <form>
-          <div class="form-group boxed">
+        <vee-form @submit="AddComment" :validation-schema="commentSchema">
+          <!-- <div class="form-group boxed">
             <div class="input-wrapper">
               <label for="number" class="d-none"></label>
               <input type="text" class="form-control" id="name5" placeholder="نام">
@@ -143,15 +90,13 @@
                 <ion-icon name="close-circle"></ion-icon>
               </i>
             </div>
-          </div>
+          </div> -->
 
           <div class="form-group boxed">
             <div class="input-wrapper">
               <label for="number" class="d-none"></label>
-              <textarea id="comment" rows="4" class="form-control" placeholder="دیدگاه"></textarea>
-              <i class="clear-input">
-                <ion-icon name="close-circle"></ion-icon>
-              </i>
+              <vee-field as="textarea" name="comment" rows="4" class="form-control" placeholder="دیدگاه"></vee-field>
+              <ErrorMessage class="text-danger fs-6" name="comment" />
             </div>
           </div>
 
@@ -161,7 +106,7 @@
             </button>
           </div>
 
-        </form>
+        </vee-form>
 
       </div>
     </div>
@@ -176,16 +121,46 @@ export default {
   name: 'AdvCntView',
   data() {
     return {
+      commentSchema: {
+        comment: 'required',
+      },
       itemId: this.$route.params.id,
       itemType: this.$route.params.type,
     };
   },
+  methods: {
+    async AddComment(value) {
+      console.log(value);
+      const adCmmtaskObj = {
+        Type: this.$route.params.type,
+        RelId: this.$route.params.id,
+        Comment: value.comment,
+      };
+      await this.$store.dispatch('WS_AddComment', tikaUtils.manualSerialize(adCmmtaskObj));
+
+      const cmmTaskObj = {
+        Type: this.$route.params.type,
+        RelId: this.$route.params.id,
+      };
+      await this.$store.dispatch('WS_GetCommensList', tikaUtils.manualSerialize(cmmTaskObj));
+    },
+  },
   computed: {
-    ...mapState(['AdvCntResult']),
+    ...mapState(['AdvCntResult', 'AdvCommentResult', 'AdvCommentMeta']),
   },
   beforeRouteEnter(to, from, next) {
     next((vm) => {
-      vm.$store.dispatch('WS_GetAdvCntList', tikaUtils.serializeEntry(vm.itemType, vm.itemId));
+      const cntTaskObj = {
+        Type: vm.$route.params.type,
+        Id: vm.$route.params.id,
+      };
+      vm.$store.dispatch('WS_GetAdvCntList', tikaUtils.manualSerialize(cntTaskObj));
+
+      const cmmTaskObj = {
+        Type: vm.$route.params.type,
+        RelId: vm.$route.params.id,
+      };
+      vm.$store.dispatch('WS_GetCommensList', tikaUtils.manualSerialize(cmmTaskObj));
 
       vm.$store.dispatch('headerTitle', {
         center: 'بلاگ',

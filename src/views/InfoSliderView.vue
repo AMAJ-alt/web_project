@@ -36,7 +36,10 @@ export default {
   },
   beforeRouteEnter(to, from, next) {
     next((vm) => {
-      vm.$store.dispatch('WS_GetHLinkList', tikaUtils.manualSerialize('Type', 'certificate'));
+      const hLinkTaskObj = {
+        Type: 'certificate',
+      };
+      vm.$store.dispatch('WS_GetHLinkList', tikaUtils.manualSerialize(hLinkTaskObj));
 
       vm.$store.dispatch('headerTitle', {
         center: 'LOGO',

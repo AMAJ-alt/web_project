@@ -64,16 +64,24 @@ export default {
   },
   methods: {
     contactsmp() {
-      this.Type = 'ContactUsText';
-      this.$store.dispatch('WS_GetSmpCntList', tikaUtils.serializeSmpCnt(this.Type, this.Param_SimpleMode, this.Param_ContentWithHTML));
+      // this.Type = 'ContactUsText';
+      // this.$store.dispatch('WS_GetSmpCntList', tikaUtils.serializeSmpCnt(this.Type, this.Param_SimpleMode, this.Param_ContentWithHTML));
     },
   },
   beforeRouteEnter(to, from, next) {
     next((vm) => {
       if (navigator.onLine) {
-        vm.$store.dispatch('WS_GetSmpCntList', tikaUtils.serializeSmpCnt(vm.Type, vm.Param_SimpleMode, vm.Param_ContentWithHTML));
+        const smpTaskObj = {
+          Type: 'FAQ',
+          Param_SimpleMode: 'false',
+          Param_ContentWithHTML: 'true',
+        };
+        vm.$store.dispatch('WS_GetSmpCntList', tikaUtils.manualSerialize(smpTaskObj));
 
-        vm.$store.dispatch('WS_GetHLinkList', tikaUtils.manualSerialize('Type', 'certificate'));
+        const hLinkTaskObj = {
+          Type: 'certificate',
+        };
+        vm.$store.dispatch('WS_GetHLinkList', tikaUtils.manualSerialize(hLinkTaskObj));
       } else {
         const data = JSON.parse(localStorage.getItem('smp'));
         vm.$store.dispatch('changeValue', {

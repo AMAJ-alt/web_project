@@ -18,6 +18,7 @@ module.exports = {
     'linebreak-style': 0,
     'max-len': 'off',
     camelcase: ['error', { properties: 'never' }],
+    'no-plusplus': 'off',
   },
   overrides: [
     {

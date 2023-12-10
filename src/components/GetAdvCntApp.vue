@@ -111,7 +111,10 @@ export default {
       await this.callWS();
     },
     async handleTypeInput(newValue) {
-      await this.$store.dispatch('Ws_GetCmsCatList', `[{"ColName":"Type","Value":"${newValue}"}]`);
+      const cmsTaskObj = {
+        Type: newValue,
+      };
+      await this.$store.dispatch('Ws_GetCmsCatList', tikaUtils.manualSerialize(cmsTaskObj));
       setTimeout(() => {
         const catJsonArr = [];
         this.AdvCmsCatResult.forEach((x) => {

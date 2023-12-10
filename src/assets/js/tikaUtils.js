@@ -14,17 +14,35 @@ const tikaUtils = {
     return document.querySelectorAll(s);
   },
 
-  manualSerialize(key, value) {
-    const fdJsonArr = [
-      { ColName: key, Value: value },
-    ];
-    return JSON.stringify(fdJsonArr);
+  manualSerialize(obj) {
+    try {
+      const fdJsonArr = [];
+      const keys = Object.keys(obj);
+      for (let i = 0; i < keys.length; i++) {
+        const key = keys[i];
+        fdJsonArr.push({ ColName: key, Value: obj[key] });
+      }
+
+      const jsonString = JSON.stringify(fdJsonArr);
+      return jsonString;
+    } catch (error) {
+      console.error('خطا در سریالایز: ', error);
+      return null;
+    }
   },
 
   serializeEntry(type, id) {
     const fdJsonArr = [
       { ColName: 'Type', Value: type },
       { ColName: 'Id', Value: id },
+    ];
+    return JSON.stringify(fdJsonArr);
+  },
+
+  serializeComment(type, id) {
+    const fdJsonArr = [
+      { ColName: 'Type', Value: type },
+      { ColName: 'RelId', Value: id },
     ];
     return JSON.stringify(fdJsonArr);
   },

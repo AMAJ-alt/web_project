@@ -33,6 +33,7 @@
 </template>
 <script>
 import { mapState } from 'vuex';
+import tikaUtils from '../assets/js/tikaUtils';
 
 export default {
   name: 'CmsCatView',
@@ -46,7 +47,10 @@ export default {
   },
   beforeRouteEnter(to, from, next) {
     next((vm) => {
-      vm.$store.dispatch('Ws_GetCmsCatList', `[{"ColName":"Type","Value":"${vm.TypeValue}"}]`);
+      const cmsTaskObj = {
+        Type: vm.TypeValue,
+      };
+      vm.$store.dispatch('Ws_GetCmsCatList', tikaUtils.manualSerialize(cmsTaskObj));
 
       vm.$store.dispatch('headerTitle', {
         center: 'دسته بندی',
@@ -57,7 +61,10 @@ export default {
   },
   watch: {
     TypeValue(newVal) {
-      this.$store.dispatch('Ws_GetCmsCatList', `[{"ColName":"Type","Value":"${newVal}"}]`);
+      const cmsTaskObj = {
+        Type: newVal,
+      };
+      this.$store.dispatch('Ws_GetCmsCatList', tikaUtils.manualSerialize(cmsTaskObj));
     },
   },
 };

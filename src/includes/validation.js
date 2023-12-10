@@ -9,6 +9,7 @@ import {
   required,
   min,
   max,
+  regex,
   email,
   confirmed,
 } from '@vee-validate/rules';
@@ -23,6 +24,7 @@ export default {
     defineRule('min', min);
     defineRule('max', max);
     defineRule('email', email);
+    defineRule('mobile', regex);
     defineRule('confirmed', confirmed);
 
     configure({
@@ -33,6 +35,7 @@ export default {
           max: 'حداکثر 100 کاراکتر لازم است. ',
           email: 'لطفا ایمیل معتبر وارد کنید.',
           confirmed: 'رمز عبور همخوانی ندارد.',
+          mobile: 'لطفا یک شماره موبایل معتبر وارد کنید.',
         };
         const message = msg[ctx.rule.name]
           ? msg[ctx.rule.name]

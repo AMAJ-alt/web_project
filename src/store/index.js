@@ -34,10 +34,16 @@ export default createStore({
       // 'siteid': '1',
       // 'uid': '',
     },
+    vis: true,
+    countdown: 'در حال محاسبه...',
+
     SignUpInfoResult: {},
 
     AdvCntResult: {},
     AdvCntMeta: {},
+
+    AdvCommentResult: {},
+    AdvCommentMeta: {},
 
     HLinkListMeta: {},
     HLinkListResult: {},
@@ -61,6 +67,29 @@ export default createStore({
     toggleAuth(state) {
       state.userLoggedIn = !state.userLoggedIn;
       console.log('userLoggedIn value ? ', state.userLoggedIn);
+    },
+    timer(state) {
+      const resTime = state.SignUpInfoResult.RemainTime * 1000;
+      const targetTime = new Date().getTime() + resTime;
+
+      const timerInterval = setInterval(() => {
+        const currentTime = new Date().getTime();
+        const timeDifference = targetTime - currentTime;
+
+        if (timeDifference <= 0) {
+          clearInterval(timerInterval);
+          state.countdown = 'زمان به پایان رسید!';
+          this.commit('endTimer');
+        } else {
+          const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+          const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
+          state.countdown = `زمان باقی‌مانده: ${minutes} دقیقه و ${seconds} ثانیه`;
+        }
+      }, 1000);
+    },
+    endTimer(state) {
+      state.countdown = 'کد را دریافت نکردید؟';
+      state.vis = true;
     },
   },
   actions: {
@@ -96,6 +125,10 @@ export default createStore({
       await tikaUtils.callWS('SignupFirstInfo', state, jsonParams)
         .then((res) => {
           console.log(res);
+          state.$toast.open({
+            message: res.message,
+            type: 'info',
+          });
           state.SignUpInfoResult = res.data;
         })
         .catch((error) => {
@@ -117,16 +150,25 @@ export default createStore({
           console.log(error);
         });
     },
-    async WS_SignupResendCode({ state }, jsonParams) {
+    async WS_SignupResendCode({ state, commit }, jsonParams) {
       console.log(jsonParams);
 
       await tikaUtils.callWS('SignupResendCode', state, jsonParams)
         .then((res) => {
           console.log(res);
-          state.$toast.open({
-            message: `${res.description} زمان لازم برای تلاش دوباره  ${res.id} ثانیه میباشد.`,
-            type: 'info',
-          });
+          if (res.id > 0) {
+            state.$toast.open({
+              message: `${res.description} زمان لازم برای تلاش دوباره  ${res.id} ثانیه میباشد.`,
+              type: 'info',
+            });
+          } else {
+            state.SignUpInfoResult = res.data;
+            commit('timer');
+            state.$toast.open({
+              message: 'کد پیامکی دوباره ارسال شد.',
+              type: 'info',
+            });
+          }
         })
         .catch((error) => {
           console.log(error);
@@ -155,6 +197,35 @@ export default createStore({
           state.AdvCntMeta = res.meta;
           state.AdvCntResult = res.data;
           console.log(state.AdvCntResult);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    async WS_GetCommensList({ state }, jsonParams) {
+      tikaUtils.clog(jsonParams);
+
+      await tikaUtils.callWS('GetCommensList', state, jsonParams)
+        .then((res) => {
+          console.log(res);
+          state.AdvCommentResult = res.data;
+          state.AdvCommentMeta = res.meta;
+          console.log(state.AdvCommentResult);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    async WS_AddComment({ state }, jsonParams) {
+      tikaUtils.clog(jsonParams);
+
+      await tikaUtils.callWS('AddComment', state, jsonParams)
+        .then((res) => {
+          console.log(res);
+          state.$toast.open({
+            message: res.message,
+            type: 'info',
+          });
         })
         .catch((error) => {
           console.log(error);

@@ -54,8 +54,7 @@ export default {
   data() {
     return {
       registerSchema: {
-        // usname: 'required|mobile:/^09[0-9]{9}$/i',
-        usname: 'required',
+        usname: 'mobile:^09[0-9]{9}$',
         pwd: 'required|min:3|max:100',
       },
     };
@@ -66,7 +65,9 @@ export default {
       await this.$store.dispatch('WS_SignupFirstInfo', tikaUtils.serializeForm('AdvRegisterForm'));
 
       console.log(value.usname);
-      this.$router.push({ name: 'verify', params: { key: value.usname } });
+      if (this.$store.state.SignUpInfoFlag >= 0) {
+        this.$router.push({ name: 'verify', params: { key: value.usname } });
+      }
     },
   },
 };

@@ -63,6 +63,20 @@
           <!-- * item -->
         </div>
         <!-- * comment block -->
+
+        <nav>
+          <ul class="pagination">
+            <li class="page-item"><a class="page-link" href="#">قبل</a></li>
+
+            <li v-for="(page, index) in pagination" :key="page" class="page-item">
+              <option class="page-link" @click="selectOption(index + 1)" :value="index + 1">
+                {{ index + 1 }}
+              </option>
+            </li>
+
+            <li class="page-item"><a class="page-link" href="#">بعد</a></li>
+          </ul>
+        </nav>
       </div>
     </div>
 
@@ -124,6 +138,9 @@ export default {
       commentSchema: {
         comment: 'required',
       },
+
+      pagination: 0,
+
       itemId: this.$route.params.id,
       itemType: this.$route.params.type,
     };
@@ -141,28 +158,43 @@ export default {
       const cmmTaskObj = {
         Type: this.$route.params.type,
         RelId: this.$route.params.id,
+        CurrPage: '1',
+        MaxNo: '3',
       };
       await this.$store.dispatch('WS_GetCommensList', tikaUtils.manualSerialize(cmmTaskObj));
+    },
+    async selectOption(val) {
+      console.log(val);
+
+      // this.pageVal = val;
+      // console.log(this.pageVal);
+      // await this.callWS();
     },
   },
   computed: {
     ...mapState(['AdvCntResult', 'AdvCommentResult', 'AdvCommentMeta']),
   },
   beforeRouteEnter(to, from, next) {
-    next((vm) => {
+    next(async (vm) => {
       const cntTaskObj = {
         Type: vm.$route.params.type,
         Id: vm.$route.params.id,
       };
-      vm.$store.dispatch('WS_GetAdvCntList', tikaUtils.manualSerialize(cntTaskObj));
+      await vm.$store.dispatch('WS_GetAdvCntList', tikaUtils.manualSerialize(cntTaskObj));
 
       const cmmTaskObj = {
         Type: vm.$route.params.type,
         RelId: vm.$route.params.id,
+        CurrPage: '1',
+        MaxNo: '3',
       };
-      vm.$store.dispatch('WS_GetCommensList', tikaUtils.manualSerialize(cmmTaskObj));
+      await vm.$store.dispatch('WS_GetCommensList', tikaUtils.manualSerialize(cmmTaskObj));
+      // eslint-disable-next-line
+      vm.pagination = Math.ceil(vm.AdvCommentMeta.total / vm.AdvCommentMeta.perpage);
 
-      vm.$store.dispatch('headerTitle', {
+      console.log(vm.pagination);
+
+      await vm.$store.dispatch('headerTitle', {
         center: 'بلاگ',
         left: '<ion-icon name="share-outline"></ion-icon>',
       }).then(() => {

@@ -43,17 +43,19 @@
             ]" />
           </div>
         </div>
-        <vee-field name="CurrPage" type="text" v-model="pageVal"/>
+        <vee-field name="CurrPage" type="hidden" v-model="pageVal" />
 
         <br>
         <div>
-          <button :disabled="login_in_submittion" type="submit" class="btn btn-primary btn-block btn-lg">
+          <button type="submit" class="btn btn-primary btn-block btn-lg">
             جستجو
           </button>
         </div>
       </vee-form>
     </div>
   </div>
+
+  <h4 v-html="err.txt" v-show="err.vis" :class="err.var"></h4>
 
   <ul class="listview image-listview media">
     <AppCustomeList v-for="  item   in   AdvCntResult  " :key="item.Id" :item="item" />
@@ -62,18 +64,16 @@
 
   <nav>
     <ul class="pagination">
-      <li class="page-item"><a class="page-link" href="#">قبل</a></li>
+      <li v-show="this.pageVal > 1" class="page-item"><button @click.prevent="prevPage" class="page-link">قبل</button>
+      </li>
 
-      <li
-      v-for="(page, index) in pagination"
-      :key="page" class="page-item">
-      <option class="page-link" @click="selectOption(index+1)"
-        :value="index+1">
-        {{ index+1 }}
-      </option>
-    </li>
+      <li v-for="(page, index) in pagination" :key="page" class="page-item">
+        <option class="page-link" @click="selectOption(index + 1)" :value="index + 1">
+          {{ index + 1 }}
+        </option>
+      </li>
 
-      <li class="page-item"><a class="page-link" href="#">بعد</a></li>
+      <li class="page-item"><button v-show="nextVis" @click.prevent="nextPage" class="page-link">بعد</button></li>
     </ul>
   </nav>
 </template>
@@ -89,7 +89,15 @@ export default {
   },
   data() {
     return {
+      err: {
+        txt: 'هیچ داده ای وجود ندارد.',
+        vis: false,
+        var: 'text-center text-danger',
+      },
+
       catOp: [],
+
+      nextVis: false,
 
       pageVal: 1,
       pagination: 0,
@@ -105,16 +113,34 @@ export default {
     ...mapState(['AdvCntResult', 'AdvCmsCatResult', 'AdvCntMeta']),
   },
   methods: {
+    async prevPage() {
+      this.pageVal -= 1;
+      console.log(this.pageVal);
+      setTimeout(() => {
+        this.callWS();
+      }, 200);
+    },
+    async nextPage() {
+      this.pageVal += 1;
+      console.log(this.pageVal);
+      setTimeout(() => {
+        this.callWS();
+      }, 200);
+    },
     async selectOption(val) {
       this.pageVal = val;
       console.log(this.pageVal);
-      await this.callWS();
+      setTimeout(() => {
+        this.callWS();
+      }, 200);
     },
     async handleTypeInput(newValue) {
       const cmsTaskObj = {
         Type: newValue,
       };
+
       await this.$store.dispatch('Ws_GetCmsCatList', tikaUtils.manualSerialize(cmsTaskObj));
+
       setTimeout(() => {
         const catJsonArr = [];
         this.AdvCmsCatResult.forEach((x) => {
@@ -128,7 +154,12 @@ export default {
     },
     async callWS() {
       await this.$store.dispatch('WS_GetAdvCntList', tikaUtils.serializeForm('AdvCntSearchForm'));
-      this.pagination = Math.ceil(this.AdvCntMeta.total / this.AdvCntMeta.perpage);
+      if (this.AdvCntMeta) {
+        this.pagination = Math.ceil(this.AdvCntMeta.total / this.AdvCntMeta.perpage);
+        this.nextVis = true;
+      } else {
+        this.err.vis = true;
+      }
     },
   },
 

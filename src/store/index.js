@@ -37,10 +37,11 @@ export default createStore({
     vis: true,
     countdown: 'در حال محاسبه...',
 
-    SignUpInfoResult: {},
+    SignUpInfoResult: null,
+    SignUpInfoFlag: null,
 
-    AdvCntResult: {},
-    AdvCntMeta: {},
+    AdvCntResult: null,
+    AdvCntMeta: null,
 
     AdvCommentResult: {},
     AdvCommentMeta: {},
@@ -125,10 +126,16 @@ export default createStore({
       await tikaUtils.callWS('SignupFirstInfo', state, jsonParams)
         .then((res) => {
           console.log(res);
-          state.$toast.open({
-            message: res.message,
-            type: 'info',
-          });
+          if (res.flag < 0) {
+            state.SignUpInfoFlag = res.flag;
+
+            state.$toast.open({
+              message: res.description,
+              type: 'info',
+            });
+            return;
+          }
+
           state.SignUpInfoResult = res.data;
         })
         .catch((error) => {
@@ -194,16 +201,22 @@ export default createStore({
       await tikaUtils.callWS('GetAdvCntList', state, jsonParams)
         .then((res) => {
           console.log(res);
+          if (res.flag < 0) {
+            state.$toast.open({
+              message: res.message,
+              type: 'error',
+            });
+            return;
+          }
           state.AdvCntMeta = res.meta;
           state.AdvCntResult = res.data;
-          console.log(state.AdvCntResult);
         })
         .catch((error) => {
           console.log(error);
         });
     },
     async WS_GetCommensList({ state }, jsonParams) {
-      tikaUtils.clog(jsonParams);
+      console.log(jsonParams);
 
       await tikaUtils.callWS('GetCommensList', state, jsonParams)
         .then((res) => {
@@ -248,7 +261,6 @@ export default createStore({
           console.log(error);
         });
     },
-
     async Ws_GetCmsCatList({ state }, jsonParams) {
       tikaUtils.callWS('GetCmsCatList', state, jsonParams)
         .then((res) => {
@@ -259,6 +271,7 @@ export default createStore({
           console.log(error);
         });
     },
+
     headerTitle({ state }, payload) {
       state.centerTopicHeader = payload.center;
       state.leftTopicHeader = payload.left;

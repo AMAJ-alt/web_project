@@ -31,31 +31,6 @@ const tikaUtils = {
     }
   },
 
-  serializeEntry(type, id) {
-    const fdJsonArr = [
-      { ColName: 'Type', Value: type },
-      { ColName: 'Id', Value: id },
-    ];
-    return JSON.stringify(fdJsonArr);
-  },
-
-  serializeComment(type, id) {
-    const fdJsonArr = [
-      { ColName: 'Type', Value: type },
-      { ColName: 'RelId', Value: id },
-    ];
-    return JSON.stringify(fdJsonArr);
-  },
-
-  serializeSmpCnt(Type, PsimpleMode, PcontentWithHTML) {
-    const fdJsonArr = [
-      { ColName: 'Type', Value: Type },
-      { ColName: 'Param_SimpleMode', Value: PsimpleMode },
-      { ColName: 'Param_ContentWithHTML', Value: PcontentWithHTML },
-    ];
-    return JSON.stringify(fdJsonArr);
-  },
-
   serializeForm(formId) {
     const fd = new FormData(tikaUtils.gel(formId));
     const fdJsonArr = [];
@@ -66,8 +41,8 @@ const tikaUtils = {
       fdJsonArr.push(fdJson);
     });
 
-    const maxPage = { ColName: 'MaxNo', Value: '4' };
-    fdJsonArr.push(maxPage);
+    // const maxPage = { ColName: 'MaxNo', Value: '4' };
+    // fdJsonArr.push(maxPage);
 
     return JSON.stringify(fdJsonArr);
   },

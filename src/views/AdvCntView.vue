@@ -38,7 +38,7 @@
           <!--item -->
           <div v-for="comment in AdvCommentResult" :key="comment.Id" class="item">
             <div class="avatar">
-              <img src="assets/img/sample/avatar/avatar1.jpg" alt="avatar" class="imaged w32 rounded">
+              <img src="../assets/guest_img.jpg" alt="avatar" class="imaged w32 rounded">
             </div>
             <div class="in">
               <div class="comment-header">
@@ -46,7 +46,7 @@
                 <span class="time">{{ comment.SendDateStr }}</span>
               </div>
               <div class="text">
-                {{ comment.Title }}
+                {{ comment.Content }}
               </div>
               <div class="comment-footer">
                 <a href="#" class="comment-button">
@@ -58,6 +58,17 @@
                   پاسخ
                 </a>
               </div>
+              <ul class="list-unstyled" v-if="comment.ResponseText">
+                <li class="media mt-4">
+                  <div class="media-body">
+                    <h5 class="mt-0">
+                      <img src="../assets/admin_img.jpg" class="imaged w32 rounded mx-2" alt="User Avatar">
+                      Admin
+                    </h5>
+                    <p>{{ comment.ResponseText }}</p>
+                  </div>
+                </li>
+              </ul>
             </div>
           </div>
           <!-- * item -->
@@ -65,8 +76,10 @@
         <!-- * comment block -->
 
         <nav>
-          <ul class="pagination">
-            <li class="page-item"><a class="page-link" href="#">قبل</a></li>
+          <ul class="pagination mt-4">
+            <li v-show="this.pageVal > 1" class="page-item"><button @click.prevent="prevPage"
+                class="page-link">قبل</button>
+            </li>
 
             <li v-for="(page, index) in pagination" :key="page" class="page-item">
               <option class="page-link" @click="selectOption(index + 1)" :value="index + 1">
@@ -74,7 +87,7 @@
               </option>
             </li>
 
-            <li class="page-item"><a class="page-link" href="#">بعد</a></li>
+            <li class="page-item"><button @click.prevent="nextPage" class="page-link">بعد</button></li>
           </ul>
         </nav>
       </div>
@@ -138,7 +151,7 @@ export default {
       commentSchema: {
         comment: 'required',
       },
-
+      pageVal: 0,
       pagination: 0,
 
       itemId: this.$route.params.id,
@@ -163,12 +176,34 @@ export default {
       };
       await this.$store.dispatch('WS_GetCommensList', tikaUtils.manualSerialize(cmmTaskObj));
     },
+    async callWS() {
+      const cmmTaskObj = {
+        Type: this.$route.params.type,
+        RelId: this.$route.params.id,
+        CurrPage: this.pageVal,
+        MaxNo: '3',
+      };
+      await this.$store.dispatch('WS_GetCommensList', tikaUtils.manualSerialize(cmmTaskObj));
+    },
+    async prevPage() {
+      this.pageVal -= 1;
+      console.log(this.pageVal);
+      setTimeout(() => {
+        this.callWS();
+      }, 200);
+    },
+    async nextPage() {
+      this.pageVal += 1;
+      console.log(this.pageVal);
+      setTimeout(() => {
+        this.callWS();
+      }, 200);
+    },
     async selectOption(val) {
-      console.log(val);
-
-      // this.pageVal = val;
-      // console.log(this.pageVal);
-      // await this.callWS();
+      this.pageVal = val;
+      setTimeout(() => {
+        this.callWS();
+      }, 200);
     },
   },
   computed: {

@@ -11,6 +11,7 @@ import VerifyView from '../views/VerifyView.vue';
 import FAQView from '../views/FAQView.vue';
 import HChatView from '../views/HChatView.vue';
 import InfoSliderView from '../views/InfoSliderView.vue';
+import ProductListView from '../views/ProductListView.vue';
 
 const routes = [
   {
@@ -77,6 +78,11 @@ const routes = [
     path: '/start',
     name: 'info-slide',
     component: InfoSliderView,
+  },
+  {
+    path: '/product-list',
+    name: 'product-list',
+    component: ProductListView,
   },
   {
     path: '/about',

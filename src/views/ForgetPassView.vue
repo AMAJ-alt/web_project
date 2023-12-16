@@ -3,18 +3,16 @@
     <div class="login-form">
       <div class="section">
         <h1>بازیابی رمز</h1>
-        <h4>برای بازنشانی رمز عبور ایمیل خود را تایپ کنید</h4>
+        <h4>برای بازنشانی شماره تلفن خود را تایپ کنید</h4>
       </div>
       <div class="section mt-2 mb-5">
-        <form action="app-pages.html">
+        <vee-form @submit="UserForgetPassword" :validation-schema="forgetPassSchema" id="ForgetPasswordForm">
 
           <div class="form-group boxed">
             <div class="input-wrapper">
-              <label for="email" class="d-none">type...</label>
-              <input type="email" class="form-control" id="name1" placeholder="ایمیل">
-              <i class="clear-input">
-                <ion-icon name="close-circle"></ion-icon>
-              </i>
+              <label for="mobile" class="d-none">type...</label>
+              <vee-field type="text" name="mobile" class="form-control" id="name1" placeholder="شماره تلفن" />
+              <ErrorMessage class="text-danger fs-6" name="mobile" />
             </div>
           </div>
 
@@ -22,15 +20,29 @@
             <button type="submit" class="btn btn-primary btn-block btn-lg">بازیابی</button>
           </div>
 
-        </form>
+        </vee-form>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import tikaUtils from '../assets/js/tikaUtils';
+
 export default {
   name: 'ForgetPassView',
+  data() {
+    return {
+      forgetPassSchema: {
+        usname: 'mobile:^09[0-9]{9}$',
+      },
+    };
+  },
+  methods: {
+    async UserForgetPassword() {
+      await this.$store.dispatch('WS_UserForgetPassword', tikaUtils.serializeForm('ForgetPasswordForm'));
+    },
+  },
   beforeRouteEnter(to, from, next) {
     next((vm) => {
       vm.$store.dispatch('headerTitle', {

@@ -1,17 +1,5 @@
 <template>
   <div id="appCapsule" class="pt-0 ">
-    <div id="login_toast" class="toast-box toast-top" :class="task.bg_varient">
-      <div class="in">
-        <div class="text">
-          {{ task.show_message }}
-        </div>
-      </div>
-      <button type="button" class="btn btn-sm close-button text-white">تایید</button>
-    </div>
-
-    <!-- <ion-icon name="heart"></ion-icon>
-    <ion-icon name="close-circle"></ion-icon> -->
-    <br><br>
     <div class="login-form mt-1 mt-5">
       <div class="section">
         <img src="../assets/vector4.png" alt="image" class="form-image">
@@ -27,9 +15,6 @@
               <label for="usname" class="d-none"></label>
               <vee-field name="usname" type="text" class="form-control form-control-user" placeholder="ایمیل..." />
               <ErrorMessage class="text-danger fs-6" name="usname" />
-              <i class="clear-input">
-                <ion-icon name="close-circle"></ion-icon>
-              </i>
             </div>
           </div>
 
@@ -38,9 +23,6 @@
               <label for="pwd" class="d-none"></label>
               <vee-field name="pwd" type="password" class="form-control form-control-user" placeholder="رمز عبور" />
               <ErrorMessage class="text-danger fs-6" name="pwd" />
-              <i class="clear-input">
-                <ion-icon name="close-circle"></ion-icon>
-              </i>
             </div>
           </div>
           <div class="form-group boxed">
@@ -59,7 +41,7 @@
           </div>
 
           <div class="form-button-group">
-            <button :disabled="task.in_submittion" type="submit" class="btn btn-primary btn-block btn-lg">
+            <button type="submit" class="btn btn-primary btn-block btn-lg">
               ورود
             </button>
           </div>
@@ -70,7 +52,6 @@
 </template>
 <script>
 import { mapMutations, mapState } from 'vuex';
-import { toastbox } from '@/assets/js/base';
 import tikaUtils from '../assets/js/tikaUtils';
 
 export default {
@@ -89,7 +70,6 @@ export default {
   methods: {
     ...mapMutations(['toggleAuthTab']),
     async login() {
-      toastbox('login_toast');
       await this.$store.dispatch('WS_Login', tikaUtils.serializeForm('AdvLoginForm'));
     },
   },

@@ -13,12 +13,6 @@ export default createStore({
     centerTopicHeader: '',
     LinkTopicHeader: '',
 
-    task: {
-      in_submittion: false,
-      bg_varient: 'bg-info',
-      show_message: 'لطفا صبر کنید! در حال چک کردن مشخصات شما.',
-    },
-
     authTabLogin: true,
 
     userLoggedIn: false,
@@ -29,19 +23,29 @@ export default createStore({
       'Content-Type': 'text/xml; charset=UTF-8',
       'Access-Control-Allow-Credentials': 'true',
       'Access-Control-Allow-Methods': 'GET,HEAD,OPTIONS,POST,PUT',
-      // 'lang': 'fa',
-      // 'src': 'app',
-      // 'siteid': '1',
-      // 'uid': '',
+
+      // eslint-disable-next-line
+      'lang': 'FA',
+      // eslint-disable-next-line
+      'src': 'APP',
+      // eslint-disable-next-line
+      'siteid': (localStorage.getItem('siteid') || '3'),
+      // eslint-disable-next-line
+      'uid': localStorage.getItem('login_token'),
     },
     vis: true,
     countdown: 'در حال محاسبه...',
+
+    LoginInfoResult: null,
 
     SignUpInfoResult: null,
     SignUpInfoFlag: null,
 
     AdvCntResult: null,
     AdvCntMeta: null,
+
+    GetProdListMeta: {},
+    GetProdListResult: {},
 
     AdvCommentResult: {},
     AdvCommentMeta: {},
@@ -94,31 +98,32 @@ export default createStore({
     },
   },
   actions: {
-    async WS_Login({ commit, state }, jsonParams) {
+    async WS_Login({ commit, state, dispatch }, jsonParams) {
       console.log(jsonParams);
-
-      state.task.in_submittion = true;
-      state.task.bg_varient = 'bg-info text-white';
-      state.task.show_message = 'لطفا صبر کنید! در حال چک کردن مشخصات شما.';
 
       await tikaUtils.callWS('Login', state, jsonParams)
         .then((res) => {
           console.log(res);
           console.log(state.AdvCntResult);
           if (res.flag < 0) {
-            state.task.in_submittion = false;
-            state.task.bg_varient = 'bg-danger text-white';
-            state.task.show_message = res.message;
+            state.$toast.open({
+              message: res.description,
+              type: 'error',
+            });
           } else {
-            state.task.in_submittion = true;
-            state.task.bg_varient = 'bg-success text-white';
-            state.task.show_message = res.message;
+            state.$toast.open({
+              message: res.message,
+              type: 'info',
+            });
+            state.LoginInfoResult = res.data;
+            commit('toggleAuth');
+            dispatch('setGUID', state.LoginInfoResult.GUID);
+            window.location.reload();
           }
         })
         .catch((error) => {
           console.log(error);
         });
-      commit('toggleAuth');
     },
     async WS_SignupFirstInfo({ state }, jsonParams) {
       console.log(jsonParams);
@@ -181,6 +186,17 @@ export default createStore({
           console.log(error);
         });
     },
+    async WS_UserForgetPassword({ state }, jsonParams) {
+      console.log(jsonParams);
+
+      await tikaUtils.callWS('UserForgetPassword', state, jsonParams)
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
     async WS_GetHLinkList({ state }, jsonParams) {
       tikaUtils.clog(jsonParams);
 
@@ -210,6 +226,19 @@ export default createStore({
           }
           state.AdvCntMeta = res.meta;
           state.AdvCntResult = res.data;
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    async WS_GetProdList({ state }, jsonParams) {
+      tikaUtils.clog(jsonParams);
+
+      await tikaUtils.callWS('GetProdList', state, jsonParams)
+        .then((res) => {
+          console.log(res);
+          state.GetProdListMeta = res.meta;
+          state.GetProdListResult = res.data;
         })
         .catch((error) => {
           console.log(error);
@@ -279,6 +308,11 @@ export default createStore({
     },
     changeValue({ state }, payload) {
       state[payload.property] = payload.data;
+    },
+    setGUID({ state }, payload) {
+      console.log(state);
+      const jsonString = JSON.stringify(payload);
+      localStorage.setItem('login_token', jsonString);
     },
   },
 

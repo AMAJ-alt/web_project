@@ -52,7 +52,7 @@ export default {
         usname: this.$route.params.key,
         code: Value.Code,
       };
-      await this.$store.dispatch('WS_SignupCheckCode', tikaUtils.manualSerialize(checkCodeTaskObj));
+      await this.$store.dispatch('WS_SignupCheckCode', tikaUtils.serializeManually(checkCodeTaskObj));
 
       this.$router.push({ name: 'finalregister', params: { key: this.usename } });
     },
@@ -60,7 +60,7 @@ export default {
       const resendCodeTaskObj = {
         usname: this.$route.params.key,
       };
-      await this.$store.dispatch('WS_SignupResendCode', tikaUtils.manualSerialize(resendCodeTaskObj));
+      await this.$store.dispatch('WS_SignupResendCode', tikaUtils.serializeManually(resendCodeTaskObj));
     },
     timer() {
       const resTime = this.SignUpInfoResult.RemainTime * 1000;

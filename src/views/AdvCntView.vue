@@ -166,7 +166,7 @@ export default {
         RelId: this.$route.params.id,
         Comment: value.comment,
       };
-      await this.$store.dispatch('WS_AddComment', tikaUtils.manualSerialize(adCmmtaskObj));
+      await this.$store.dispatch('WS_AddComment', tikaUtils.serializeManually(adCmmtaskObj));
 
       const cmmTaskObj = {
         Type: this.$route.params.type,
@@ -174,7 +174,7 @@ export default {
         CurrPage: '1',
         MaxNo: '3',
       };
-      await this.$store.dispatch('WS_GetCommensList', tikaUtils.manualSerialize(cmmTaskObj));
+      await this.$store.dispatch('WS_GetCommensList', tikaUtils.serializeManually(cmmTaskObj));
     },
     async callWS() {
       const cmmTaskObj = {
@@ -183,7 +183,7 @@ export default {
         CurrPage: this.pageVal,
         MaxNo: '3',
       };
-      await this.$store.dispatch('WS_GetCommensList', tikaUtils.manualSerialize(cmmTaskObj));
+      await this.$store.dispatch('WS_GetCommensList', tikaUtils.serializeManually(cmmTaskObj));
     },
     async prevPage() {
       this.pageVal -= 1;
@@ -215,7 +215,7 @@ export default {
         Type: vm.$route.params.type,
         Id: vm.$route.params.id,
       };
-      await vm.$store.dispatch('WS_GetAdvCntList', tikaUtils.manualSerialize(cntTaskObj));
+      await vm.$store.dispatch('WS_GetAdvCntList', tikaUtils.serializeManually(cntTaskObj));
 
       const cmmTaskObj = {
         Type: vm.$route.params.type,
@@ -223,7 +223,7 @@ export default {
         CurrPage: '1',
         MaxNo: '3',
       };
-      await vm.$store.dispatch('WS_GetCommensList', tikaUtils.manualSerialize(cmmTaskObj));
+      await vm.$store.dispatch('WS_GetCommensList', tikaUtils.serializeManually(cmmTaskObj));
       // eslint-disable-next-line
       vm.pagination = Math.ceil(vm.AdvCommentMeta.total / vm.AdvCommentMeta.perpage);
 

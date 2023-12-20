@@ -39,7 +39,7 @@ export default {
       const hLinkTaskObj = {
         Type: 'certificate',
       };
-      vm.$store.dispatch('WS_GetHLinkList', tikaUtils.manualSerialize(hLinkTaskObj));
+      vm.$store.dispatch('WS_GetHLinkList', tikaUtils.serializeManually(hLinkTaskObj));
 
       vm.$store.dispatch('headerTitle', {
         center: 'LOGO',

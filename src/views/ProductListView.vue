@@ -5,16 +5,6 @@
 
         <div class="form-group boxed">
           <div class="input-wrapper">
-            <label for="Type" class="ms-1 mb-1">نوع</label>
-            <AppSelect @input="handleTypeInput" :id="'sType'" :name="'Type'" :label="'انتخاب نوع'" :options="[
-              { value: 'Products', label: 'محصولات' },
-            ]
-              " />
-          </div>
-        </div>
-
-        <div class="form-group boxed">
-          <div class="input-wrapper">
             <label for="Status" class="ms-1 mb-1">دسته</label>
             <AppSelect :id="'sCategoryId'" :name="'CategoryId'" :label="'انتخاب دسته'" :options="catOp" />
           </div>
@@ -54,90 +44,94 @@
           <p class="text p-0">{{ product.CategoryName }}</p>
           <p class="text">تاریخ تولید {{ product.ProducedDateStr }}</p>
           <div class="price">{{ product.Price }} تومان</div>
-          <a href="#" class="btn btn-sm btn-primary btn-block">افزودن به سبد</a>
+          <router-link :to="{ name: 'Product', params: { type: 'Products', id: product.Id } }"
+            class="btn btn-sm btn-primary btn-block">مشاهده محصول</router-link>
         </div>
       </div>
     </swiper-slide>
   </swiper>
-  <ul>
+  <!-- <ul>
     <li v-for="item in treeData" :key="item.id">
       {{ item.label }}
       <tree-list :treeData="item.children" v-if="item.children && item.children.length > 0" />
     </li>
-  </ul>
+  </ul> -->
 </template>
 <script>
 import { mapState } from 'vuex';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import 'swiper/swiper-bundle.css';
 import { FreeMode, Autoplay } from 'swiper/modules';
-import TreeList from '@/components/TreeList.vue';
+// import TreeList from '@/components/TreeList.vue';
 import tikaUtils from '../assets/js/tikaUtils';
 
 export default {
   data() {
     return {
       catOp: [],
-      treeData: [
-        {
-          id: 1,
-          label: 'Node 1',
-          children: [
-            {
-              id: 2,
-              label: 'Node 1.1',
-              children: [
-                {
-                  id: 3,
-                  label: 'Node 1.1.1',
-                },
-                {
-                  id: 4,
-                  label: 'Node 1.1.2',
-                },
-              ],
-            },
-            {
-              id: 5,
-              label: 'Node 1.2',
-            },
-          ],
-        },
-        {
-          id: 6,
-          label: 'Node 2',
-          children: [
-            {
-              id: 7,
-              label: 'Node 2.1',
-            },
-            {
-              id: 8,
-              label: 'Node 2.2',
-            },
-          ],
-        },
-      ],
+      // treeData: [
+      //   {
+      //     id: 1,
+      //     label: 'Node 1',
+      //     children: [
+      //       {
+      //         id: 2,
+      //         label: 'Node 1.1',
+      //         children: [
+      //           {
+      //             id: 3,
+      //             label: 'Node 1.1.1',
+      //           },
+      //           {
+      //             id: 4,
+      //             label: 'Node 1.1.2',
+      //           },
+      //         ],
+      //       },
+      //       {
+      //         id: 5,
+      //         label: 'Node 1.2',
+      //       },
+      //     ],
+      //   },
+      //   {
+      //     id: 6,
+      //     label: 'Node 2',
+      //     children: [
+      //       {
+      //         id: 7,
+      //         label: 'Node 2.1',
+      //       },
+      //       {
+      //         id: 8,
+      //         label: 'Node 2.2',
+      //       },
+      //     ],
+      //   },
+      // ],
     };
   },
   components: {
     Swiper,
     SwiperSlide,
-    TreeList,
+    // TreeList,
   },
   computed: {
     ...mapState(['GetProdListResult', 'AdvCmsCatResult']),
   },
   methods: {
     async getProductList() {
-      await this.$store.dispatch('WS_GetProdList', tikaUtils.serializeForm('AdvProductSearchForm'));
+      const addObj = {
+        Type: 'Products',
+      };
+      await this.$store.dispatch('WS_GetProdList', tikaUtils.serializeObj_Arr(addObj, tikaUtils.serializeForm('AdvProductSearchForm')));
     },
-    async handleTypeInput(newValue) {
+    async handleTypeInput() {
       const cmsTaskObj = {
-        Type: newValue,
+        Type: 'Products',
       };
 
-      await this.$store.dispatch('Ws_GetCmsCatList', tikaUtils.manualSerialize(cmsTaskObj));
+      await this.$store.dispatch('Ws_GetCmsCatList', tikaUtils.serializeManually(cmsTaskObj));
 
       setTimeout(() => {
         const catJsonArr = [];
@@ -145,11 +139,23 @@ export default {
           const catJson = {};
           catJson.value = x.Id;
           catJson.label = x.Title;
+          catJson.ParentId = x.ParentId;
           catJsonArr.push(catJson);
         });
         this.catOp = catJsonArr;
       }, (2000));
     },
+  },
+  beforeRouteEnter(to, from, next) {
+    next((vm) => {
+      vm.handleTypeInput();
+
+      vm.$store.dispatch('headerTitle', {
+        center: 'محصولات',
+        left: 'خروج',
+      }).then(() => {
+      });
+    });
   },
   setup() {
     return {

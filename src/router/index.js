@@ -12,6 +12,7 @@ import FAQView from '../views/FAQView.vue';
 import HChatView from '../views/HChatView.vue';
 import InfoSliderView from '../views/InfoSliderView.vue';
 import ProductListView from '../views/ProductListView.vue';
+import ProductView from '../views/ProductView.vue';
 
 const routes = [
   {
@@ -83,6 +84,11 @@ const routes = [
     path: '/product-list',
     name: 'product-list',
     component: ProductListView,
+  },
+  {
+    path: '/Prod/:type/:id',
+    name: 'Product',
+    component: ProductView,
   },
   {
     path: '/about',

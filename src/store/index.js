@@ -47,15 +47,21 @@ export default createStore({
     GetProdListMeta: {},
     GetProdListResult: {},
 
+    GetProdMeta: {},
+    GetProdResult: {},
+
+    GetAssignedImgMeta: {},
+    GetAssignedImgResult: {},
+
     AdvCommentResult: {},
     AdvCommentMeta: {},
 
     HLinkListMeta: {},
     HLinkListResult: {},
 
-    AdvCntSmp: {},
+    AdvCntSmp: {}, // SmpCnt
 
-    AdvCmsCatResult: {},
+    AdvCmsCatResult: {}, // CmsCat
   },
   getters: {
   },
@@ -232,13 +238,60 @@ export default createStore({
         });
     },
     async WS_GetProdList({ state }, jsonParams) {
-      tikaUtils.clog(jsonParams);
+      console.log(jsonParams);
 
       await tikaUtils.callWS('GetProdList', state, jsonParams)
         .then((res) => {
           console.log(res);
+          if (res.flag < 0) {
+            state.$toast.open({
+              message: res.description,
+              type: 'error',
+            });
+            return;
+          }
           state.GetProdListMeta = res.meta;
           state.GetProdListResult = res.data;
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    async WS_GetProd({ state }, jsonParams) {
+      console.log(jsonParams);
+
+      await tikaUtils.callWS('GetProdList', state, jsonParams)
+        .then((res) => {
+          console.log(res);
+          if (res.flag < 0) {
+            state.$toast.open({
+              message: res.description,
+              type: 'error',
+            });
+            return;
+          }
+          state.GetProdMeta = res.meta;
+          state.GetProdResult = res.data;
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    async WS_GetAssignedImages({ state }, jsonParams) {
+      console.log(jsonParams);
+
+      await tikaUtils.callWS('GetAssignedImages', state, jsonParams)
+        .then((res) => {
+          console.log(res);
+          if (res.flag < 0) {
+            state.$toast.open({
+              message: res.description,
+              type: 'error',
+            });
+            // return;
+          }
+          state.GetAssignedImgMeta = res.meta;
+          state.GetAssignedImgResult = res.data;
         })
         .catch((error) => {
           console.log(error);

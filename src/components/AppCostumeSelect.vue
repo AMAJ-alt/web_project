@@ -1,11 +1,10 @@
 <template>
   <div>
-    <div data-bs-toggle="offcanvas" :data-bs-target="`#${id}`"
-      class="form-control" style="padding: 10px 16px">
+    <div data-bs-toggle="offcanvas" :data-bs-target="`#${id}`" class="form-control" style="padding: 10px 16px">
       {{ selectedText }}
     </div>
 
-    <vee-field :name="name" type="hidden" v-model="selectedOption" @input="emitValue"/>
+    <vee-field :name="name" type="hidden" v-model="selectedOption" @input="emitValue" />
     <ErrorMessage class="text-danger fs-6" :name="name" />
 
     <div class="offcanvas offcanvas-bottom action-sheet inset" tabindex="-1" :id="id">
@@ -15,7 +14,8 @@
       <div class="offcanvas-body">
         <ul class="action-button-list">
           <li v-for="(option, index) in options" :key="index">
-            <option data-bs-dismiss="offcanvas" :value="option.value" class="btn btn-list" @click="selectOption(option)">
+            <option data-bs-dismiss="offcanvas" :value="option.value" class="btn btn-list" @click="selectOption(option)"
+              :class="{ 'parent-node': !option.ParentId, 'child-node': option.ParentId }">
               <span>{{ option.label }}</span>
             </option>
           </li>
@@ -55,3 +55,13 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.parent-node {
+
+}
+
+.child-node {
+  margin-right: 30px;
+}
+</style>

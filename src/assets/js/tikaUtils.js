@@ -14,7 +14,11 @@ const tikaUtils = {
     return document.querySelectorAll(s);
   },
 
-  manualSerialize(obj) {
+  /**
+ * @obj آبجکت.
+ * @Guide این متد آبجکت دریافتی را تبدیل به ارایه و سپس به جیسون تبدیل میکند
+ */
+  serializeManually(obj) {
     try {
       const fdJsonArr = [];
       const keys = Object.keys(obj);
@@ -31,6 +35,24 @@ const tikaUtils = {
     }
   },
 
+  /**
+   * آروم بگیر امیرمحمد
+   * @obj آبجکت.
+   * @arr آرایه
+   * @Guide این متد آبجکت دریافتی را به آرایه دریافتی درج میکند و سپس به جیسون تبدیل میکند
+   */
+  serializeObj_Arr(obj, arr) {
+    const jsonParse = JSON.parse(arr);
+    jsonParse.push(obj);
+    const jsonString = JSON.stringify(jsonParse);
+
+    return jsonString;
+  },
+
+  /**
+ * @formId اطلاعات فرم
+ * @Guide  این متداطلاعات فرم دریافتی به ارایه تبدیل و سپس به جیسون تبدیل میکند
+ */
   serializeForm(formId) {
     const fd = new FormData(tikaUtils.gel(formId));
     const fdJsonArr = [];

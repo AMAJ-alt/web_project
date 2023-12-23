@@ -50,7 +50,7 @@ export default {
       const cmsTaskObj = {
         Type: vm.TypeValue,
       };
-      vm.$store.dispatch('Ws_GetCmsCatList', tikaUtils.serializeManually(cmsTaskObj));
+      vm.$store.dispatch('Ws_GetCmsCatList', tikaUtils.serializeObject(cmsTaskObj));
 
       vm.$store.dispatch('headerTitle', {
         center: 'دسته بندی',
@@ -64,7 +64,7 @@ export default {
       const cmsTaskObj = {
         Type: newVal,
       };
-      this.$store.dispatch('Ws_GetCmsCatList', tikaUtils.serializeManually(cmsTaskObj));
+      this.$store.dispatch('Ws_GetCmsCatList', tikaUtils.serializeObject(cmsTaskObj));
     },
   },
 };

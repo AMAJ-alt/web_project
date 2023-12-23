@@ -124,14 +124,14 @@ export default {
       const addObj = {
         Type: 'Products',
       };
-      await this.$store.dispatch('WS_GetProdList', tikaUtils.serializeObj_Arr(addObj, tikaUtils.serializeForm('AdvProductSearchForm')));
+      await this.$store.dispatch('WS_GetProdList', tikaUtils.serializeObjectToArray(addObj, tikaUtils.serializeForm('AdvProductSearchForm')));
     },
     async handleTypeInput() {
       const cmsTaskObj = {
         Type: 'Products',
       };
 
-      await this.$store.dispatch('Ws_GetCmsCatList', tikaUtils.serializeManually(cmsTaskObj));
+      await this.$store.dispatch('Ws_GetCmsCatList', tikaUtils.serializeObject(cmsTaskObj));
 
       setTimeout(() => {
         const catJsonArr = [];
@@ -142,7 +142,7 @@ export default {
           catJson.ParentId = x.ParentId;
           catJsonArr.push(catJson);
         });
-        this.catOp = catJsonArr;
+        // this.catOp = tikaUtils.jsonTree(catJsonArr);
       }, (2000));
     },
   },

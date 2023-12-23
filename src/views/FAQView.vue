@@ -76,12 +76,12 @@ export default {
           Param_SimpleMode: 'false',
           Param_ContentWithHTML: 'true',
         };
-        vm.$store.dispatch('WS_GetSmpCntList', tikaUtils.serializeManually(smpTaskObj));
+        vm.$store.dispatch('WS_GetSmpCntList', tikaUtils.serializeObject(smpTaskObj));
 
         const hLinkTaskObj = {
           Type: 'certificate',
         };
-        vm.$store.dispatch('WS_GetHLinkList', tikaUtils.serializeManually(hLinkTaskObj));
+        vm.$store.dispatch('WS_GetHLinkList', tikaUtils.serializeObject(hLinkTaskObj));
       } else {
         const data = JSON.parse(localStorage.getItem('smp'));
         vm.$store.dispatch('changeValue', {

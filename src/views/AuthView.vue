@@ -14,11 +14,18 @@ export default {
     AppLogin,
     AppRegister,
   },
+  data() {
+    return {
+      authTabQuery: null,
+    };
+  },
   computed: {
     ...mapState(['authTabLogin']),
   },
   beforeRouteEnter(to, from, next) {
     next((vm) => {
+      vm.$store.commit('toggleAuthTab');
+
       vm.$store.dispatch('headerTitle', {
         center: 'احراز هویت',
         left: 'فراموشی رمزعبور',
@@ -27,5 +34,19 @@ export default {
       });
     });
   },
+  // watch: {
+  //   authTabNewVal(newVal) {
+  //     if (newVal === this.$route.query.loginTab) {
+  //       console.log('sdf');
+  //       return;
+  //     }
+  //     console.log('sdfdsdssad');
+  //     this.$router.push({
+  //       query: {
+  //         loginTab: newVal,
+  //       },
+  //     });
+  //   },
+  // },
 };
 </script>

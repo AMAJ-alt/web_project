@@ -139,7 +139,7 @@ export default {
         Type: newValue,
       };
 
-      await this.$store.dispatch('Ws_GetCmsCatList', tikaUtils.serializeManually(cmsTaskObj));
+      await this.$store.dispatch('Ws_GetCmsCatList', tikaUtils.serializeObject(cmsTaskObj));
 
       setTimeout(() => {
         const catJsonArr = [];

@@ -78,32 +78,15 @@
           <!--item -->
           <div v-for="comment in AdvCommentResult" :key="comment.Id" class="item">
             <div class="avatar">
-              <img src="assets/img/sample/avatar/avatar1.jpg" alt="avatar" class="imaged w32 rounded">
+              <img src="../assets/guest_img.jpg" alt="avatar" class="imaged w32 rounded">
             </div>
             <div class="in">
               <div class="comment-header">
                 <h4 class="title">{{ comment.SenderStr }}</h4>
                 <span class="time">{{ comment.SendDateStr }}</span>
               </div>
-              <div class="rate-block mb-1 mt-05">
-                <ion-icon name="star" class="active"></ion-icon>
-                <ion-icon name="star" class="active"></ion-icon>
-                <ion-icon name="star" class="active"></ion-icon>
-                <ion-icon name="star" class="active"></ion-icon>
-                <ion-icon name="star"></ion-icon>
-              </div>
               <div class="text">
                 {{ comment.Content }}
-              </div>
-              <div class="comment-footer">
-                <a href="#" class="comment-button">
-                  <ion-icon name="happy-outline"></ion-icon>
-                  مفید بود (523)
-                </a>
-                <a href="#" class="comment-button">
-                  <ion-icon name="flag-outline"></ion-icon>
-                  گزارش
-                </a>
               </div>
             </div>
           </div>
@@ -111,7 +94,28 @@
         </div>
         <!-- * comment block -->
         <div class="divider mt-3 mb-2"></div>
-        <a href="#" class="btn btn-block btn-primary">افزودن بازخورد</a>
+
+        <div class="section mt-2">
+          <h3 class="mb-0">یک دیدگاه بنویسید</h3>
+          <div class="pt-2 pb-2">
+            <vee-form @submit="AddComment" :validation-schema="commentSchema">
+
+              <div class="form-group boxed">
+                <div class="input-wrapper">
+                  <label for="number" class="d-none"></label>
+                  <vee-field as="textarea" name="comment" rows="4" class="form-control" placeholder="دیدگاه"></vee-field>
+                  <ErrorMessage class="text-danger fs-6" name="comment" />
+                </div>
+              </div>
+
+              <div class="mt-1">
+                <button type="submit" class="btn btn-primary btn-lg btn-block">
+                  ارسال
+                </button>
+              </div>
+            </vee-form>
+          </div>
+        </div>
       </div>
     </div>
     <!-- * Review -->
@@ -133,6 +137,9 @@ export default {
     return {
       OrderNum: 1,
       product_FinalPrice: null,
+      commentSchema: {
+        comment: 'required',
+      },
     };
   },
   components: {
@@ -149,6 +156,23 @@ export default {
         this.product_FinalPrice = product.FinalPrice * this.OrderNum;
       }
     },
+    async AddComment(value) {
+      console.log(value);
+      const adCmmtaskObj = {
+        Type: this.$route.params.type,
+        RelId: this.$route.params.id,
+        Comment: value.comment,
+      };
+      await this.$store.dispatch('WS_AddComment', tikaUtils.serializeObject(adCmmtaskObj));
+
+      const cmmTaskObj = {
+        Type: this.$route.params.type,
+        RelId: this.$route.params.id,
+        CurrPage: '1',
+        MaxNo: '3',
+      };
+      await this.$store.dispatch('WS_GetCommensList', tikaUtils.serializeObject(cmmTaskObj));
+    },
   },
   beforeRouteEnter(to, from, next) {
     next(async (vm) => {
@@ -156,19 +180,19 @@ export default {
         Type: vm.$route.params.type,
         Id: vm.$route.params.id,
       };
-      await vm.$store.dispatch('WS_GetProd', tikaUtils.serializeManually(prodTaskObj));
+      await vm.$store.dispatch('WS_GetProd', tikaUtils.serializeObject(prodTaskObj));
 
       const prodImgTaskObj = {
         Type: vm.$route.params.type,
         RelId: vm.$route.params.id,
       };
-      await vm.$store.dispatch('WS_GetAssignedImages', tikaUtils.serializeManually(prodImgTaskObj));
+      await vm.$store.dispatch('WS_GetAssignedImages', tikaUtils.serializeObject(prodImgTaskObj));
 
       const cmmTaskObj = {
         Type: vm.$route.params.type,
         RelId: vm.$route.params.id,
       };
-      await vm.$store.dispatch('WS_GetCommensList', tikaUtils.serializeManually(cmmTaskObj));
+      await vm.$store.dispatch('WS_GetCommensList', tikaUtils.serializeObject(cmmTaskObj));
 
       vm.updateFinalPrice();
 

@@ -14,11 +14,17 @@ const tikaUtils = {
     return document.querySelectorAll(s);
   },
 
+  // jsonTree(jsonArray) {
+  //   let topParents = jsonArray.filter(x => x.ParentId === 0);
+  //   let child = jsonArray.filter(x => x.parent !== 0)
+  //   return ;
+  // },
+
   /**
  * @obj آبجکت.
  * @Guide این متد آبجکت دریافتی را تبدیل به ارایه و سپس به جیسون تبدیل میکند
  */
-  serializeManually(obj) {
+  serializeObject(obj) {
     try {
       const fdJsonArr = [];
       const keys = Object.keys(obj);
@@ -41,7 +47,7 @@ const tikaUtils = {
    * @arr آرایه
    * @Guide این متد آبجکت دریافتی را به آرایه دریافتی درج میکند و سپس به جیسون تبدیل میکند
    */
-  serializeObj_Arr(obj, arr) {
+  serializeObjectToArray(obj, arr) {
     const jsonParse = JSON.parse(arr);
     jsonParse.push(obj);
     const jsonString = JSON.stringify(jsonParse);

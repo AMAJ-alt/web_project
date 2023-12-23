@@ -99,25 +99,6 @@
       <h3 class="mb-0">یک دیدگاه بنویسید</h3>
       <div class="pt-2 pb-2">
         <vee-form @submit="AddComment" :validation-schema="commentSchema">
-          <!-- <div class="form-group boxed">
-            <div class="input-wrapper">
-              <label for="number" class="d-none"></label>
-              <input type="text" class="form-control" id="name5" placeholder="نام">
-              <i class="clear-input">
-                <ion-icon name="close-circle"></ion-icon>
-              </i>
-            </div>
-          </div>
-
-          <div class="form-group boxed">
-            <div class="input-wrapper">
-              <label for="number" class="d-none"></label>
-              <input type="email" class="form-control" id="email5" placeholder="ایمیل">
-              <i class="clear-input">
-                <ion-icon name="close-circle"></ion-icon>
-              </i>
-            </div>
-          </div> -->
 
           <div class="form-group boxed">
             <div class="input-wrapper">
@@ -166,7 +147,7 @@ export default {
         RelId: this.$route.params.id,
         Comment: value.comment,
       };
-      await this.$store.dispatch('WS_AddComment', tikaUtils.serializeManually(adCmmtaskObj));
+      await this.$store.dispatch('WS_AddComment', tikaUtils.serializeObject(adCmmtaskObj));
 
       const cmmTaskObj = {
         Type: this.$route.params.type,
@@ -174,7 +155,7 @@ export default {
         CurrPage: '1',
         MaxNo: '3',
       };
-      await this.$store.dispatch('WS_GetCommensList', tikaUtils.serializeManually(cmmTaskObj));
+      await this.$store.dispatch('WS_GetCommensList', tikaUtils.serializeObject(cmmTaskObj));
     },
     async callWS() {
       const cmmTaskObj = {
@@ -183,7 +164,7 @@ export default {
         CurrPage: this.pageVal,
         MaxNo: '3',
       };
-      await this.$store.dispatch('WS_GetCommensList', tikaUtils.serializeManually(cmmTaskObj));
+      await this.$store.dispatch('WS_GetCommensList', tikaUtils.serializeObject(cmmTaskObj));
     },
     async prevPage() {
       this.pageVal -= 1;
@@ -215,7 +196,7 @@ export default {
         Type: vm.$route.params.type,
         Id: vm.$route.params.id,
       };
-      await vm.$store.dispatch('WS_GetAdvCntList', tikaUtils.serializeManually(cntTaskObj));
+      await vm.$store.dispatch('WS_GetAdvCntList', tikaUtils.serializeObject(cntTaskObj));
 
       const cmmTaskObj = {
         Type: vm.$route.params.type,
@@ -223,7 +204,7 @@ export default {
         CurrPage: '1',
         MaxNo: '3',
       };
-      await vm.$store.dispatch('WS_GetCommensList', tikaUtils.serializeManually(cmmTaskObj));
+      await vm.$store.dispatch('WS_GetCommensList', tikaUtils.serializeObject(cmmTaskObj));
       // eslint-disable-next-line
       vm.pagination = Math.ceil(vm.AdvCommentMeta.total / vm.AdvCommentMeta.perpage);
 

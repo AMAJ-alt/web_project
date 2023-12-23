@@ -1,5 +1,6 @@
 <template>
-  <div id="appCapsule">
+  <FinalRegistrationApp v-if="verifySuccess"  />
+  <div v-else id="appCapsule">
     <div class="login-form">
       <div class="section">
         <h1>الان تایید کن</h1>
@@ -31,67 +32,53 @@
 </template>
 <script>
 import { mapState } from 'vuex';
+import FinalRegistrationApp from './FinalRegistrationApp.vue';
 import tikaUtils from '../assets/js/tikaUtils';
 
 export default {
-  name: 'VerifyView',
+  name: 'VerifyApp',
   data() {
     return {
       checkSignUpSchema: {
         Code: 'required',
       },
-      usename: this.$route.params.key,
+
+      verifySuccess: false,
     };
   },
+  components: {
+    FinalRegistrationApp,
+  },
+  props: ['usname', 'SignUpSuccess'],
   computed: {
-    ...mapState(['SignUpInfoResult', 'vis', 'countdown']),
+    ...mapState(['SignupCheckCodeFlag', 'vis', 'countdown']),
   },
   methods: {
     async checkSignUp(Value) {
       const checkCodeTaskObj = {
-        usname: this.$route.params.key,
+        usname: this.usname,
         code: Value.Code,
       };
+
       await this.$store.dispatch('WS_SignupCheckCode', tikaUtils.serializeObject(checkCodeTaskObj));
 
-      this.$router.push({ name: 'finalregister', params: { key: this.usename } });
+      if (this.SignupCheckCodeFlag >= 0 && navigator.onLine) {
+        this.verifySuccess = true;
+      }
     },
     async SignupResendCode() {
       const resendCodeTaskObj = {
-        usname: this.$route.params.key,
+        usname: this.usname,
       };
       await this.$store.dispatch('WS_SignupResendCode', tikaUtils.serializeObject(resendCodeTaskObj));
     },
-    timer() {
-      const resTime = this.SignUpInfoResult.RemainTime * 1000;
-      const self = this;
-      // const targetTime = new Date().getTime() + resTime; // زمان هدف به میلی‌ثانیه
-      const targetTime = new Date().getTime() + resTime; // زمان هدف به میلی‌ثانیه
-      // تنظیم یک تایمر با استفاده از setInterval
-      const timerInterval = setInterval(() => {
-        const currentTime = new Date().getTime();
-        const timeDifference = targetTime - currentTime;
-
-        if (timeDifference <= 0) {
-          // زمان به پایان رسیده است
-          clearInterval(timerInterval);
-          self.countdown = 'زمان به پایان رسید!';
-          self.endTimer();
-        } else {
-          // محاسبه دقیقه و ثانیه باقی‌مانده
-          const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
-          const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
-          self.countdown = `زمان باقی‌مانده: ${minutes} دقیقه و ${seconds} ثانیه`;
-        }
-      }, 1000); // هر ثانیه تابع فراخوانی می‌شود
-    },
-    endTimer() {
-      this.countdown = 'کد را دریافت نکردید؟';
-      this.vis = true;
-    },
   },
-  mounted() {
-    this.$store.commit('timer');
+  watch: {
+    SignUpSuccess(newVal) {
+      if (newVal) {
+        this.$store.commit('timer');
+      }
+    },
   },
 };
 </script>

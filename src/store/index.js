@@ -9,11 +9,15 @@ export default createStore({
 
     host: 'http://10.10.10.3/tika11/wservice.asmx',
 
+    utility: {
+      disableButton: false,
+    },
+
     leftTopicHeader: '',
     centerTopicHeader: '',
     LinkTopicHeader: '',
 
-    authTabLogin: true,
+    authTabLogin: false,
 
     userLoggedIn: false,
 
@@ -40,6 +44,9 @@ export default createStore({
 
     SignUpInfoResult: null,
     SignUpInfoFlag: null,
+
+    SignupCheckCodeResult: null,
+    SignupCheckCodeFlag: null,
 
     AdvCntResult: null,
     AdvCntMeta: null,
@@ -80,27 +87,32 @@ export default createStore({
       console.log('userLoggedIn value ? ', state.userLoggedIn);
     },
     timer(state) {
-      const resTime = state.SignUpInfoResult.RemainTime * 1000;
-      const targetTime = new Date().getTime() + resTime;
+      if (state.SignUpInfoResult) {
+        const resTime = state.SignUpInfoResult.RemainTime * 1000;
+        const targetTime = new Date().getTime() + resTime;
 
-      const timerInterval = setInterval(() => {
-        const currentTime = new Date().getTime();
-        const timeDifference = targetTime - currentTime;
+        const timerInterval = setInterval(() => {
+          const currentTime = new Date().getTime();
+          const timeDifference = targetTime - currentTime;
 
-        if (timeDifference <= 0) {
-          clearInterval(timerInterval);
-          state.countdown = 'زمان به پایان رسید!';
-          this.commit('endTimer');
-        } else {
-          const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
-          const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
-          state.countdown = `زمان باقی‌مانده: ${minutes} دقیقه و ${seconds} ثانیه`;
-        }
-      }, 1000);
+          if (timeDifference <= 0) {
+            clearInterval(timerInterval);
+            state.countdown = 'زمان به پایان رسید!';
+            this.commit('endTimer');
+          } else {
+            const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
+            state.countdown = `زمان باقی‌مانده: ${minutes} دقیقه و ${seconds} ثانیه`;
+          }
+        }, 1000);
+      }
     },
     endTimer(state) {
       state.countdown = 'کد را دریافت نکردید؟';
       state.vis = true;
+    },
+    updateProperty(state, newConfig) {
+      state.utility[newConfig.key] = newConfig.value;
     },
   },
   actions: {
@@ -159,10 +171,18 @@ export default createStore({
       await tikaUtils.callWS('SignupCheckCode', state, jsonParams)
         .then((res) => {
           console.log(res);
-          state.$toast.open({
-            message: res.description,
-            type: 'info',
-          });
+          if (res.flag < 0) {
+            state.SignupCheckCodeFlag = res.flag;
+            state.$toast.open({
+              message: res.description,
+              type: 'info',
+            });
+          } else {
+            state.$toast.open({
+              message: res.description,
+              type: 'success',
+            });
+          }
         })
         .catch((error) => {
           console.log(error);

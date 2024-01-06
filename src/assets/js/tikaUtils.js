@@ -87,7 +87,7 @@ const tikaUtils = {
 
       let headers = {};
       headers = state.headers;
-
+      console.log(filterSoapReq);
       axios
         .post(`${state.host}?op=${action}`, filterSoapReq, { headers })
         .then((res) => {

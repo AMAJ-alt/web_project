@@ -14,8 +14,7 @@
       <div class="offcanvas-body">
         <ul class="action-button-list">
           <li v-for="(option, index) in options" :key="index">
-            <option data-bs-dismiss="offcanvas" :value="option.value" class="btn btn-list" @click="selectOption(option)"
-              :class="{ 'parent-node': !option.ParentId, 'child-node': option.ParentId }">
+            <option data-bs-dismiss="offcanvas" :value="option.value" class="btn btn-list" @click="selectOption(option)">
               <span>{{ option.label }}</span>
             </option>
           </li>

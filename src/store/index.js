@@ -16,6 +16,7 @@ export default createStore({
     leftTopicHeader: '',
     centerTopicHeader: '',
     LinkTopicHeader: '',
+    rightTopicHeader: '',
 
     authTabLogin: false,
 
@@ -33,12 +34,16 @@ export default createStore({
       // eslint-disable-next-line
       'src': 'APP',
       // eslint-disable-next-line
-      'siteid': (localStorage.getItem('siteid') || '3'),
+      'siteid': (localStorage.getItem('siteid') || '1'),
       // eslint-disable-next-line
       'uid': localStorage.getItem('login_token'),
+      // 'uid': '7d37dfa724f64f94a99fe15620b6136d',
     },
     vis: true,
     countdown: 'در حال محاسبه...',
+
+    GetAppMenuListResult: null,
+    GetAppMenuListMeta: null,
 
     LoginInfoResult: null,
 
@@ -50,6 +55,15 @@ export default createStore({
 
     AdvCntResult: null,
     AdvCntMeta: null,
+
+    GetSupportTicketingListResult: null,
+    GetSupportTicketingListMeta: null,
+
+    GetSupportTicketingDetailsResult: null,
+    GetSupportTicketingDetailsMeta: null,
+
+    AddSupportTicketingResult: null,
+    AddSupportTicketingMeta: null,
 
     GetProdListMeta: {},
     GetProdListResult: {},
@@ -116,6 +130,26 @@ export default createStore({
     },
   },
   actions: {
+    async WS_GetAppMenuList({ state }, jsonParams) {
+      console.log(jsonParams);
+
+      await tikaUtils.callWS('GetAppMenuList', state, jsonParams)
+        .then((res) => {
+          console.log(res);
+          if (res.flag < 0) {
+            state.$toast.open({
+              message: res.description,
+              type: 'error',
+            });
+            return;
+          }
+          state.GetAppMenuListMeta = res.meta;
+          state.GetAppMenuListResult = res.data;
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
     async WS_Login({ commit, state, dispatch }, jsonParams) {
       console.log(jsonParams);
 
@@ -373,19 +407,62 @@ export default createStore({
           console.log(error);
         });
     },
+    async WS_GetSupportTicketingList({ state }, jsonParams) {
+      console.log(jsonParams);
+
+      await tikaUtils.callWS('GetSupportTicketingList', state, jsonParams)
+        .then((res) => {
+          console.log(res);
+          state.GetSupportTicketingListResult = res.data;
+          state.GetSupportTicketingListMeta = res.meta;
+          console.log(state.GetSupportTicketingListResult);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    async WS_GetSupportTicketingDetails({ state }, jsonParams) {
+      console.log(jsonParams);
+
+      await tikaUtils.callWS('GetSupportTicketingDetails', state, jsonParams)
+        .then((res) => {
+          console.log(res);
+          state.GetSupportTicketingDetailsResult = res.data;
+          state.GetSupportTicketingDetailsMeta = res.meta;
+          console.log(state.GetSupportTicketingDetailsResult);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+
+    async WS_AddSupportTicketing({ state }, jsonParams) {
+      console.log(jsonParams);
+
+      await tikaUtils.callWS('AddSupportTicketing', state, jsonParams)
+        .then((res) => {
+          console.log(res);
+          state.AddSupportTicketingResult = res.data;
+          state.AddSupportTicketingMeta = res.meta;
+          console.log(state.AddSupportTicketingResult);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
 
     headerTitle({ state }, payload) {
       state.centerTopicHeader = payload.center;
       state.leftTopicHeader = payload.left;
       state.LinkTopicHeader = payload.to;
+      state.rightTopicHeader = payload.right;
     },
     changeValue({ state }, payload) {
       state[payload.property] = payload.data;
     },
     setGUID({ state }, payload) {
       console.log(state);
-      const jsonString = JSON.stringify(payload);
-      localStorage.setItem('login_token', jsonString);
+      localStorage.setItem('login_token', payload);
     },
   },
 

@@ -21,13 +21,14 @@
           </div>
 
           <br>
-          <router-link :to="{ name: 'GetAdvCnt'}">GetAdvCnt</router-link><br>
-          <router-link :to="{ name: 'catagory'}">catagory</router-link><br>
-          <router-link :to="{ name: 'auth'}">auth</router-link><br>
-          <router-link :to="{ name: 'FAQ'}">FAQ</router-link><br>
-          <router-link :to="{ name: 'hchat'}">hchat</router-link><br>
-          <router-link :to="{ name: 'info-slide'}">info-slide</router-link><br>
-          <router-link :to="{ name: 'product-list'}">product-list</router-link><br>
+          <router-link :to="{ name: 'GetAdvCnt' }">GetAdvCnt</router-link><br>
+          <router-link :to="{ name: 'catagory' }">catagory</router-link><br>
+          <router-link :to="{ name: 'auth' }">auth</router-link><br>
+          <router-link :to="{ name: 'FAQ' }">FAQ</router-link><br>
+          <router-link :to="{ name: 'hchat' }">hchat</router-link><br>
+          <router-link :to="{ name: 'info-slide' }">info-slide</router-link><br>
+          <router-link :to="{ name: 'product-list' }">product-list</router-link><br>
+          <router-link :to="{ name: 'alltickets' }">alltickets</router-link><br>
 
           <div class="form-button-group">
             <button type="submit" class="btn btn-primary btn-block btn-lg">ورود</button>
@@ -40,14 +41,29 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
+
 export default {
   name: 'HomeView',
+  computed: {
+    ...mapState(['GetAppMenuListResult']),
+  },
   beforeRouteEnter(to, from, next) {
-    next((vm) => {
+    next(async (vm) => {
+      await vm.$store.dispatch('WS_GetAppMenuList', '[{}]');
+
+      const menuJsonArr = [];
+      vm.GetAppMenuListResult.forEach((x) => {
+        let menuJson = {};
+        menuJson = x;
+        menuJsonArr.push(menuJson);
+      });
+
       vm.$store.dispatch('headerTitle', {
         center: 'خانه',
         left: ' ثبت نام / ورود',
         to: 'auth',
+        right: menuJsonArr,
       }).then(() => {
       });
     });

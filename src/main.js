@@ -1,6 +1,7 @@
 import { createApp } from 'vue';
 import VueToast from 'vue-toast-notification';
 import 'vue-toast-notification/dist/theme-sugar.css';
+import VueLazyload from 'vue-lazyload';
 import AppCostumeSelect from './components/AppCostumeSelect.vue';
 import App from './App.vue';
 import router from './router';
@@ -14,10 +15,20 @@ import './assets/css/iransans.css';
 import './assets/css/style.css';
 import './registerServiceWorker';
 
+const loadimage = require('./assets/Loading.gif');
+const errorimage = require('./assets/error.gif');
+
 const vm = createApp(App);
 vm.component('AppSelect', AppCostumeSelect);
 vm.config.productionTip = false;
 vm.use(VueToast);
+vm.use(VueLazyload, {
+  preLoad: 1.5,
+  error: errorimage,
+  loading: loadimage,
+  attempt: 4,
+  listenEvents: ['scroll'],
+});
 vm.use(VeeValidatePlugin);
 vm.use(store);
 vm.use(router);

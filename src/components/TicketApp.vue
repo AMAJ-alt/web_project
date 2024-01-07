@@ -1,15 +1,12 @@
 <template>
   <div id="appCapsule">
 
-    <div class="message-divider">
-      جمعه، 20 مرداد 1401، 10:40 AM
-    </div>
-
-    <div class="message-item" :class="{ 'user': TicketDetails.IsSentByUser, }" v-for="TicketDetails in GetSupportTicketingDetailsResult" :key="TicketDetails.GUID">
+    <div class="message-item" :class="{ 'user': TicketDetails.IsSentByUser, }"
+      v-for="TicketDetails in GetSupportTicketingDetailsResult" :key="TicketDetails.GUID">
       <!-- <img src="assets/img/sample/avatar/avatar1.jpg" alt="avatar" class="avatar"> -->
       <div class="content">
         <div class="bubble">
-          {{ TicketDetails.Subject }}
+          {{ TicketDetails.ResponseText }}
         </div>
         <div class="footer">{{ TicketDetails.CreateDateStr }}</div>
       </div>
@@ -72,17 +69,17 @@
 
   <!-- chat footer -->
   <div class="chatFooter">
-    <vee-form @submit="sendTicketDetails" :validation-schema="ticketSchema">
+    <vee-form ref="sendTicketDetails" @submit="sendTicketDetails" :validation-schema="ticketSchema" id="sendTicketDetailsForm">
       <a href="#" class="btn btn-icon btn-secondary rounded" data-bs-toggle="offcanvas" data-bs-target="#actionSheetAdd">
         <ion-icon name="add">h</ion-icon>
       </a>
       <div class="form-group boxed">
         <div class="input-wrapper">
           <label class="d-none"></label>
-          <vee-field name="pm" type="text" class="form-control" placeholder="یک پیام بنویسید..."/>
+          <vee-field id="pm" name="pm" type="text" class="form-control" placeholder="یک پیام بنویسید..." />
         </div>
       </div>
-      <button type="button" class="btn btn-icon btn-primary rounded">
+      <button type="submit" class="btn btn-icon btn-primary rounded">
         <ion-icon name="send"> </ion-icon>
       </button>
     </vee-form>
@@ -94,35 +91,46 @@ import { mapState } from 'vuex';
 import tikaUtils from '../assets/js/tikaUtils';
 
 export default {
-  name: 'TicketView',
+  name: 'TicketApp',
   data() {
     return {
       ticketSchema: {
-        pm: '',
+        pm: 'required',
       },
     };
   },
+  props: ['Id'],
   computed: {
     ...mapState(['GetSupportTicketingDetailsResult']),
   },
   methods: {
-    sendTicketDetails() {
+    async sendTicketDetails(val) {
+      const ReplyTicketDetailTaskObj = {
+        Comment: val.pm,
+        Id: this.Id || this.$route.query.TicketId,
+      };
+      await this.$store.dispatch('WS_ReplySupportTicketing', tikaUtils.serializeObject(ReplyTicketDetailTaskObj));
 
+      document.getElementById('pm').value = '';
+
+      const getTicketDetailTaskObj = {
+        Id: this.Id || this.$route.query.TicketId,
+      };
+      await this.$store.dispatch('WS_GetSupportTicketingDetails', tikaUtils.serializeObject(getTicketDetailTaskObj));
     },
   },
-  beforeRouteEnter(to, from, next) {
-    next(async (vm) => {
-      const getTicketDetailTaskObj = {
-        Id: vm.$route.params.id,
-      };
-      await vm.$store.dispatch('WS_GetSupportTicketingDetails', tikaUtils.serializeObject(getTicketDetailTaskObj));
+  async mounted() {
+    const getTicketDetailTaskObj = {
+      Id: this.Id || this.$route.query.TicketId,
+    };
+    await this.$store.dispatch('WS_GetSupportTicketingDetails', tikaUtils.serializeObject(getTicketDetailTaskObj));
 
-      vm.$store.dispatch('headerTitle', {
-        center: 'چت',
-        left: '<ion-icon name="call-outline"></ion-icon><span class="badge badge-danger">1</span>',
-        to: 'forget',
-      }).then(() => {
-      });
+    this.$store.dispatch('headerTitle', {
+      center: 'چت',
+      left: '<ion-icon name="call-outline"></ion-icon><span class="badge badge-danger">1</span>',
+      to: 'forget',
+      right: 'goBack',
+    }).then(() => {
     });
   },
 };

@@ -142,7 +142,7 @@ export default {
           catJson.ParentId = x.ParentId;
           catJsonArr.push(catJson);
         });
-        // this.catOp = tikaUtils.jsonTree(catJsonArr);
+        this.catOp = catJsonArr;
       }, (2000));
     },
   },

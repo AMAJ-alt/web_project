@@ -1,7 +1,11 @@
 <template>
   <div class="appHeader bg-secondary">
     <div class="left">
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+      <button v-if="rightTopicHeader == 'goBack'" @click.prevent="goBack" class="headerButton btn btn-link">
+        <ion-icon name="chevron-back-outline" class="text-white"></ion-icon>
+      </button>
+
+      <button v-else class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
         aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <ion-icon name="menu-outline" class="text-white navbar-toggler-icon"></ion-icon>
       </button>
@@ -12,16 +16,13 @@
           </li>
         </ul>
       </div>
-        <!-- <button @click.prevent="goBack" class="headerButton btn btn-link">
-        <ion-icon name="chevron-back-outline" class="text-white"></ion-icon>
-      </button> -->
-      </div>
-      <div class="pageTitle">{{ centerTopicHeader }}</div>
-      <div class="right">
-        <router-link :to="{ name: LinkTopicHeader }" class="headerButton text-white" v-html="leftTopicHeader">
-        </router-link>
-      </div>
     </div>
+    <div class="pageTitle">{{ centerTopicHeader }}</div>
+    <div class="right">
+      <router-link :to="{ name: LinkTopicHeader }" class="headerButton text-white" v-html="leftTopicHeader">
+      </router-link>
+    </div>
+  </div>
 </template>
 <script>
 import { mapState } from 'vuex';
@@ -40,13 +41,14 @@ export default {
 </script>
 
 <style scoped>
-  #navbarNav {
-    position: relative;
-    top: 293px;
-    right: -75px;
-    background-color: #6C7C94;
-  }
-  .navbar-nav li {
-    width: 300px;
-  }
+#navbarNav {
+  position: relative;
+  top: 293px;
+  right: -75px;
+  background-color: #6C7C94;
+}
+
+.navbar-nav li {
+  width: 300px;
+}
 </style>

@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory } from 'vue-router';
+import { createRouter, createWebHashHistory } from 'vue-router';
 import HomeView from '../views/HomeView.vue';
 import AuthView from '../views/AuthView.vue';
 import FinalRegistrationView from '../views/FinalRegistrationView.vue';
@@ -14,7 +14,7 @@ import InfoSliderView from '../views/InfoSliderView.vue';
 import ProductListView from '../views/ProductListView.vue';
 import ProductView from '../views/ProductView.vue';
 import TicketAllView from '../views/TicketAllView.vue';
-import TicketView from '../views/TicketView.vue';
+// import TicketView from '../views/TicketView.vue';
 
 const routes = [
   {
@@ -97,11 +97,11 @@ const routes = [
     name: 'alltickets',
     component: TicketAllView,
   },
-  {
-    path: '/tickets/:id',
-    name: 'ticket',
-    component: TicketView,
-  },
+  // {
+  //   path: '/tickets/:id',
+  //   name: 'ticket',
+  //   component: TicketView,
+  // },
   {
     path: '/about',
     name: 'about',
@@ -113,7 +113,7 @@ const routes = [
 ];
 
 const router = createRouter({
-  history: createWebHistory(process.env.BASE_URL),
+  history: createWebHashHistory(),
   mode: 'history',
   routes,
 });

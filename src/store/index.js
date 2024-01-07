@@ -1,5 +1,5 @@
 import { createStore } from 'vuex';
-import router from '@/router';
+// import router from '@/router';
 import { useToast } from 'vue-toast-notification';
 import tikaUtils from '@/assets/js/tikaUtils';
 
@@ -18,7 +18,7 @@ export default createStore({
     LinkTopicHeader: '',
     rightTopicHeader: '',
 
-    authTabLogin: false,
+    authTabLogin: true,
 
     userLoggedIn: false,
 
@@ -65,6 +65,9 @@ export default createStore({
     AddSupportTicketingResult: null,
     AddSupportTicketingMeta: null,
 
+    ReplySupportTicketingResult: null,
+    ReplySupportTicketingMeta: null,
+
     GetProdListMeta: {},
     GetProdListResult: {},
 
@@ -89,11 +92,7 @@ export default createStore({
   mutations: {
     toggleAuthTab(state) {
       state.authTabLogin = !state.authTabLogin;
-      router.push({
-        query: {
-          loginTab: state.authTabLogin,
-        },
-      });
+
       console.log('authTab value ? ', state.userLoggedIn);
     },
     toggleAuth(state) {
@@ -445,6 +444,21 @@ export default createStore({
           state.AddSupportTicketingResult = res.data;
           state.AddSupportTicketingMeta = res.meta;
           console.log(state.AddSupportTicketingResult);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+
+    async WS_ReplySupportTicketing({ state }, jsonParams) {
+      console.log(jsonParams);
+
+      await tikaUtils.callWS('ReplySupportTicketing', state, jsonParams)
+        .then((res) => {
+          console.log(res);
+          state.ReplySupportTicketingResult = res.data;
+          state.ReplySupportTicketingMeta = res.meta;
+          console.log(state.ReplySupportTicketingResult);
         })
         .catch((error) => {
           console.log(error);

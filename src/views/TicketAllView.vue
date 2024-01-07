@@ -1,14 +1,14 @@
 <template>
-  <div class="container mt-5">
+  <TicketApp v-if="selectedTicketId !== undefined" :Id="selectedTicketId" />
+
+  <div v-else class="container mt-5">
     <h1 class="mb-4">تیکت ها</h1>
     <ul class="list-group">
-      <!-- استفاده از v-for برای ایجاد لوپ بر روی تمام ticket ها -->
-      <li v-for="ticket in GetSupportTicketingListResult" :key="ticket.Id" class="list-group-item">
-        <router-link :to="{ name: 'ticket', params: { id: ticket.Id } }">
-          <h3 class="mb-3">{{ ticket.Subject }}</h3>
-          <p><strong>شناسه:</strong> {{ ticket.Id }}</p>
-          <p><strong>توضیحات:</strong> {{ ticket.CustomerText }}</p>
-        </router-link>
+      <li v-for="ticket in GetSupportTicketingListResult" :key="ticket.Id" class="list-group-item"
+        @click.prevent="getTicketDetails(ticket.Id)" @keydown.prevent="getTicketDetails(ticket.Id)">
+        <h3 class="mb-3">{{ ticket.Subject }}</h3>
+        <p><strong>شناسه:</strong> {{ ticket.Id }}</p>
+        <p><strong>توضیحات:</strong> {{ ticket.CustomerText }}</p>
       </li>
     </ul>
     <div class="fab-button text bottom-center">
@@ -60,6 +60,7 @@
 </template>
 
 <script>
+import TicketApp from '@/components/TicketApp.vue';
 import { mapState } from 'vuex';
 import tikaUtils from '../assets/js/tikaUtils';
 
@@ -74,9 +75,21 @@ export default {
       },
 
       catOp: [],
+
+      selectedTicketId: undefined,
+
+      savedIdUrl: null,
     };
   },
+  components: {
+    TicketApp,
+  },
   methods: {
+    getTicketDetails(Id) {
+      this.selectedTicketId = Id;
+      this.savedIdUrl = Id;
+      console.log('aaa');
+    },
     async getCatagory() {
       const cmsTaskObj = {
         Type: 'SupportTicketing',
@@ -115,11 +128,37 @@ export default {
       await vm.$store.dispatch('WS_GetSupportTicketingList', tikaUtils.serializeObject(getTicketTaskObj));
 
       await vm.$store.dispatch('headerTitle', {
-        center: 'بلاگ',
+        center: 'تیکت ها',
         left: '<ion-icon name="share-outline"></ion-icon>',
+        to: 'auth',
+        right: 'goBack',
       }).then(() => {
       });
+
+      const { TicketId } = vm.$route.query;
+      // eslint-disable-next-line
+      vm.savedIdUrl = TicketId;
     });
+  },
+  beforeRouteUpdate(to, from, next) {
+    if (!(to.query && to.query.TicketId)) {
+      this.selectedTicketId = undefined;
+    }
+    next();
+  },
+  watch: {
+    savedIdUrl(newVal) {
+      if (newVal === this.$route.query.TicketId) {
+        this.selectedTicketId = newVal;
+        return;
+      }
+
+      this.$router.push({
+        query: {
+          TicketId: newVal,
+        },
+      });
+    },
   },
 };
 </script>

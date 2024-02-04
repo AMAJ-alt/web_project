@@ -1,6 +1,5 @@
 <template>
-  <div id="appCapsule">
-    <div class="login-form mt-5 pe-2 ps-2">
+    <div class="login-form pe-2 ps-2">
       <div class="section">
         <img src="../assets/avatar1.jpg" alt="avatar" class="imaged rounded w86">
       </div>
@@ -28,6 +27,7 @@
           <router-link :to="{ name: 'hchat' }">hchat</router-link><br>
           <router-link :to="{ name: 'info-slide' }">info-slide</router-link><br>
           <router-link :to="{ name: 'product-list' }">product-list</router-link><br>
+          <router-link :to="{ name: 'Basket' }">Basket</router-link><br>
           <router-link :to="{ name: 'alltickets' }">alltickets</router-link><br>
 
           <div class="form-button-group">
@@ -37,7 +37,6 @@
         </form>
       </div>
     </div>
-  </div>
 </template>
 
 <script>

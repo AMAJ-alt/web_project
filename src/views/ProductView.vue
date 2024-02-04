@@ -1,5 +1,6 @@
 <template>
   <div id="appCapsule">
+
     <div class="row">
       <div class="col-6">
         <swiper :style="{
@@ -18,7 +19,8 @@
           </swiper-slide>
         </swiper>
       </div>
-      <div class="col-6">
+      <div class="col-6" v-html="GetProductAttribsResult"  v-on:change="refreshPrice"></div>
+      <!-- <div class="col-6">
         <div class="section full" v-for="Product in GetProdResult" :key="Product.Id">
           <div class="wide-block pt-2 pb-2 product-detail-header">
             <div class="rate-block mb-1">
@@ -33,15 +35,14 @@
             <div class="text">{{ Product.CategoryName }}</div>
             <div class="text">کد کالا:{{ Product.Code }}</div>
             <div class="detail-footer">
-              <!-- price -->
+
               <div class="price">
                 <div class="old-price">{{ Product.Price }} تومان</div>
                 <div class="badge bg-primary text-wrap">{{ Product.FinalPrice }} تومان</div>
                 <br><br>
                 <div class="current-price">قابل پرداخت: {{ product_FinalPrice }} تومان</div>
               </div>
-              <!-- * price -->
-              <!-- amount -->
+
               <div class="amount">
                 <div class="stepper stepper-secondary">
                   <button :disabled="OrderNum == 1" @click.prevent="OrderNum -= 1"
@@ -51,7 +52,7 @@
                   <button @click.prevent="OrderNum += 1" class="stepper-button stepper-up">+</button>
                 </div>
               </div>
-              <!-- * amount -->
+
             </div>
             <button class="btn btn-primary btn-lg btn-block">
               <ion-icon name="cart-outline"></ion-icon>
@@ -64,7 +65,7 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
     </div>
 
     <!-- carousel full -->
@@ -147,9 +148,16 @@ export default {
     SwiperSlide,
   },
   computed: {
-    ...mapState(['GetProdResult', 'AdvCommentResult', 'AdvCommentMeta', 'GetProdMeta', 'GetAssignedImgResult']),
+    ...mapState(['GetProdResult', 'GetProductAttribsResult', 'AdvCommentResult', 'AdvCommentMeta', 'GetProdMeta', 'GetAssignedImgResult']),
   },
   methods: {
+    async refreshPrice() {
+      const prodAttTaskObj = {
+        ColName: 'ProdId',
+        Value: this.$route.params.id,
+      };
+      await this.$store.dispatch('WS_GetProductAttribs', tikaUtils.serializeObjectToArray(prodAttTaskObj, tikaUtils.serializeForm('ProdSetting')));
+    },
     updateFinalPrice() {
       if (this.GetProdResult.length > 0) {
         const product = this.GetProdResult[0]; // اینجا فرض شده که تنها یک محصول وجود دارد
@@ -181,6 +189,11 @@ export default {
         Id: vm.$route.params.id,
       };
       await vm.$store.dispatch('WS_GetProd', tikaUtils.serializeObject(prodTaskObj));
+
+      const prodAttTaskObj = {
+        ProdId: vm.$route.params.id,
+      };
+      await vm.$store.dispatch('WS_GetProductAttribs', tikaUtils.serializeObject(prodAttTaskObj));
 
       const prodImgTaskObj = {
         Type: vm.$route.params.type,
@@ -295,5 +308,4 @@ export default {
   width: 70%;
   height: 230%;
   object-fit: cover;
-}
-</style>
+}</style>

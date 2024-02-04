@@ -74,6 +74,9 @@ export default createStore({
     GetProdMeta: {},
     GetProdResult: {},
 
+    GetProductAttribsMeta: null,
+    GetProductAttribsResult: null,
+
     GetAssignedImgMeta: {},
     GetAssignedImgResult: {},
 
@@ -84,6 +87,9 @@ export default createStore({
     HLinkListResult: {},
 
     AdvCntSmp: {}, // SmpCnt
+
+    AddFAQResult: null,
+    AddFAQMeta: null,
 
     AdvCmsCatResult: {}, // CmsCat
   },
@@ -330,6 +336,50 @@ export default createStore({
           console.log(error);
         });
     },
+    async WS_GetProductAttribs({ state }, jsonParams) {
+      console.log(jsonParams);
+
+      await tikaUtils.callWS('GetProductAttribs', state, jsonParams)
+        .then((res) => {
+          console.log(res);
+          if (res.flag < 0) {
+            state.$toast.open({
+              message: res.description,
+              type: 'error',
+            });
+            return;
+          }
+          state.GetProductAttribsMeta = res.meta;
+          state.GetProductAttribsResult = res.data;
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    async WS_AddAddress({ state }, jsonParams) {
+      console.log(jsonParams);
+
+      await tikaUtils.callWS('AddAddress', state, jsonParams)
+        .then((res) => {
+          console.log(res);
+          // console.log(state.AddFAQResult);
+          if (res.flag < 0) {
+            state.$toast.open({
+              message: res.description,
+              type: 'error',
+            });
+          } else {
+            state.$toast.open({
+              message: res.message,
+              type: 'info',
+            });
+            // state.AddFAQResult = res.data;
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
     async WS_GetAssignedImages({ state }, jsonParams) {
       console.log(jsonParams);
 
@@ -396,6 +446,30 @@ export default createStore({
           console.log(error);
         });
     },
+    async WS_AddFAQ({ state }, jsonParams) {
+      console.log(jsonParams);
+
+      await tikaUtils.callWS('AddFAQ', state, jsonParams)
+        .then((res) => {
+          console.log(res);
+          console.log(state.AddFAQResult);
+          if (res.flag < 0) {
+            state.$toast.open({
+              message: res.description,
+              type: 'error',
+            });
+          } else {
+            state.$toast.open({
+              message: res.message,
+              type: 'info',
+            });
+            state.AddFAQResult = res.data;
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
     async Ws_GetCmsCatList({ state }, jsonParams) {
       tikaUtils.callWS('GetCmsCatList', state, jsonParams)
         .then((res) => {
@@ -434,7 +508,6 @@ export default createStore({
           console.log(error);
         });
     },
-
     async WS_AddSupportTicketing({ state }, jsonParams) {
       console.log(jsonParams);
 
@@ -449,7 +522,6 @@ export default createStore({
           console.log(error);
         });
     },
-
     async WS_ReplySupportTicketing({ state }, jsonParams) {
       console.log(jsonParams);
 

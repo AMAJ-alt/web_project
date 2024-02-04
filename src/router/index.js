@@ -13,6 +13,7 @@ import HChatView from '../views/HChatView.vue';
 import InfoSliderView from '../views/InfoSliderView.vue';
 import ProductListView from '../views/ProductListView.vue';
 import ProductView from '../views/ProductView.vue';
+import BasketView from '../views/BasketView.vue';
 import TicketAllView from '../views/TicketAllView.vue';
 // import TicketView from '../views/TicketView.vue';
 
@@ -91,6 +92,11 @@ const routes = [
     path: '/Prod/:type/:id',
     name: 'Product',
     component: ProductView,
+  },
+  {
+    path: '/Basket',
+    name: 'Basket',
+    component: BasketView,
   },
   {
     path: '/all-tickets',

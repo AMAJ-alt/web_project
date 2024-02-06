@@ -13,7 +13,6 @@ const tikaUtils = {
   selAll(s) {
     return document.querySelectorAll(s);
   },
-
   // jsonTree(jsonArray) {
   //   let topParents = jsonArray.filter(x => x.ParentId === 0);
   //   let child = jsonArray.filter(x => x.parent !== 0)

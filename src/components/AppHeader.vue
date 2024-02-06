@@ -1,5 +1,5 @@
 <template>
-  <div class="appHeader bg-secondary">
+  <div class="appHeader bg-primary scrolled is-active" :class="{ 'is-active': scroll > 20 }">
     <div class="left">
       <button v-if="rightTopicHeader == 'goBack'" @click.prevent="goBack" class="headerButton btn btn-link">
         <ion-icon name="chevron-back-outline" class="text-white"></ion-icon>
@@ -29,6 +29,11 @@ import { mapState } from 'vuex';
 
 export default {
   name: 'AppHeader',
+  data() {
+    return {
+      scroll: window.scrollY,
+    };
+  },
   computed: {
     ...mapState(['leftTopicHeader', 'centerTopicHeader', 'LinkTopicHeader', 'rightTopicHeader']),
   },
@@ -41,7 +46,7 @@ export default {
 </script>
 
 <style scoped>
-#navbarNav {
+/* #navbarNav {
   position: relative;
   top: 293px;
   right: -75px;
@@ -50,5 +55,5 @@ export default {
 
 .navbar-nav li {
   width: 300px;
-}
+} */
 </style>

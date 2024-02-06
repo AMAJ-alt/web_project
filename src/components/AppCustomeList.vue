@@ -2,7 +2,7 @@
   <li :class="item.StatusColor">
     <router-link :to="{ name: 'AdvCnt', params: { type: 'Articles', id: item.Id } }" class="item">
       <div class="imageWrapper">
-        <img v-lazy="item.src" :src="item.ImageUrl" alt="image" class="imaged w100">
+        <img v-lazy="item.ImageUrl" :src="item.ImageUrl" alt="image" class="imaged w100">
       </div>
       <div class="in">
         <div>

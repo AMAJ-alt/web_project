@@ -1,11 +1,6 @@
 <template>
+  <div id="appCapsule">
     <div class="login-form pe-2 ps-2">
-      <div class="section">
-        <img src="../assets/avatar1.jpg" alt="avatar" class="imaged rounded w86">
-      </div>
-      <div class="section mt-3">
-        <h2>جولیان گرابر</h2>
-      </div>
       <div class="section mt-3 mb-5">
         <form action="app-pages.html">
 
@@ -30,39 +25,37 @@
           <router-link :to="{ name: 'Basket' }">Basket</router-link><br>
           <router-link :to="{ name: 'alltickets' }">alltickets</router-link><br>
 
-          <div class="form-button-group">
-            <button type="submit" class="btn btn-primary btn-block btn-lg">ورود</button>
-          </div>
-
         </form>
       </div>
     </div>
+  </div>
 </template>
 
 <script>
-import { mapState } from 'vuex';
-
 export default {
   name: 'HomeView',
-  computed: {
-    ...mapState(['GetAppMenuListResult']),
-  },
+  // computed: {
+  //   ...mapState(['GetAppMenuListResult']),
+  // },
   beforeRouteEnter(to, from, next) {
     next(async (vm) => {
-      await vm.$store.dispatch('WS_GetAppMenuList', '[{}]');
+      // await vm.$store.dispatch('WS_GetAppMenuList', '[{}]');
 
-      const menuJsonArr = [];
-      vm.GetAppMenuListResult.forEach((x) => {
-        let menuJson = {};
-        menuJson = x;
-        menuJsonArr.push(menuJson);
-      });
+      // const menuJsonArr = [];
+      // vm.GetAppMenuListResult.forEach((x) => {
+      //   let menuJson = {};
+      //   menuJson = x;
+      //   menuJsonArr.push(menuJson);
+      // });
 
       vm.$store.dispatch('headerTitle', {
         center: 'خانه',
         left: ' ثبت نام / ورود',
         to: 'auth',
-        right: menuJsonArr,
+      }).then(() => {
+      });
+      await vm.$store.dispatch('bottomMenu', {
+        vis: true,
       }).then(() => {
       });
     });

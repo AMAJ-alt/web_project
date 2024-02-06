@@ -3,21 +3,30 @@
   <AppHeader />
 
   <!-- Adding br for position fixed -->
-  <AppMargin />
+  <!-- <AppMargin /> -->
 
   <!-- router -->
   <RouterView />
+
+  <AppSideBar />
+
+  <AppBottom />
 </template>
 
 <script>
 import AppHeader from './components/AppHeader.vue';
-import AppMargin from './components/AppMargin.vue';
+import AppSideBar from './components/AppSideBar.vue';
+// import AppMargin from './components/AppMargin.vue';
+import AppBottom from './components/AppBottom.vue';
 
 export default {
   components: {
     AppHeader,
-    AppMargin,
+    // AppMargin,
+    AppSideBar,
+    AppBottom,
   },
+
   mounted() {
     window.addEventListener('online', this.handleNetworkChange);
     window.addEventListener('offline', this.handleNetworkChange);

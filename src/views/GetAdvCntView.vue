@@ -15,6 +15,7 @@ export default {
       vm.$store.dispatch('headerTitle', {
         center: 'مطالب',
         left: '<ion-icon name="file-tray-stacked-outline"></ion-icon>',
+        right: 'goBack',
       }).then(() => {
       });
     });

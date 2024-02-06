@@ -13,10 +13,16 @@ export default createStore({
       disableButton: false,
     },
 
+    // header
     leftTopicHeader: '',
     centerTopicHeader: '',
     LinkTopicHeader: '',
     rightTopicHeader: '',
+    // header
+
+    // bottom menu
+    visableity: '',
+    // bottom menu
 
     authTabLogin: true,
 
@@ -73,6 +79,10 @@ export default createStore({
 
     GetProdMeta: {},
     GetProdResult: {},
+
+    GetProvincesResult: null,
+
+    GetProvinceCitiesResult: null,
 
     GetProductAttribsMeta: null,
     GetProductAttribsResult: null,
@@ -175,7 +185,7 @@ export default createStore({
             state.LoginInfoResult = res.data;
             commit('toggleAuth');
             dispatch('setGUID', state.LoginInfoResult.GUID);
-            window.location.reload();
+            // window.location.reload();
           }
         })
         .catch((error) => {
@@ -351,6 +361,65 @@ export default createStore({
           }
           state.GetProductAttribsMeta = res.meta;
           state.GetProductAttribsResult = res.data;
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    async WS_AddToBasket({ state }, jsonParams) {
+      console.log(jsonParams);
+
+      await tikaUtils.callWS('AddToBasket', state, jsonParams)
+        .then((res) => {
+          console.log(res);
+          if (res.flag < 0) {
+            state.$toast.open({
+              message: res.description,
+              type: 'error',
+            });
+            return;
+          }
+          console.log('ds');
+          // state.GetProductAttribsMeta = res.meta;
+          // state.GetProductAttribsResult = res.data;
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    async WS_GetProvinces({ state }, jsonParams) {
+      console.log(jsonParams);
+
+      await tikaUtils.callWS('GetProvinces', state, jsonParams)
+        .then((res) => {
+          console.log(res);
+          if (res.flag < 0) {
+            state.$toast.open({
+              message: res.description,
+              type: 'error',
+            });
+            return;
+          }
+          state.GetProvincesResult = res.data;
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    async WS_GetProvinceCities({ state }, jsonParams) {
+      console.log(jsonParams);
+
+      await tikaUtils.callWS('GetProvinceCities', state, jsonParams)
+        .then((res) => {
+          console.log(res);
+          if (res.flag < 0) {
+            state.$toast.open({
+              message: res.description,
+              type: 'error',
+            });
+            return;
+          }
+          state.GetProvinceCitiesResult = res.data;
         })
         .catch((error) => {
           console.log(error);
@@ -542,6 +611,12 @@ export default createStore({
       state.leftTopicHeader = payload.left;
       state.LinkTopicHeader = payload.to;
       state.rightTopicHeader = payload.right;
+    },
+    bottomMenu({ state }, payload) {
+      state.visableity = payload.vis;
+      // state.leftTopicHeader = payload.left;
+      // state.LinkTopicHeader = payload.to;
+      // state.rightTopicHeader = payload.right;
     },
     changeValue({ state }, payload) {
       state[payload.property] = payload.data;

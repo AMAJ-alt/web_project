@@ -3382,11 +3382,11 @@ a.badge-dark {
 }
 
 .dialogbox .modal-dialog .form-group {
-  text-align: left;
+  text-align: right;
 }
 
 .dialogbox .modal-dialog .modal-content {
-  max-width: 300px;
+  max-width: 400px;
   margin: auto;
   max-height: 560px;
   overflow: auto;

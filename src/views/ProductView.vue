@@ -152,11 +152,10 @@ export default {
   },
   methods: {
     async refreshPrice() {
-      const prodAttTaskObj = {
-        ColName: 'ProdId',
-        Value: this.$route.params.id,
-      };
-      await this.$store.dispatch('WS_GetProductAttribs', tikaUtils.serializeObjectToArray(prodAttTaskObj, tikaUtils.serializeForm('ProdSetting')));
+      await this.$store.dispatch('WS_GetProductAttribs', tikaUtils.serializeForm('ProdSetting'));
+    },
+    async addToBasket() {
+      await this.$store.dispatch('WS_AddToBasket', tikaUtils.serializeForm('ProdSetting'));
     },
     updateFinalPrice() {
       if (this.GetProdResult.length > 0) {
@@ -194,6 +193,9 @@ export default {
         ProdId: vm.$route.params.id,
       };
       await vm.$store.dispatch('WS_GetProductAttribs', tikaUtils.serializeObject(prodAttTaskObj));
+
+      // window.refreshPrice = vm.refreshPrice;
+      window.addToBasket = vm.addToBasket;
 
       const prodImgTaskObj = {
         Type: vm.$route.params.type,

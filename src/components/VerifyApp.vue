@@ -49,7 +49,7 @@ export default {
   components: {
     FinalRegistrationApp,
   },
-  props: ['usname', 'SignUpSuccess'],
+  props: ['usname', 'SignUpSuccess', 'pwd'],
   computed: {
     ...mapState(['SignupCheckCodeFlag', 'vis', 'countdown']),
   },
@@ -61,6 +61,12 @@ export default {
       };
 
       await this.$store.dispatch('WS_SignupCheckCode', tikaUtils.serializeObject(checkCodeTaskObj));
+
+      const loginTaskObj = {
+        usname: this.usname,
+        pwd: this.pwd,
+      };
+      await this.$store.dispatch('WS_Login', tikaUtils.serializeObject(loginTaskObj));
 
       if (this.SignupCheckCodeFlag >= 0 && navigator.onLine) {
         this.verifySuccess = true;

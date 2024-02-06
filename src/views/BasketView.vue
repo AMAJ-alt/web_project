@@ -1,6 +1,5 @@
 <template>
-  <div>
-
+  <div id="appCapsule">
     <div class="section mt-2">
       <div class="card cart-item mb-2">
         <div class="card-body">
@@ -26,7 +25,7 @@
       </div>
 
       <div class="wide-block pt-2 pb-2">
-        <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#DialogForm">افزودن
+        <button type="button" class="btn bg-primary" data-bs-toggle="modal" data-bs-target="#DialogForm">افزودن
           آدرس</button>
       </div>
       <div class="modal fade dialogbox" id="DialogForm" data-bs-backdrop="static" tabindex="-1" role="dialog">
@@ -40,26 +39,62 @@
                 <div class="form-group basic">
                   <div class="input-wrapper">
                     <label class="form-label" for="fld_Address">آدرس *</label>
-                    <vee-field type="text" class="form-control" id="fld_Address" name="fld_Address"/>
+                    <vee-field type="text" class="form-control" id="fld_Address" name="fld_Address" />
                     <ErrorMessage class="text-danger fs-6" name="fld_Address" />
                   </div>
                 </div>
 
-                <div class="form-group basic">
-                  <div class="input-wrapper">
-                    <label class="form-label" for="Tel">تلفن</label>
-                    <vee-field type="text" class="form-control" id="fld_Tel" autocomplete="off" name="fld_Tel"/>
-                    <ErrorMessage class="text-danger fs-6" name="fld_Tel" />
+                <div class="row">
+                  <div class="col-6">
+                    <div class="form-group basic">
+                      <div class="input-wrapper">
+                        <label class="form-label" for="Tel">تلفن</label>
+                        <vee-field type="text" class="form-control" id="fld_Tel" autocomplete="off" name="fld_Tel" />
+                        <ErrorMessage class="text-danger fs-6" name="fld_Tel" />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-6">
+                    <div class="form-group basic">
+                      <div class="input-wrapper">
+                        <label class="form-label" for="fld_PostalCode">کد پستی</label>
+                        <vee-field type="text" class="form-control" id="fld_PostalCode" autocomplete="off"
+                          name="fld_PostalCode" />
+                        <ErrorMessage class="text-danger fs-6" name="fld_PostalCode" />
+                      </div>
+                    </div>
                   </div>
                 </div>
 
-                <div class="form-group basic">
-                  <div class="input-wrapper">
-                    <label class="form-label" for="fld_PostalCode">کد پستی</label>
-                    <vee-field type="text" class="form-control" id="fld_PostalCode" autocomplete="off" name="fld_PostalCode"/>
-                    <ErrorMessage class="text-danger fs-6" name="fld_PostalCode" />
+                <div class="row">
+                  <div class="col-6">
+                    <div class="form-group basic">
+                      <div class="input-wrapper not-empty">
+                        <label class="form-label" for="fld_ProvinceId">استان</label>
+                        <vee-field v-model="getProvVal" @change="handleInput" as="select" class="form-control form-select" name="fld_ProvinceId"
+                          id="fld_ProvinceId">
+                          <option v-for="provItem in GetProvincesResult" :key="provItem.Id" :value="provItem.Id">{{
+                            provItem.Title }}</option>
+                        </vee-field>
+                        <ErrorMessage class="text-danger fs-6" name="fld_ProvinceId" />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-6">
+                    <div class="form-group basic">
+                      <div class="input-wrapper not-empty">
+                        <label class="form-label" for="fld_CityId">شهر</label>
+                        <vee-field as="select" :disabled="!getProvVal" class="form-control form-select" name="fld_CityId"
+                          id="fld_CityId">
+                          <option v-for="provCityItem in GetProvinceCitiesResult" :key="provCityItem.Id" :value="provCityItem.Id">{{
+                            provCityItem.Title }}</option>
+                        </vee-field>
+                        <ErrorMessage class="text-danger fs-6" name="fld_CityId" />
+                      </div>
+                    </div>
                   </div>
                 </div>
+
               </div>
               <div class="modal-footer">
                 <div class="btn-inline">
@@ -129,7 +164,7 @@
 </template>
 
 <script>
-// import { mapMutations, mapState } from 'vuex';
+import { mapState } from 'vuex';
 import tikaUtils from '../assets/js/tikaUtils';
 
 export default {
@@ -140,13 +175,41 @@ export default {
         fld_Tel: 'mobile:^09[0-9]{9}$',
         fld_Address: 'required|min:3|max:100',
         fld_PostalCode: '',
+        fld_ProvinceId: '',
+        fld_CityId: '',
       },
+      getProvVal: '',
     };
+  },
+  computed: {
+    ...mapState(['GetProvincesResult', 'GetProvinceCitiesResult']),
   },
   methods: {
     async AddAddress() {
       await this.$store.dispatch('WS_AddAddress', tikaUtils.serializeForm('AddAddressForm'));
     },
+    async handleInput() {
+      const provCityTaskObj = {
+        ProvinceId: this.getProvVal,
+      };
+
+      await this.$store.dispatch('WS_GetProvinceCities', tikaUtils.serializeObject(provCityTaskObj));
+    },
+  },
+  beforeRouteEnter(to, from, next) {
+    next(async (vm) => {
+      // fetch Provinces
+      await vm.$store.dispatch('WS_GetProvinces', '');
+      // fetch Provinces end
+
+      vm.$store.dispatch('headerTitle', {
+        center: 'سبد خرید(0)',
+        left: '<ion-icon name="trash-outline" role="img" class="md hydrated" aria-label="trash outline"></ion-icon>',
+        to: '',
+        right: 'goBack',
+      }).then(() => {
+      });
+    });
   },
 };
 </script>

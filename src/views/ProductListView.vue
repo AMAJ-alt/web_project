@@ -1,16 +1,17 @@
 <template>
-  <div class="container">
-    <div class="section mt-1 mb-5">
-      <vee-form id="AdvProductSearchForm" @submit="getProductList" :validation-schema="filterSchema">
+  <div id="appCapsule">
+    <div class="container">
+      <div class="section mt-1 mb-5">
+        <vee-form id="AdvProductSearchForm" @submit="getProductList" :validation-schema="filterSchema">
 
-        <div class="form-group boxed">
-          <div class="input-wrapper">
-            <label for="Status" class="ms-1 mb-1">دسته</label>
-            <AppSelect :id="'sCategoryId'" :name="'CategoryId'" :label="'انتخاب دسته'" :options="catOp" />
+          <div class="form-group boxed">
+            <div class="input-wrapper">
+              <label for="Status" class="ms-1 mb-1">دسته</label>
+              <AppSelect :id="'sCategoryId'" :name="'CategoryId'" :label="'انتخاب دسته'" :options="catOp" />
+            </div>
           </div>
-        </div>
 
-        <!-- <div class="form-group boxed">
+          <!-- <div class="form-group boxed">
           <div class="input-wrapper">
             <label for="Status" class="ms-1 mb-1">ترتیب</label>
             <AppSelect :id="'sSort'" :name="'Sort'" :label="'انتخاب ترتیب'" :options="[
@@ -21,41 +22,42 @@
           </div>
         </div> -->
 
-        <br>
-        <div>
-          <button type="submit" class="btn btn-primary btn-block btn-lg">
-            جستجو
-          </button>
-        </div>
-      </vee-form>
+          <br>
+          <div>
+            <button type="submit" class="btn btn-primary btn-block btn-lg">
+              جستجو
+            </button>
+          </div>
+        </vee-form>
+      </div>
     </div>
-  </div>
-  <swiper :slidesPerView="3" :autoplay="{
-    delay: 2500,
-    disableOnInteraction: false,
-  }" :spaceBetween="30" :freeMode="true" :pagination="{
+    <swiper :slidesPerView="3" :autoplay="{
+      delay: 2500,
+      disableOnInteraction: false,
+    }" :spaceBetween="30" :freeMode="true" :pagination="{
   clickable: true,
 }" :modules="modules" class="mySwiper">
-    <swiper-slide v-for="product in GetProdListResult" :key="product.GUID">
-      <div class="card product-card">
-        <div class="card-body">
-          <img :src="product.ImageUrl" class="image" alt="product image">
-          <h2 class="title">{{ product.Title }}</h2>
-          <p class="text p-0">{{ product.CategoryName }}</p>
-          <p class="text">تاریخ تولید {{ product.ProducedDateStr }}</p>
-          <div class="price">{{ product.Price }} تومان</div>
-          <router-link :to="{ name: 'Product', params: { type: 'Products', id: product.Id } }"
-            class="btn btn-sm btn-primary btn-block">مشاهده محصول</router-link>
+      <swiper-slide v-for="product in GetProdListResult" :key="product.GUID">
+        <div class="card product-card">
+          <div class="card-body">
+            <img :src="product.ImageUrl" class="image" alt="product image">
+            <h2 class="title">{{ product.Title }}</h2>
+            <p class="text p-0">{{ product.CategoryName }}</p>
+            <p class="text">تاریخ تولید {{ product.ProducedDateStr }}</p>
+            <div class="price">{{ product.Price }} تومان</div>
+            <router-link :to="{ name: 'Product', params: { type: 'Products', id: product.Id } }"
+              class="btn btn-sm btn-primary btn-block">مشاهده محصول</router-link>
+          </div>
         </div>
-      </div>
-    </swiper-slide>
-  </swiper>
-  <!-- <ul>
+      </swiper-slide>
+    </swiper>
+    <!-- <ul>
     <li v-for="item in treeData" :key="item.id">
       {{ item.label }}
       <tree-list :treeData="item.children" v-if="item.children && item.children.length > 0" />
     </li>
   </ul> -->
+  </div>
 </template>
 <script>
 import { mapState } from 'vuex';
@@ -153,6 +155,7 @@ export default {
       vm.$store.dispatch('headerTitle', {
         center: 'محصولات',
         left: 'خروج',
+        right: 'goBack',
       }).then(() => {
       });
     });

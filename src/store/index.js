@@ -40,10 +40,11 @@ export default createStore({
       // eslint-disable-next-line
       'src': 'APP',
       // eslint-disable-next-line
-      'siteid': (localStorage.getItem('siteid') || '1'),
+      'siteid': (localStorage.getItem('siteid') || '3'),
       // eslint-disable-next-line
       'uid': localStorage.getItem('login_token'),
-      // 'uid': '7d37dfa724f64f94a99fe15620b6136d',
+
+      'basket-guid': localStorage.getItem('basket_token'),
     },
     vis: true,
     countdown: 'در حال محاسبه...',
@@ -86,6 +87,11 @@ export default createStore({
 
     GetProductAttribsMeta: null,
     GetProductAttribsResult: null,
+
+    GetBasketListResult: {},
+    GetBasketListMeta: null,
+
+    AddToBasketResult: null,
 
     GetAssignedImgMeta: {},
     GetAssignedImgResult: {},
@@ -366,7 +372,28 @@ export default createStore({
           console.log(error);
         });
     },
-    async WS_AddToBasket({ state }, jsonParams) {
+    async WS_GetBasketList({ state }, jsonParams) {
+      console.log(jsonParams);
+
+      await tikaUtils.callWS('GetBasketList', state, jsonParams)
+        .then((res) => {
+          console.log(res);
+          if (res.flag < 0) {
+            state.$toast.open({
+              message: res.description,
+              type: 'error',
+            });
+            return;
+          }
+          console.log('ds');
+          state.GetBasketListResult = res.data;
+          state.GetBasketListMeta = res.meta;
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    async WS_AddToBasket({ state, dispatch }, jsonParams) {
       console.log(jsonParams);
 
       await tikaUtils.callWS('AddToBasket', state, jsonParams)
@@ -380,8 +407,30 @@ export default createStore({
             return;
           }
           console.log('ds');
-          // state.GetProductAttribsMeta = res.meta;
-          // state.GetProductAttribsResult = res.data;
+          state.AddToBasketResult = res.data;
+          dispatch('setBasketGuid', state.AddToBasketResult.BasketGUID);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    async WS_DeleteFromBasket({ state }, jsonParams) {
+      console.log(jsonParams);
+
+      await tikaUtils.callWS('DeleteFromBasket', state, jsonParams)
+        .then((res) => {
+          console.log(res);
+          if (res.flag < 0) {
+            state.$toast.open({
+              message: res.description,
+              type: 'error',
+            });
+            return;
+          }
+          state.$toast.open({
+            message: res.description,
+            type: 'info',
+          });
         })
         .catch((error) => {
           console.log(error);
@@ -624,6 +673,10 @@ export default createStore({
     setGUID({ state }, payload) {
       console.log(state);
       localStorage.setItem('login_token', payload);
+    },
+    setBasketGuid({ state }, payload) {
+      console.log(state);
+      localStorage.setItem('basket_token', payload);
     },
   },
 

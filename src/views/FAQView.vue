@@ -1,69 +1,67 @@
 <template>
-  <div class="section full mt-2">
-    <div class="section-title">سوالات متداول</div>
+  <div id="appCapsule">
+    <div class="section full mt-2">
+      <div class="section-title">سوالات متداول</div>
 
-    <div class="accordion" id="accordionExample1">
-      <div class="accordion-item" v-for="sample in AdvCntSmp" :key="sample.Id">
-        <h2 class="accordion-header">
-          <button v-html="sample.Title" class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-            :data-bs-target="`#samp${sample.Id}`">
-          </button>
-        </h2>
-        <div :id="`samp${sample.Id}`" class="accordion-collapse collapse" data-bs-parent="#accordionExample1">
-          <div class="accordion-body" v-html="sample.Brief">
+      <div class="accordion" id="accordionExample1">
+        <div class="accordion-item" v-for="sample in AdvCntSmp" :key="sample.Id">
+          <h2 class="accordion-header">
+            <button v-html="sample.Title" class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+              :data-bs-target="`#samp${sample.Id}`">
+            </button>
+          </h2>
+          <div :id="`samp${sample.Id}`" class="accordion-collapse collapse" data-bs-parent="#accordionExample1">
+            <div class="accordion-body" v-html="sample.Brief">
+            </div>
           </div>
         </div>
-      </div>
-    </div><br><br>
-    <div class="section full mt-2">
-      <div class="section-title">سوالتان را بپرسید *</div>
-      <div class="wide-block pt-2 pb-2">
-        <vee-form @submit="addFAQ" :validation-schema="faqSchema" id="AddFAQForm">
-          <div class="form-group boxed">
-            <div class="input-wrapper">
-              <label for="" class="d-none"></label>
-              <vee-field type="text" class="form-control" name="Subject" placeholder="موضوع" />
-              <ErrorMessage class="text-danger fs-6" name="Subject" />
+      </div><br>
+      <div class="section full mt-2" id="askUs">
+        <div class="section-title">سوالتان را بپرسید *</div>
+        <div class="wide-block pt-2 pb-2">
+          <vee-form @submit="addFAQ" :validation-schema="faqSchema" id="AddFAQForm">
+            <div class="form-group boxed">
+              <div class="input-wrapper">
+                <label for="" class="d-none"></label>
+                <vee-field type="text" class="form-control" name="Subject" placeholder="موضوع" />
+                <ErrorMessage class="text-danger fs-6" name="Subject" />
+              </div>
             </div>
-          </div>
 
-          <div class="form-group boxed">
-            <div class="input-wrapper">
-              <label for="" class="d-none"></label>
-              <vee-field type="email" class="form-control" name="Email" placeholder="ایمیل" />
-              <ErrorMessage class="text-danger fs-6" name="Email" />
+            <div class="form-group boxed">
+              <div class="input-wrapper">
+                <label for="" class="d-none"></label>
+                <vee-field type="email" class="form-control" name="Email" placeholder="ایمیل" />
+                <ErrorMessage class="text-danger fs-6" name="Email" />
+              </div>
             </div>
-          </div>
 
-          <div class="form-group boxed">
-            <div class="input-wrapper">
-              <label for="" class="d-none"></label>
-              <vee-field name="Comment" rows="4" class="form-control" placeholder="پیام"></vee-field>
-              <ErrorMessage class="text-danger fs-6" name="Comment" />
+            <div class="form-group boxed">
+              <div class="input-wrapper">
+                <label for="" class="d-none"></label>
+                <vee-field name="Comment" rows="4" class="form-control" placeholder="پیام"></vee-field>
+                <ErrorMessage class="text-danger fs-6" name="Comment" />
+              </div>
             </div>
-          </div>
 
-          <div class="form-group boxed d-none">
-            <div class="input-wrapper">
-              <label for="" class="d-none"></label>
-              <vee-field type="text" class="form-control" name="CategoryId" placeholder="ایمیل" />
-              <ErrorMessage class="text-danger fs-6" name="CategoryId" />
+            <div class="form-group boxed d-none">
+              <div class="input-wrapper">
+                <label for="" class="d-none"></label>
+                <vee-field type="text" class="form-control" name="CategoryId" placeholder="ایمیل" />
+                <ErrorMessage class="text-danger fs-6" name="CategoryId" />
+              </div>
             </div>
-          </div>
 
-          <div class="mt-1">
-            <button type="submit" class="btn btn-primary btn-lg btn-block">
-              ارسال
-            </button>
-          </div>
-
-        </vee-form>
-
+            <div class="mt-1">
+              <button type="submit" class="btn btn-primary btn-lg btn-block">
+                ارسال
+              </button>
+            </div>
+          </vee-form>
+        </div>
       </div>
 
-    </div>
-
-    <!-- <ul class="listview image-listview">
+      <!-- <ul class="listview image-listview">
       <li v-for="HLink in HLinkListResult" :key="HLink.GUID">
         <a href="#" class="d-flex justify-content-between">
           <div class="col-auto">
@@ -75,7 +73,7 @@
         </a>
       </li>
     </ul> -->
-    <!-- <div class="section full  mb-2">
+      <!-- <div class="section full  mb-2">
     <div class="accordion" id="contact-acor">
       <div class="accordion-item">
         <h2 class="accordion-header">
@@ -91,6 +89,7 @@
         </div>
       </div>
     </div> -->
+    </div>
   </div>
 </template>
 <script>
@@ -154,9 +153,10 @@ export default {
       }
 
       vm.$store.dispatch('headerTitle', {
-        center: 'احراز هویت',
-        left: 'فراموشی رمزعبور',
-        to: 'forget',
+        center: 'سوالات متداول',
+        // left: '<ion-icon name="mail-outline" role="img" class="md hydrated" aria-label="mail outline"></ion-icon>',
+        // to: '',
+        right: 'goBack',
       }).then(() => {
       });
     });

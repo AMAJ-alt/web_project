@@ -44,7 +44,7 @@
       </div>
     </div>
   </div>
-  <VerifyApp v-show="firstSignUpSuccess" :SignUpSuccess="firstSignUpSuccess" :usname="verifyNum" :pwd="verifyPas" />
+  <VerifyApp v-show="firstSignUpSuccess" :SignUpSuccess="firstSignUpSuccess" :usname="verifyNum"/>
 </template>
 
 <script>
@@ -65,8 +65,6 @@ export default {
       firstSignUpSuccess: false,
 
       verifyNum: null,
-
-      verifyPas: null,
     };
   },
   computed: {
@@ -86,7 +84,6 @@ export default {
         this.SignUpModal = false;
         this.firstSignUpSuccess = true;
         this.verifyNum = value.usname;
-        this.verifyPas = value.pwd;
       }
     },
   },

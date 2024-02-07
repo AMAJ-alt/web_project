@@ -19,6 +19,7 @@ module.exports = {
     'max-len': 'off',
     camelcase: ['error', { properties: 'never' }],
     'no-plusplus': 'off',
+    'no-param-reassign': 0,
   },
   overrides: [
     {

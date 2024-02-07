@@ -1,33 +1,42 @@
 <template>
   <div id="appCapsule">
     <div class="section mt-2">
-      <div class="card cart-item mb-2">
+      <h4 class="text-danger fs-6">داده ای وجود</h4>
+    </div>
+    <div class="section mt-2">
+      <div v-for="basketItem in GetBasketListResult.OrderItems" :key="basketItem.Id" class="card cart-item mb-2">
         <div class="card-body">
           <div class="in">
-            <img src="assets/img/sample/photo/product1.jpg" alt="product" class="imaged">
+            <img :src="basketItem.ExtraFields.ProdImage" alt="product" class="imaged">
             <div class="text">
-              <h3 class="title">سیب اوگانیک</h3>
+              <h3 class="title">{{ basketItem.ExtraFields.ProdTitle }}</h3>
               <p class="detail">1 kg</p>
-              <strong class="price">5000 تومان</strong>
+              <strong class="price">{{ basketItem.ItemCost }} ریال</strong>
             </div>
           </div>
           <div class="cart-item-footer">
-            <div class="stepper stepper-sm stepper-secondary">
-              <a href="#" class="stepper-button stepper-down">-</a>
-              <label for="" class="d-none"></label>
-              <input type="text" class="form-control" value="4" disabled />
-              <a href="#" class="stepper-button stepper-up">+</a>
+            <div class="stepper stepper-sm stepper-secondary" v-html="basketItem.ExtraFields.CountOptions">
             </div>
-            <a href="#" class="btn btn-outline-secondary btn-sm">حذف</a>
+            <a href="#" class="btn btn-outline-secondary btn-sm" @click.prevent="deleteItem(basketItem.GUID)">حذف</a>
             <a href="#" class="btn btn-outline-secondary btn-sm">ذخیره برای بعد</a>
           </div>
         </div>
       </div>
 
-      <div class="wide-block pt-2 pb-2">
-        <button type="button" class="btn bg-primary" data-bs-toggle="modal" data-bs-target="#DialogForm">افزودن
-          آدرس</button>
+      <div class="section-title">انتخاب آدرس *</div>
+      <div class="wide-block p-0">
+        <div class="input-list">
+          <div class="form-check" v-for="addressItem in GetBasketListResult.Addresses" :key="addressItem.Guid">
+            <input class="form-check-input" type="radio" :value="addressItem.Id" name="radioList" :id="addressItem.Id">
+            <label class="form-check-label" :for="addressItem.Id">{{ addressItem.Address }}</label>
+          </div>
+        </div>
+        <div class="wide-block pt-2 pb-2">
+          <button type="button" class="btn bg-primary" data-bs-toggle="modal" data-bs-target="#DialogForm">افزودن
+            آدرس</button>
+        </div>
       </div>
+
       <div class="modal fade dialogbox" id="DialogForm" data-bs-backdrop="static" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
           <div class="modal-content">
@@ -71,8 +80,8 @@
                     <div class="form-group basic">
                       <div class="input-wrapper not-empty">
                         <label class="form-label" for="fld_ProvinceId">استان</label>
-                        <vee-field v-model="getProvVal" @change="handleInput" as="select" class="form-control form-select" name="fld_ProvinceId"
-                          id="fld_ProvinceId">
+                        <vee-field v-model="getProvVal" @change="handleInput" as="select" class="form-control form-select"
+                          name="fld_ProvinceId" id="fld_ProvinceId">
                           <option v-for="provItem in GetProvincesResult" :key="provItem.Id" :value="provItem.Id">{{
                             provItem.Title }}</option>
                         </vee-field>
@@ -86,8 +95,9 @@
                         <label class="form-label" for="fld_CityId">شهر</label>
                         <vee-field as="select" :disabled="!getProvVal" class="form-control form-select" name="fld_CityId"
                           id="fld_CityId">
-                          <option v-for="provCityItem in GetProvinceCitiesResult" :key="provCityItem.Id" :value="provCityItem.Id">{{
-                            provCityItem.Title }}</option>
+                          <option v-for="provCityItem in GetProvinceCitiesResult" :key="provCityItem.Id"
+                            :value="provCityItem.Id">{{
+                              provCityItem.Title }}</option>
                         </vee-field>
                         <ErrorMessage class="text-danger fs-6" name="fld_CityId" />
                       </div>
@@ -147,10 +157,10 @@
     <div class="section mt-2 mb-2">
       <div class="card">
         <ul class="listview flush transparent simple-listview">
-          <li>آیتم ها <span class="text-muted">20000 تومان</span></li>
+          <li>آیتم ها <span class="text-muted">{{ Order.TotalAmountOfItems }} ریال</span></li>
           <li>حمل و نقل <span class="text-muted">3000 تومان</span></li>
           <li>مالیات<span class="text-muted">2000 تومان</span></li>
-          <li>جمع<span class="text-primary font-weight-bold">25000 تومان</span></li>
+          <li>جمع<span class="text-primary font-weight-bold">{{ Order.TotalToPay }} ریال</span></li>
         </ul>
       </div>
     </div>
@@ -179,14 +189,27 @@ export default {
         fld_CityId: '',
       },
       getProvVal: '',
+
+      Order: '' || 0,
     };
   },
   computed: {
-    ...mapState(['GetProvincesResult', 'GetProvinceCitiesResult']),
+    ...mapState(['GetProvincesResult', 'GetProvinceCitiesResult', 'GetBasketListResult']),
   },
   methods: {
+    async deleteItem(itemGuid) {
+      const deleteItemTaskObj = {
+        Guid: itemGuid,
+      };
+
+      await this.$store.dispatch('WS_DeleteFromBasket', tikaUtils.serializeObject(deleteItemTaskObj));
+      console.log('sdas');
+      await this.$store.dispatch('WS_GetBasketList', '[{}]');
+    },
     async AddAddress() {
       await this.$store.dispatch('WS_AddAddress', tikaUtils.serializeForm('AddAddressForm'));
+
+      await this.$store.dispatch('WS_GetBasketList', '[{}]');
     },
     async handleInput() {
       const provCityTaskObj = {
@@ -198,6 +221,12 @@ export default {
   },
   beforeRouteEnter(to, from, next) {
     next(async (vm) => {
+      // fetch basket info
+      await vm.$store.dispatch('WS_GetBasketList', '[{}]');
+
+      vm.Order = vm.GetBasketListResult.Order;
+      // fetch basket info end
+
       // fetch Provinces
       await vm.$store.dispatch('WS_GetProvinces', '');
       // fetch Provinces end

@@ -9,46 +9,49 @@
         <h4>برای پیوستن به ما فرم را پر کنید</h4>
       </div>
       <div class="section mt-2">
-        <vee-form @submit="register" :validation-schema="registerSchema" id="FinalRegisterForm">
+        <vee-form @submit="completeRegister" :validation-schema="completeRegisterSchema" id="completeRegisterForm">
 
           <div class="form-group boxed">
             <div class="input-wrapper">
               <label for="number" class="d-none"></label>
-              <vee-field type="text" class="form-control" name="fullname" placeholder="نام کامل..." />
-              <ErrorMessage class="text-danger fs-6" name="fullname" />
+              <vee-field type="text" class="form-control" name="FirstName" placeholder="نام" />
+              <ErrorMessage class="text-danger fs-6" name="FirstName" />
+            </div>
+          </div>
+          <div class="form-group boxed">
+            <div class="input-wrapper">
+              <label for="number" class="d-none"></label>
+              <vee-field type="text" class="form-control" name="LastName" placeholder="نام خانوادگی" />
+              <ErrorMessage class="text-danger fs-6" name="LastName" />
             </div>
           </div>
 
           <div class="form-group boxed">
             <div class="input-wrapper">
               <label for="number" class="d-none"></label>
-              <vee-field name="email" type="email" class="form-control" id="email1" placeholder="ایمیل" />
-              <ErrorMessage class="text-danger fs-6" name="email" />
+              <vee-field name="Email" type="email" class="form-control" id="Email" placeholder="ایمیل" />
+              <ErrorMessage class="text-danger fs-6" name="Email" />
             </div>
           </div>
-          <!-- <div class="form-group boxed">
-              <div class="input-wrapper">
-                <label for="number" class="d-none"></label>
-                <vee-field name="confirm_password" type="password" class="form-control" autocomplete="off"
-                  placeholder="ورود مجدد رمز" />
-                <i class="clear-input">
-                  <ion-icon name="close-circle"></ion-icon>
-                </i>
-                <ErrorMessage class="text-danger fs-6" name="confirm_password" />
-              </div>
-            </div> -->
+          <div class="form-group boxed">
+            <div class="input-wrapper">
+              <label for="number" class="d-none"></label>
+              <vee-field name="BirthDate" type="date" class="form-control" id="BirthDate" placeholder="تاریخ تولد" />
+              <ErrorMessage class="text-danger fs-6" name="BirthDate" />
+            </div>
+          </div>
           <div class="form-group boxed">
             <div class="input-wrapper text-start">
-              <AppSelect :id="'sgender'" :name="'gender'" :label="'انتخاب جنسیت'" :options="[
-                { value: 'female', label: 'زن' },
-                { value: 'male', label: 'مرد' },
+              <AppSelect :id="'sGender'" :name="'Gender'" :label="'انتخاب جنسیت'" :options="[
+                { value: 'f', label: 'زن' },
+                { value: 'm', label: 'مرد' },
                 { value: 'none', label: 'تمایلی به بازگو کردن ندارم' },
               ]
                 " />
             </div>
           </div>
 
-          <div class=" mt-1 text-start">
+          <!-- <div class=" mt-1 text-start">
             <div class="form-check">
               <vee-field value="1" name="tos" type="checkbox" class="form-check-input" id="customCheckb1" />
               <label class="form-check-label" for="customCheckb1">من <a href="#"
@@ -95,7 +98,7 @@
                 </div>
               </div>
             </div>
-          </div>
+          </div> -->
         <br>
 
         <div class="form-button-group">
@@ -108,7 +111,27 @@
 </div></template>
 
 <script>
+// import { mapMutations, mapState } from 'vuex';
+// import VerifyApp from './VerifyApp.vue';
+import tikaUtils from '../assets/js/tikaUtils';
+
 export default {
   name: 'FinalRegistrationApp',
+  data() {
+    return {
+      completeRegisterSchema: {
+        FirstName: 'required|min:3|max:100',
+        LastName: 'required|min:3|max:100',
+        Email: 'required|min:3|max:100',
+        BirthDate: 'required',
+        Gender: 'required',
+      },
+    };
+  },
+  methods: {
+    async completeRegister() {
+      await this.$store.dispatch('WS_UserCompleteRegisteration', tikaUtils.serializeForm('completeRegisterForm'));
+    },
+  },
 };
 </script>

@@ -1,7 +1,7 @@
 <template>
   <div id="appCapsule">
-    <div class="section mt-2">
-      <h4 class="text-danger fs-6">داده ای وجود</h4>
+    <div class="section mt-2" v-show="GetBasketListResult == !null">
+      <h4 class="text-danger fs-6">داده ای وجود ندارد</h4>
     </div>
     <div class="section mt-2">
       <div v-for="basketItem in GetBasketListResult.OrderItems" :key="basketItem.Id" class="card cart-item mb-2">
@@ -15,7 +15,9 @@
             </div>
           </div>
           <div class="cart-item-footer">
-            <div class="stepper stepper-sm stepper-secondary" v-html="basketItem.ExtraFields.CountOptions">
+            <div class="stepper stepper-sm stepper-secondary"
+              @change="refreshCountItem($event.target.value, basketItem.GUID)"
+              v-html="basketItem.ExtraFields.CountOptions">
             </div>
             <a href="#" class="btn btn-outline-secondary btn-sm" @click.prevent="deleteItem(basketItem.GUID)">حذف</a>
             <a href="#" class="btn btn-outline-secondary btn-sm">ذخیره برای بعد</a>
@@ -26,9 +28,10 @@
       <div class="section-title">انتخاب آدرس *</div>
       <div class="wide-block p-0">
         <div class="input-list">
-          <div class="form-check" v-for="addressItem in GetBasketListResult.Addresses" :key="addressItem.Guid">
-            <input class="form-check-input" type="radio" :value="addressItem.Id" name="radioList" :id="addressItem.Id">
-            <label class="form-check-label" :for="addressItem.Id">{{ addressItem.Address }}</label>
+          <div class="form-check" v-for="addressItem in GetAddressListResult" :key="addressItem.GUID">
+            <input class="form-check-input" type="radio" :value="addressItem.GUID" name="radioList" :id="addressItem.GUID"
+              v-model="selectedAddressVal">
+            <label class="form-check-label" :for="addressItem.GUID">{{ addressItem.ExtraFields.Address }}</label>
           </div>
         </div>
         <div class="wide-block pt-2 pb-2">
@@ -154,6 +157,14 @@
     </div>
     <!-- * Discount Action Sheet -->
 
+    <div class="form-group basic">
+      <div class="input-wrapper p-4">
+        <label class="form-label" for="TxtComment">توضیحات *</label>
+        <vee-field type="text" class="form-control" id="TxtComment" name="TxtComment" v-model="textCommentVal" />
+        <ErrorMessage class="text-danger fs-6" name="TxtComment" />
+      </div>
+    </div>
+
     <div class="section mt-2 mb-2">
       <div class="card">
         <ul class="listview flush transparent simple-listview">
@@ -166,8 +177,7 @@
     </div>
 
     <div class="section mb-2">
-      <a href="#" class="btn btn-primary btn-block ">اکنون سفارش دهید</a>
-
+      <a href="#" class="btn btn-primary btn-block " @click.prevent="SubmitBasket">اکنون سفارش دهید</a>
     </div>
 
   </div>
@@ -190,13 +200,45 @@ export default {
       },
       getProvVal: '',
 
-      Order: '' || 0,
+      Order: '',
+
+      selectedAddressVal: '',
+      textCommentVal: '',
     };
   },
   computed: {
-    ...mapState(['GetProvincesResult', 'GetProvinceCitiesResult', 'GetBasketListResult']),
+    ...mapState(['GetProvincesResult',
+      'GetProvinceCitiesResult',
+      'GetBasketListResult',
+      'GetAddressListResult',
+      'GetBasketListMeta']),
   },
   methods: {
+    async SubmitBasket() {
+      const submitBasketTaskObj = {
+        UserAddress: this.selectedAddressVal,
+        PayType: 'onsite',
+        PostType: '37030',
+        TxtComment: this.textCommentVal,
+      };
+
+      await this.$store.dispatch('WS_SubmitBasket', tikaUtils.serializeObject(submitBasketTaskObj));
+
+      await this.$store.dispatch('WS_GetBasketList', '[{}]');
+      this.Order = this.GetBasketListResult.Order;
+    },
+    async refreshCountItem(itemCount, itemGuid) {
+      const changeItemCountTaskObj = {
+        Guid: itemGuid,
+        OrderCount: itemCount,
+      };
+
+      await this.$store.dispatch('WS_ChangeBasketItemCount', tikaUtils.serializeObject(changeItemCountTaskObj));
+
+      await this.$store.dispatch('WS_GetBasketList', '[{}]');
+
+      this.Order = this.GetBasketListResult.Order;
+    },
     async deleteItem(itemGuid) {
       const deleteItemTaskObj = {
         Guid: itemGuid,
@@ -205,11 +247,13 @@ export default {
       await this.$store.dispatch('WS_DeleteFromBasket', tikaUtils.serializeObject(deleteItemTaskObj));
       console.log('sdas');
       await this.$store.dispatch('WS_GetBasketList', '[{}]');
+
+      this.Order = this.GetBasketListResult.Order;
     },
     async AddAddress() {
       await this.$store.dispatch('WS_AddAddress', tikaUtils.serializeForm('AddAddressForm'));
 
-      await this.$store.dispatch('WS_GetBasketList', '[{}]');
+      await this.$store.dispatch('WS_GetAddressList', '[{}]');
     },
     async handleInput() {
       const provCityTaskObj = {
@@ -227,12 +271,16 @@ export default {
       vm.Order = vm.GetBasketListResult.Order;
       // fetch basket info end
 
+      // fetch address info
+      await vm.$store.dispatch('WS_GetAddressList', '[{}]');
+      // fetch address info end
+
       // fetch Provinces
       await vm.$store.dispatch('WS_GetProvinces', '');
       // fetch Provinces end
 
       vm.$store.dispatch('headerTitle', {
-        center: 'سبد خرید(0)',
+        center: `سبد خرید(${vm.GetBasketListMeta.total})`,
         left: '<ion-icon name="trash-outline" role="img" class="md hydrated" aria-label="trash outline"></ion-icon>',
         to: '',
         right: 'goBack',

@@ -19,7 +19,7 @@
           </swiper-slide>
         </swiper>
       </div>
-      <div class="col-6" v-html="GetProductAttribsResult"  v-on:change="refreshPrice"></div>
+      <div class="col-6" v-html="GetProductAttribsResult" v-on:change="refreshPrice"></div>
       <!-- <div class="col-6">
         <div class="section full" v-for="Product in GetProdResult" :key="Product.Id">
           <div class="wide-block pt-2 pb-2 product-detail-header">
@@ -66,6 +66,11 @@
           </div>
         </div>
       </div> -->
+    </div>
+    <div class="section full mt-2">
+      <div class="section-title">توضیحات محصول</div>
+      <div class="wide-block pt-2 pb-2" v-html="productInfo.Content">
+      </div>
     </div>
 
     <!-- carousel full -->
@@ -141,6 +146,8 @@ export default {
       commentSchema: {
         comment: 'required',
       },
+
+      productInfo: '',
     };
   },
   components: {
@@ -189,6 +196,8 @@ export default {
       };
       await vm.$store.dispatch('WS_GetProd', tikaUtils.serializeObject(prodTaskObj));
 
+      vm.productInfo = vm.GetProdResult[0];
+
       const prodAttTaskObj = {
         ProdId: vm.$route.params.id,
       };
@@ -212,8 +221,9 @@ export default {
       vm.updateFinalPrice();
 
       await vm.$store.dispatch('headerTitle', {
-        center: 'بلاگ',
-        left: '<ion-icon name="share-outline"></ion-icon>',
+        center: vm.productInfo.Title,
+        // left: '<ion-icon name="share-outline"></ion-icon>',
+        right: 'goBack',
       }).then(() => {
       });
     });
@@ -310,4 +320,5 @@ export default {
   width: 70%;
   height: 230%;
   object-fit: cover;
-}</style>
+}
+</style>

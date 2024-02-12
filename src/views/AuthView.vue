@@ -23,7 +23,7 @@ export default {
     ...mapState(['authTabLogin']),
   },
   beforeRouteEnter(to, from, next) {
-    next((vm) => {
+    next(async (vm) => {
       // vm.$store.commit('toggleAuthTab');
 
       // const { authTabQuery } = vm.$route.query;
@@ -34,6 +34,10 @@ export default {
         center: 'احراز هویت',
         left: 'فراموشی رمزعبور',
         to: 'forget',
+      }).then(() => {
+      });
+      await vm.$store.dispatch('bottomMenu', {
+        vis: false,
       }).then(() => {
       });
     });

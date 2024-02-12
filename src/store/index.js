@@ -1,5 +1,5 @@
 import { createStore } from 'vuex';
-// import router from '@/router';
+import router from '@/router';
 import { useToast } from 'vue-toast-notification';
 import tikaUtils from '@/assets/js/tikaUtils';
 
@@ -92,6 +92,8 @@ export default createStore({
     GetBasketListMeta: null,
 
     AddToBasketResult: null,
+
+    GetAddressListResult: null,
 
     GetAssignedImgMeta: {},
     GetAssignedImgResult: {},
@@ -220,23 +222,50 @@ export default createStore({
           console.log(error);
         });
     },
-    async WS_SignupCheckCode({ state }, jsonParams) {
+    async WS_SignupCheckCode({ state, dispatch }, jsonParams) {
       console.log(jsonParams);
 
       await tikaUtils.callWS('SignupCheckCode', state, jsonParams)
         .then((res) => {
           console.log(res);
           if (res.flag < 0) {
-            state.SignupCheckCodeFlag = res.flag;
             state.$toast.open({
               message: res.description,
               type: 'info',
             });
           } else {
+            state.SignupCheckCodeFlag = res.flag;
+            dispatch('setGUID', res.data);
             state.$toast.open({
               message: res.description,
               type: 'success',
             });
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    async WS_UserCompleteRegisteration({ state }, jsonParams) {
+      console.log(jsonParams);
+
+      await tikaUtils.callWS('UserCompleteRegisteration', state, jsonParams)
+        .then((res) => {
+          console.log(res);
+          if (res.flag < 0) {
+            state.$toast.open({
+              message: res.description,
+              type: 'info',
+            });
+          } else {
+            // state.SignupCheckCodeFlag = res.flag;
+            // dispatch('setGUID', res.data);
+            state.$toast.open({
+              message: res.description,
+              type: 'success',
+            });
+            // window.location.reload('Home');
+            router.push({ name: 'home' });
           }
         })
         .catch((error) => {
@@ -436,6 +465,51 @@ export default createStore({
           console.log(error);
         });
     },
+    async WS_ChangeBasketItemCount({ state }, jsonParams) {
+      console.log(jsonParams);
+
+      await tikaUtils.callWS('ChangeBasketItemCount', state, jsonParams)
+        .then((res) => {
+          console.log(res);
+          if (res.flag < 0) {
+            state.$toast.open({
+              message: res.description,
+              type: 'error',
+            });
+            return;
+          }
+          state.$toast.open({
+            message: res.description,
+            type: 'info',
+          });
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+
+    async WS_SubmitBasket({ state }, jsonParams) {
+      console.log(jsonParams);
+
+      await tikaUtils.callWS('SubmitBasket', state, jsonParams)
+        .then((res) => {
+          console.log(res);
+          if (res.flag < 0) {
+            state.$toast.open({
+              message: res.description,
+              type: 'error',
+            });
+            return;
+          }
+          state.$toast.open({
+            message: res.description,
+            type: 'info',
+          });
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
     async WS_GetProvinces({ state }, jsonParams) {
       console.log(jsonParams);
 
@@ -469,6 +543,30 @@ export default createStore({
             return;
           }
           state.GetProvinceCitiesResult = res.data;
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    async WS_GetAddressList({ state }, jsonParams) {
+      console.log(jsonParams);
+
+      await tikaUtils.callWS('GetAddressList', state, jsonParams)
+        .then((res) => {
+          console.log(res);
+          // console.log(state.AddFAQResult);
+          if (res.flag < 0) {
+            state.$toast.open({
+              message: res.description,
+              type: 'error',
+            });
+          } else {
+            state.$toast.open({
+              message: res.message,
+              type: 'info',
+            });
+            state.GetAddressListResult = res.data;
+          }
         })
         .catch((error) => {
           console.log(error);

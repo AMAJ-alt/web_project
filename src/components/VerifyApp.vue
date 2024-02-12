@@ -62,7 +62,7 @@ export default {
 
       await this.$store.dispatch('WS_SignupCheckCode', tikaUtils.serializeObject(checkCodeTaskObj));
 
-      if (this.SignupCheckCodeFlag >= 0 && navigator.onLine) {
+      if (this.SignupCheckCodeFlag > 0 && navigator.onLine) {
         this.verifySuccess = true;
       }
     },

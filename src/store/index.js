@@ -18,10 +18,11 @@ export default createStore({
     centerTopicHeader: '',
     LinkTopicHeader: '',
     rightTopicHeader: '',
+    headerVisableity: '',
     // header
 
     // bottom menu
-    visableity: '',
+    bottomVisableity: '',
     // bottom menu
 
     authTabLogin: true,
@@ -193,7 +194,7 @@ export default createStore({
             state.LoginInfoResult = res.data;
             commit('toggleAuth');
             dispatch('setGUID', state.LoginInfoResult.GUID);
-            // window.location.reload();
+            router.push({ name: 'home' });
           }
         })
         .catch((error) => {
@@ -754,13 +755,14 @@ export default createStore({
     },
 
     headerTitle({ state }, payload) {
+      state.headerVisableity = payload.vis;
       state.centerTopicHeader = payload.center;
       state.leftTopicHeader = payload.left;
       state.LinkTopicHeader = payload.to;
       state.rightTopicHeader = payload.right;
     },
     bottomMenu({ state }, payload) {
-      state.visableity = payload.vis;
+      state.bottomVisableity = payload.vis;
       // state.leftTopicHeader = payload.left;
       // state.LinkTopicHeader = payload.to;
       // state.rightTopicHeader = payload.right;

@@ -1,5 +1,5 @@
 <template>
-  <div class="appBottomMenu" v-show="visableity">
+  <div class="appBottomMenu" v-show="bottomVisableity">
     <a href="#" class="item">
       <div class="col">
         <p class="d-none">asa</p>
@@ -39,7 +39,7 @@ import { mapState } from 'vuex';
 export default {
   name: 'AppBottom',
   computed: {
-    ...mapState(['visableity']),
+    ...mapState(['bottomVisableity']),
   },
   mounted() {
     this.$store.dispatch('WS_GetAppMenuList', '[{}]');

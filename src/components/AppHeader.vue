@@ -1,11 +1,11 @@
 <template>
-  <div class="appHeader bg-primary scrolled is-active" :class="{ 'is-active': scroll > 20 }">
-    <div class="left">
+  <div class="appHeader" :class="{'bg-primary': headerVisableity, 'no-border transparent position-absolute': !headerVisableity }">
+    <div class="left" >
       <button v-if="rightTopicHeader == 'goBack'" @click.prevent="goBack" class="headerButton btn btn-link">
         <ion-icon name="chevron-back-outline" class="text-white"></ion-icon>
       </button>
 
-      <button v-else class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+      <!-- <button v-else class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
         aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <ion-icon name="menu-outline" class="text-white navbar-toggler-icon"></ion-icon>
       </button>
@@ -15,7 +15,7 @@
             <a class="nav-link text-white" href="#">{{ right.Title }}</a>
           </li>
         </ul>
-      </div>
+      </div> -->
     </div>
     <div class="pageTitle">{{ centerTopicHeader }}</div>
     <div class="right">
@@ -35,7 +35,7 @@ export default {
     };
   },
   computed: {
-    ...mapState(['leftTopicHeader', 'centerTopicHeader', 'LinkTopicHeader', 'rightTopicHeader']),
+    ...mapState(['headerVisableity', 'leftTopicHeader', 'centerTopicHeader', 'LinkTopicHeader', 'rightTopicHeader']),
   },
   methods: {
     goBack() {

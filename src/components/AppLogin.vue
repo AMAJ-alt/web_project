@@ -1,6 +1,5 @@
 <template>
-  <div id="appCapsule">
-    <div class="login-form mt-1 mt-5">
+    <div class="login-form">
       <div class="section">
         <img src="../assets/vector4.png" alt="image" class="form-image">
       </div>
@@ -48,7 +47,6 @@
         </vee-form>
       </div>
     </div>
-  </div>
 </template>
 <script>
 import { mapMutations, mapState } from 'vuex';

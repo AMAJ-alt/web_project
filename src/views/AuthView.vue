@@ -31,9 +31,10 @@ export default {
       // vm.authTabLogin = authTabQuery;
 
       vm.$store.dispatch('headerTitle', {
-        center: 'احراز هویت',
-        left: 'فراموشی رمزعبور',
-        to: 'forget',
+        vis: false,
+        right: 'goBack',
+        // left: 'فراموشی رمزعبور',
+        // to: 'forget',
       }).then(() => {
       });
       await vm.$store.dispatch('bottomMenu', {

@@ -153,6 +153,7 @@ export default {
       vm.handleTypeInput();
 
       vm.$store.dispatch('headerTitle', {
+        vis: true,
         center: 'محصولات',
         left: 'خروج',
         right: 'goBack',

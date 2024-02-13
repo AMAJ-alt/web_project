@@ -42,9 +42,11 @@ export default {
       vm.$store.dispatch('WS_GetHLinkList', tikaUtils.serializeObject(hLinkTaskObj));
 
       vm.$store.dispatch('headerTitle', {
+        vis: true,
         center: 'LOGO',
         left: 'رد کردن',
         to: 'forget',
+        right: 'goBack',
       }).then(() => {
       });
     });

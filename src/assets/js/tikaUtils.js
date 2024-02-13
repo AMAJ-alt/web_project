@@ -13,10 +13,74 @@ const tikaUtils = {
   selAll(s) {
     return document.querySelectorAll(s);
   },
-  // jsonTree(jsonArray) {
-  //   let topParents = jsonArray.filter(x => x.ParentId === 0);
-  //   let child = jsonArray.filter(x => x.parent !== 0)
-  //   return ;
+
+  // darkMode() {
+
+  //   //-----------------------------------------------------------------------
+  //   // Dark Mode Detection
+  //   var checkDarkModeStatus = localStorage.getItem("MobilekitDarkMode");
+  //   var switchDarkMode = document.querySelectorAll(".dark-mode-switch");
+  //   var pageBodyActive = pageBody.classList.contains("dark-mode-active");
+
+  //   // Check if enable as default
+  //   if (Mobilekit.Dark_Mode.default) {
+  //     pageBody.classList.add("dark-mode-active");
+  //   }
+
+  //   // Night Mode
+  //   if (Mobilekit.Dark_Mode.night_mode.enable) {
+  //     var nightStart = Mobilekit.Dark_Mode.night_mode.start_time;
+  //     var nightEnd = Mobilekit.Dark_Mode.night_mode.end_time;
+  //     var currentDate = new Date();
+  //     var currentHour = currentDate.getHours();
+  //     if (currentHour >= nightStart || currentHour < nightEnd) {
+  //       // It is night time
+  //       pageBody.classList.add("dark-mode-active");
+  //     }
+  //   }
+
+  //   // Auto Detect Dark Mode
+  //   if (Mobilekit.Dark_Mode.auto_detect.enable)
+  //     if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+  //       pageBody.classList.add("dark-mode-active");
+  //     }
+
+  //   function switchDarkModeCheck(value) {
+  //     switchDarkMode.forEach(function (el) {
+  //       el.checked = value
+  //     })
+  //   }
+  //   // if dark mode on
+  //   if (checkDarkModeStatus === 1 || checkDarkModeStatus === "1" || pageBody.classList.contains('dark-mode-active')) {
+  //     switchDarkModeCheck(true);
+  //     if (pageBodyActive) {
+  //       // dark mode already activated
+  //     }
+  //     else {
+  //       pageBody.classList.add("dark-mode-active")
+  //     }
+  //   }
+  //   else {
+  //     switchDarkModeCheck(false);
+  //   }
+  //   switchDarkMode.forEach(function (el) {
+  //     el.addEventListener("click", function () {
+  //       var darkmodeCheck = localStorage.getItem("MobilekitDarkMode");
+  //       var bodyCheck = pageBody.classList.contains('dark-mode-active');
+  //       if (darkmodeCheck === 1 || darkmodeCheck === "1" || bodyCheck) {
+  //         pageBody.classList.remove("dark-mode-active");
+  //         localStorage.setItem("MobilekitDarkMode", "0");
+  //         switchDarkModeCheck(false);
+  //       }
+  //       else {
+  //         pageBody.classList.add("dark-mode-active")
+  //         switchDarkModeCheck(true);
+  //         localStorage.setItem("MobilekitDarkMode", "1");
+  //       }
+  //     })
+  //   })
+  //   //-----------------------------------------------------------------------
+
   // },
 
   /**
@@ -41,7 +105,6 @@ const tikaUtils = {
   },
 
   /**
-   * آروم بگیر امیرمحمد
    * @obj آبجکت.
    * @arr آرایه
    * @Guide این متد آبجکت دریافتی را به آرایه دریافتی درج میکند و سپس به جیسون تبدیل میکند

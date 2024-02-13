@@ -19,7 +19,8 @@
           </swiper-slide>
         </swiper>
       </div>
-      <div class="col-6" v-html="GetProductAttribsResult" v-on:change="refreshPrice"></div>
+      <div class="col-6" v-html="GetProductAttribsResult" @change="refreshPrice($event.target.id, $event.target.value)"></div>
+
       <!-- <div class="col-6">
         <div class="section full" v-for="Product in GetProdResult" :key="Product.Id">
           <div class="wide-block pt-2 pb-2 product-detail-header">
@@ -69,7 +70,7 @@
     </div>
     <div class="section full mt-2">
       <div class="section-title">توضیحات محصول</div>
-      <div class="wide-block pt-2 pb-2" v-html="productInfo.Content">
+      <div class="wide-block pt-2 pb-2" v-html="productInfo.Brief">
       </div>
     </div>
 
@@ -141,8 +142,6 @@ export default {
   name: 'ProductView',
   data() {
     return {
-      OrderNum: 1,
-      product_FinalPrice: null,
       commentSchema: {
         comment: 'required',
       },
@@ -158,17 +157,17 @@ export default {
     ...mapState(['GetProdResult', 'GetProductAttribsResult', 'AdvCommentResult', 'AdvCommentMeta', 'GetProdMeta', 'GetAssignedImgResult']),
   },
   methods: {
-    async refreshPrice() {
-      await this.$store.dispatch('WS_GetProductAttribs', tikaUtils.serializeForm('ProdSetting'));
+    async refreshPrice(targetId, targetVal) {
+      if (targetId === 'OrderCount') {
+        const str = tikaUtils.gel('spLastPrice').innerHTML.replaceAll(',', '');
+        const calculate = (parseInt(targetVal, 10) * parseInt(str, 10)).toLocaleString('fa');
+        tikaUtils.gel('spTotalToPay').innerHTML = calculate;
+      } else {
+        await this.$store.dispatch('WS_GetProductAttribs', tikaUtils.serializeForm('ProdSetting'));
+      }
     },
     async addToBasket() {
       await this.$store.dispatch('WS_AddToBasket', tikaUtils.serializeForm('ProdSetting'));
-    },
-    updateFinalPrice() {
-      if (this.GetProdResult.length > 0) {
-        const product = this.GetProdResult[0]; // اینجا فرض شده که تنها یک محصول وجود دارد
-        this.product_FinalPrice = product.FinalPrice * this.OrderNum;
-      }
     },
     async AddComment(value) {
       console.log(value);
@@ -196,6 +195,7 @@ export default {
       };
       await vm.$store.dispatch('WS_GetProd', tikaUtils.serializeObject(prodTaskObj));
 
+      // eslint-disable-next-line
       vm.productInfo = vm.GetProdResult[0];
 
       const prodAttTaskObj = {
@@ -218,9 +218,8 @@ export default {
       };
       await vm.$store.dispatch('WS_GetCommensList', tikaUtils.serializeObject(cmmTaskObj));
 
-      vm.updateFinalPrice();
-
       await vm.$store.dispatch('headerTitle', {
+        vis: true,
         center: vm.productInfo.Title,
         // left: '<ion-icon name="share-outline"></ion-icon>',
         right: 'goBack',
@@ -259,6 +258,7 @@ export default {
 </script>
 
 <style scoped>
+
 .swiper {
   width: 100%;
   height: 100%;

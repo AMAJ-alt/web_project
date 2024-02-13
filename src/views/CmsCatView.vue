@@ -53,8 +53,10 @@ export default {
       vm.$store.dispatch('Ws_GetCmsCatList', tikaUtils.serializeObject(cmsTaskObj));
 
       vm.$store.dispatch('headerTitle', {
+        vis: true,
         center: 'دسته بندی',
         left: '<ion-icon name="grid-outline"></ion-icon>',
+        right: 'goBack',
       }).then(() => {
       });
     });

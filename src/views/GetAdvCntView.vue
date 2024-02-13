@@ -13,6 +13,7 @@ export default {
   beforeRouteEnter(to, from, next) {
     next((vm) => {
       vm.$store.dispatch('headerTitle', {
+        vis: true,
         center: 'مطالب',
         left: '<ion-icon name="file-tray-stacked-outline"></ion-icon>',
         right: 'goBack',

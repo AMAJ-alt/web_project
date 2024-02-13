@@ -111,9 +111,11 @@ export default {
   beforeRouteEnter(to, from, next) {
     next((vm) => {
       vm.$store.dispatch('headerTitle', {
+        vis: true,
         center: 'چت',
         left: '<ion-icon name="call-outline"></ion-icon><span class="badge badge-danger">1</span>',
         to: 'forget',
+        right: 'goBack',
       }).then(() => {
       });
     });

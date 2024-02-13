@@ -211,8 +211,10 @@ export default {
       console.log(vm.pagination);
 
       await vm.$store.dispatch('headerTitle', {
+        vis: true,
         center: 'بلاگ',
         left: '<ion-icon name="share-outline"></ion-icon>',
+        right: 'goBack',
       }).then(() => {
       });
     });

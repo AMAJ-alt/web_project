@@ -130,6 +130,7 @@ export default {
       await vm.$store.dispatch('WS_GetSupportTicketingList', tikaUtils.serializeObject(getTicketTaskObj));
 
       await vm.$store.dispatch('headerTitle', {
+        vis: true,
         center: 'تیکت ها',
         left: '<ion-icon name="share-outline"></ion-icon>',
         to: 'auth',

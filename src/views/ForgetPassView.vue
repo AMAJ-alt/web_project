@@ -46,8 +46,10 @@ export default {
   beforeRouteEnter(to, from, next) {
     next((vm) => {
       vm.$store.dispatch('headerTitle', {
+        vis: true,
         center: 'احراز هویت',
         left: 'حساب کاربری دارید ؟',
+        right: 'goBack',
         to: 'auth',
       }).then(() => {
       });

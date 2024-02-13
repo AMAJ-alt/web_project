@@ -31,6 +31,20 @@
             </div>
           </a>
         </li>
+        <li>
+          <div class="item">
+            <div class="icon-box bg-primary">
+              <ion-icon name="moon-outline" role="img" class="md hydrated" aria-label="moon outline"></ion-icon>
+            </div>
+            <div class="in">
+              <div>نسخه تاریک</div>
+              <div class="form-check form-switch">
+                <input class="form-check-input dark-mode-switch" type="checkbox" id="darkmodesidebar">
+                <label class="form-check-label" for="darkmodesidebar"></label>
+              </div>
+            </div>
+          </div>
+        </li>
       </ul>
     </div>
 

@@ -280,6 +280,7 @@ export default {
       // fetch Provinces end
 
       vm.$store.dispatch('headerTitle', {
+        vis: true,
         center: `سبد خرید(${vm.GetBasketListMeta.total})`,
         left: '<ion-icon name="trash-outline" role="img" class="md hydrated" aria-label="trash outline"></ion-icon>',
         to: '',

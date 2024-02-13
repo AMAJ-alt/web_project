@@ -153,6 +153,7 @@ export default {
       }
 
       vm.$store.dispatch('headerTitle', {
+        vis: true,
         center: 'سوالات متداول',
         // left: '<ion-icon name="mail-outline" role="img" class="md hydrated" aria-label="mail outline"></ion-icon>',
         // to: '',

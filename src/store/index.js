@@ -92,6 +92,12 @@ export default createStore({
     GetBasketListResult: {},
     GetBasketListMeta: null,
 
+    GetOrdersListResult: null,
+    GetOrdersListMeta: null,
+
+    GetOrderDetailsResult: null,
+    GetOrderDetailsMeta: null,
+
     AddToBasketResult: null,
 
     GetAddressListResult: null,
@@ -506,6 +512,46 @@ export default createStore({
             message: res.description,
             type: 'info',
           });
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    async WS_GetOrdersList({ state }, jsonParams) {
+      console.log(jsonParams);
+
+      await tikaUtils.callWS('GetOrdersList', state, jsonParams)
+        .then((res) => {
+          console.log(res);
+          if (res.flag < 0) {
+            state.$toast.open({
+              message: res.description,
+              type: 'error',
+            });
+            return;
+          }
+          state.GetOrdersListMeta = res.meta;
+          state.GetOrdersListResult = res.data;
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    async WS_GetOrderDetails({ state }, jsonParams) {
+      console.log(jsonParams);
+
+      await tikaUtils.callWS('GetOrderDetails', state, jsonParams)
+        .then((res) => {
+          console.log(res);
+          if (res.flag < 0) {
+            state.$toast.open({
+              message: res.description,
+              type: 'error',
+            });
+            return;
+          }
+          state.GetOrderDetailsMeta = res.meta;
+          state.GetOrderDetailsResult = res.data;
         })
         .catch((error) => {
           console.log(error);

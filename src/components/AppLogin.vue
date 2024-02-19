@@ -36,7 +36,7 @@
             <div>
               <button type="button" @click.prevent="toggleAuthTab" class="btn btn-link">ثبت نام در سایت</button>
             </div>
-            <div><a href="page-forgot-password.html" class="text-muted">رمز خود را فراموش کردید؟</a></div>
+            <div><RouterLink :to="{ name: 'forget' }" class="text-muted">رمز خود را فراموش کردید؟</RouterLink></div>
           </div>
 
           <div class="form-button-group">

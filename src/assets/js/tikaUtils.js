@@ -1,3 +1,4 @@
+/* eslint-disable */
 import axios from 'axios';
 
 const tikaUtils = {
@@ -14,6 +15,76 @@ const tikaUtils = {
     return document.querySelectorAll(s);
   },
 
+  toMoney: (nStr) => {
+    //if (isEmpty(nStr)) return '';
+    // nStr = nStr.toString().removeNotInChars("\\d");
+    // if (isEmpty(nStr)) return '';
+
+    nStr += ''.replaceAll(',', '');
+    var comma = /,/g;
+    var isNeg = nStr.startsWith('-');
+    nStr = nStr
+      .replace(comma, '')
+      .replace(/[^0-9,.]+/g, "");
+    let x = nStr.split('.');
+    let x1 = x[0];
+    let x2 = x.length > 1 ? '.' + x[1] : '';
+    let rgx = /(\d+)(\d{3})/;
+    while (rgx.test(x1)) {
+      x1 = x1.replace(rgx, '$1' + ',' + '$2');
+    }
+    return (isNeg ? '-' : '') + x1 + x2;
+  },
+
+  toInt: (s) => {
+    if (!s) {
+      return 0;
+    }
+    let objVal = typeof (s) === 'object' ?
+      (s.innerHTML ? s.innerHTML : s.value) :
+      s;
+    objVal = parseInt(tikaUtils.getDigit(objVal, 'en').replace(/,/g, ''), 10);
+    return Number.isNaN(objVal) ? 0 : objVal;
+  },
+
+  toFloat: (s) => {
+    if (!s) {
+      return 0;
+    }
+    let objVal = typeof (s) === 'object' ?
+      (s.innerHTML ? s.innerHTML : s.value) :
+      s;
+    objVal = parseFloat(tikaUtils.getDigit(objVal, 'en').replace(/,/g, ''));
+    return Number.isNaN(objVal) ? 0 : objVal;
+  },
+
+  getDigit: (number, lang) => {
+    number = (number || '').toString();
+    if (lang.toUpperCase().trim() === 'FA') {
+      number = number.replace(/0/g, '۰')
+        .replace(/1/g, '۱')
+        .replace(/2/g, '۲')
+        .replace(/3/g, '۳')
+        .replace(/4/g, '۴')
+        .replace(/5/g, '۵')
+        .replace(/6/g, '۶')
+        .replace(/7/g, '۷')
+        .replace(/8/g, '۸')
+        .replace(/9/g, '۹');
+    } else {
+      number = number.replace(/۰/g, '0')
+        .replace(/۱/g, '1')
+        .replace(/۲/g, '2')
+        .replace(/۳/g, '3')
+        .replace(/۴/g, '4')
+        .replace(/۵/g, '5')
+        .replace(/۶/g, '6')
+        .replace(/۷/g, '7')
+        .replace(/۸/g, '8')
+        .replace(/۹/g, '9');
+    }
+    return number;
+  },
   // darkMode() {
 
   //   //-----------------------------------------------------------------------

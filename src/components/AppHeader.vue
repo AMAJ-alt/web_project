@@ -2,7 +2,7 @@
   <div class="appHeader" :class="{'bg-primary': headerVisableity, 'no-border transparent position-absolute': !headerVisableity }">
     <div class="left" >
       <button v-if="rightTopicHeader == 'goBack'" @click.prevent="goBack" class="headerButton btn btn-link">
-        <ion-icon name="chevron-back-outline" class="text-white"></ion-icon>
+        <ion-icon name="chevron-back-outline" :class="{'text-white': headerVisableity, 'text-dark': !headerVisableity}"></ion-icon>
       </button>
 
       <!-- <button v-else class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"

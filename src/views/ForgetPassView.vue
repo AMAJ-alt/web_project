@@ -44,13 +44,16 @@ export default {
     },
   },
   beforeRouteEnter(to, from, next) {
-    next((vm) => {
-      vm.$store.dispatch('headerTitle', {
-        vis: true,
-        center: 'احراز هویت',
-        left: 'حساب کاربری دارید ؟',
+    next(async (vm) => {
+      await vm.$store.dispatch('headerTitle', {
+        vis: false,
         right: 'goBack',
-        to: 'auth',
+        // left: 'فراموشی رمزعبور',
+        // to: 'forget',
+      }).then(() => {
+      });
+      await vm.$store.dispatch('bottomMenu', {
+        vis: false,
       }).then(() => {
       });
     });

@@ -1,7 +1,7 @@
 <template>
   <div>
     <div data-bs-toggle="offcanvas" :data-bs-target="`#${id}`" class="form-control" style="padding: 10px 16px">
-      {{ selectedText }}
+      {{ selectedText || placeholder }}
     </div>
 
     <vee-field :name="name" type="hidden" v-model="selectedOption" @input="emitValue" />
@@ -32,6 +32,10 @@ export default {
     label: String,
     options: Array,
     value: String,
+    placeholder: {
+      type: String,
+      default: 'انتخاب کنید...',
+    },
   },
   data() {
     return {

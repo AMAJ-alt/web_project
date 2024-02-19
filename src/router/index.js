@@ -14,6 +14,8 @@ import InfoSliderView from '../views/InfoSliderView.vue';
 import ProductListView from '../views/ProductListView.vue';
 import ProductView from '../views/ProductView.vue';
 import BasketView from '../views/BasketView.vue';
+import OrderListViewVue from '../views/OrderListView.vue';
+import OrderView from '../views/OrderView.vue';
 import TicketAllView from '../views/TicketAllView.vue';
 // import TicketView from '../views/TicketView.vue';
 
@@ -97,6 +99,16 @@ const routes = [
     path: '/Basket',
     name: 'Basket',
     component: BasketView,
+  },
+  {
+    path: '/Orders',
+    name: 'Orders',
+    component: OrderListViewVue,
+  },
+  {
+    path: '/Orders/:id',
+    name: 'Order',
+    component: OrderView,
   },
   {
     path: '/all-tickets',

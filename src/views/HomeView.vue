@@ -24,6 +24,7 @@
           <router-link :to="{ name: 'product-list' }">product-list</router-link><br>
           <router-link :to="{ name: 'Basket' }">Basket</router-link><br>
           <router-link :to="{ name: 'alltickets' }">alltickets</router-link><br>
+          <router-link :to="{ name: 'Orders' }">Orders</router-link><br>
 
         </form>
       </div>

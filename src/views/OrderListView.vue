@@ -3,7 +3,7 @@
     <div class="listview-title mt-2">لیست ویو رسانه</div>
     <ul class="listview image-listview media">
       <li v-for="orderItem in GetOrdersListResult" :key="orderItem.GUID">
-        <router-link :to="{ name: 'Order', params: { id: item.GUID } }">
+        <router-link :to="{ name: 'Order', params: { id: orderItem.GUID } }">
           <div class="item">
             <div class="imageWrapper">
               <img src="assets/img/sample/photo/1.jpg" alt="image" class="imaged w64">
